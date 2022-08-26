@@ -41,7 +41,7 @@ public class SilabaController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        drag.enableDrag();
+        acercarAPantalla();
     }
     void OnMouseDrag(){
         moviendose = true;
@@ -49,12 +49,37 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp() {
         moviendose = false;
+        colocarEnPosicionNormalRelativaAPantalla();
     }
+
+    private void acercarAPantalla()
+    {
+        //Vector3 posNueva = transform.position;
+        //posNueva.z -= 1;
+        //transform.position = posNueva;
+    }
+
+    private void colocarEnPosicionNormalRelativaAPantalla()
+    {
+        //Vector3 posNueva = transform.position;
+        //posNueva.z = 0;
+        //transform.position = posNueva;
+    }
+
 
     public void dejarQuietaYQuitarControlDeMouse()
     {
         moviendose = false;
         drag.disableDrag();
+    }
+
+    public void disableDrag()
+    {
+        drag.enabled = false;
+    }
+    public void enableDrag()
+    {
+        drag.enabled = true;
     }
 
 }

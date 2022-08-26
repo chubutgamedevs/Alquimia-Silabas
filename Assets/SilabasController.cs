@@ -4,10 +4,22 @@ using UnityEngine;
 
 public class SilabasController : MonoBehaviour
 {
+    private float anchoSilaba = 1;
+    public GameObject sampleSilaba;
+
+
+    private void Awake()
+    {
+        EventManager.SilabasColisionan += UnirSilabas;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (sampleSilaba)
+        {
+            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().bounds.size.x;
+        }
     }
 
     // Update is called once per frame
@@ -19,15 +31,22 @@ public class SilabasController : MonoBehaviour
     void UnirSilabas(SilabaController s1, SilabaController s2)
     {
         //s1 siempre es la que se está moviendo
+        GameObject silaba = s1.gameObject;
+        GameObject otraSilaba = s2.gameObject;
 
-        //float xOffset = otraSilaba.transform.position.x + (anchoSilaba * Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x)); ;
-        //silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
+        float signoDistanciaSilabas = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x);
 
-        ////quitamos el control al usuario
-        //silabaController.dejarQuietaYQuitarControlDeMouse();
+        bool s1EstaALaIzquierda = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x) > 0;
 
-        ////desactivamos conectores para no conectar en el medio
-        //gameObject.SetActive(false);
-        //other.gameObject.SetActive(false);
+        float xOffset = otraSilaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
+        silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
+
+        //quitamos el control al usuario
+        s1.dejarQuietaYQuitarControlDeMouse();
+
+        s1.disableDrag();
+        s2.disableDrag();
+
+        EventManager.onSilabasUnidas(s1, s2);
     }
 }

@@ -22,7 +22,7 @@ public class ConectorController : MonoBehaviour
 
     private void Start()
     {
-        //anchoSilaba = silaba.GetComponent<BoxCollider>().bounds.size.x;
+
     }
 
 
@@ -33,8 +33,13 @@ public class ConectorController : MonoBehaviour
             ConectorController otroConector = other.gameObject.GetComponent<ConectorController>();
 
             if (silabaController.moviendose)
+                //desactivamos conectores para no conectar en el medio
+                gameObject.SetActive(false);
+                other.gameObject.SetActive(false);
+
             {   //el primer argumento es la silaba que se está moviendo
                 EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);
+
             }
         }
     }
