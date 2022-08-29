@@ -58,8 +58,8 @@ public class ConectoresManager : MonoBehaviour
 
     internal void activarConectores()
     {
-        conectorHembra.desActivarConector();
-        conectorMacho.desActivarConector();
+        conectorHembra.activarConector();
+        conectorMacho.activarConector();
     }
     
 }

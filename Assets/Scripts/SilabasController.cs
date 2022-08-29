@@ -36,16 +36,25 @@ public class SilabasController : MonoBehaviour
 
         float signoDistanciaSilabas = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x);
 
-        bool s1EstaALaIzquierda = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x) > 0;
+        bool s2EstaALaIzquierda = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x) > 0;
 
         float xOffset = otraSilaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
         silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
 
         //quitamos el control al usuario
         s1.dejarQuietaYQuitarControlDeMouse();
+        s2.dejarQuietaYQuitarControlDeMouse();
 
-        s1.disableDrag();
-        s2.disableDrag();
+        if (s2EstaALaIzquierda)
+        {
+            s2.silabaDerecha = s1;
+            s1.silabaIzquierda = s2;
+        }
+        else
+        {
+            s2.silabaIzquierda = s1;
+            s1.silabaDerecha = s2;
+        }
 
         EventManager.onSilabasUnidas(s1, s2);
     }

@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class SilabaController : MonoBehaviour
 {
-    private SilabaController silabaIzquierda;
-    private SilabaController silabaDerecha;
+    public SilabaController silabaIzquierda;
+    public SilabaController silabaDerecha;
 
     private ConectoresManager conectoresManager;
 
@@ -18,6 +18,22 @@ public class SilabaController : MonoBehaviour
     private void Awake() {
         drag = gameObject.GetComponent<Drag>();
     }
+
+    // eventos
+    void OnEnable()
+    {
+        EventManager.ModoRomperActivado += enableDrag;
+        EventManager.ModoRomperDesActivado += disableDrag;
+    }
+
+    void OnDisable()
+    {
+        EventManager.ModoRomperActivado -= enableDrag;
+        EventManager.ModoRomperDesActivado -= disableDrag;
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +57,6 @@ public class SilabaController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        conectoresManager.desActivarConectores();
         acercarAPantalla();
     }
     void OnMouseDrag(){
@@ -50,7 +65,6 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp() {
         moviendose = false;
-        conectoresManager.activarConectores();
         colocarEnPosicionNormalRelativaAPantalla();
     }
 
