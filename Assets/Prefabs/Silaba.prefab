@@ -126,7 +126,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 4
+  m_Height: 8
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7832757445445151203
@@ -487,7 +487,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 4
+  m_Height: 8
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7832757446643457402
@@ -536,12 +536,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a56aa8bad9e070e2a99e0444ea0a6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  conectoresHembra:
-  - {fileID: 0}
-  - {fileID: 0}
-  conectoresMacho:
-  - {fileID: 2497947909707056401}
-  - {fileID: 2212775506407378658}
+  conectorHembra: {fileID: 2497947909707056401}
+  conectorMacho: {fileID: 2212775506407378658}
 --- !u!1 &7832757446965612366
 GameObject:
   m_ObjectHideFlags: 0

@@ -41,6 +41,7 @@ public class SilabaController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        conectoresManager.desActivarConectores();
         acercarAPantalla();
     }
     void OnMouseDrag(){
@@ -49,6 +50,7 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp() {
         moviendose = false;
+        conectoresManager.activarConectores();
         colocarEnPosicionNormalRelativaAPantalla();
     }
 

@@ -5,16 +5,42 @@ using UnityEngine;
 
 public class ConectoresManager : MonoBehaviour
 {
+    public ConectorController conectorHembra; 
+    public ConectorController conectorMacho;
+
+    private void Awake()
+    {
+        if (!conectorHembra)
+        {
+            conectorHembra = gameObject.transform.GetChild(0).GetComponent<ConectorController>();
+        }
+
+        if (!conectorMacho)
+        {
+            conectorMacho = gameObject.transform.GetChild(1).GetComponent<ConectorController>();
+        }
+
+    }
 
 
-    public ConectorController[] conectoresHembra; //verdes
-    public ConectorController[] conectoresMacho; //rojos
 
+    // eventos
+    void OnEnable()
+    {
+        EventManager.ModoRomperActivado += activarConectores;
+        EventManager.ModoRomperDesActivado += desActivarConectores;
+    }
+
+    void OnDisable()
+    {
+        EventManager.ModoRomperActivado -= activarConectores;
+        EventManager.ModoRomperDesActivado -= desActivarConectores;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
 
@@ -24,5 +50,16 @@ public class ConectoresManager : MonoBehaviour
 
     }
 
+    internal void desActivarConectores()
+    {
+        conectorHembra.desActivarConector();
+        conectorMacho.desActivarConector();
+    }
 
+    internal void activarConectores()
+    {
+        conectorHembra.desActivarConector();
+        conectorMacho.desActivarConector();
+    }
+    
 }

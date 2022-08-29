@@ -6,10 +6,9 @@ public class ConectorController : MonoBehaviour
 {
     
     private SilabaController silabaController;
+    public GameObject silaba;
 
     float anchoSilaba;
-
-    public GameObject silaba;
 
     private void Awake()
     {
@@ -17,14 +16,17 @@ public class ConectorController : MonoBehaviour
         {
             silaba = transform.parent.transform.parent.gameObject;
         }
-        silabaController = silaba.GetComponent<SilabaController>();
+        silabaController = silaba.GetComponent<SilabaController>();        
     }
 
-    private void Start()
+    public void desActivarConector()
     {
-
+        gameObject.SetActive(false);
     }
-
+    public void activarConector()
+    {
+        gameObject.SetActive(true);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -32,14 +34,14 @@ public class ConectorController : MonoBehaviour
         {
             ConectorController otroConector = other.gameObject.GetComponent<ConectorController>();
 
-            if (silabaController.moviendose)
+            //de esta manera evitamos que el evento se lance 2 veces
+            if (silabaController.moviendose){ 
                 //desactivamos conectores para no conectar en el medio
                 gameObject.SetActive(false);
                 other.gameObject.SetActive(false);
 
-            {   //el primer argumento es la silaba que se está moviendo
+                //el primer argumento es la silaba que se está moviendo
                 EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);
-
             }
         }
     }
