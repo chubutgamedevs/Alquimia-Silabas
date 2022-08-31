@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
+using Random = System.Random;
 
 public class SilabaController : MonoBehaviour
 {
@@ -11,36 +12,72 @@ public class SilabaController : MonoBehaviour
 
     private ConectoresManager conectoresManager;
 
+    public Rigidbody rb;
+    
+    public String silaba = "CIS";
+
+    public TMPro.TextMeshPro texto;
 
     private Drag drag;
     public bool moviendose = false;
-    
-    private void Awake() {
-        drag = gameObject.GetComponent<Drag>();
-    }
 
-    // eventos
+    private BoxCollider boxCollider;
+
+    #region eventos
     void OnEnable()
     {
-        EventManager.ModoRomperActivado += enableDrag;
-        EventManager.ModoRomperDesActivado += disableDrag;
     }
 
     void OnDisable()
     {
-        EventManager.ModoRomperActivado -= enableDrag;
-        EventManager.ModoRomperDesActivado -= disableDrag;
     }
 
+    private void OnMouseDown()
+    {
+        EventManager.onSilabaEsClickeada(this);
+    }
+    void OnMouseDrag()
+    {
+        if (drag.dragEnabled)
+        {
 
+        moviendose = true;
+        }
+    }
+    void OnMouseUp()
+    {
+        moviendose = false;
+    }
+
+    #endregion eventos
+
+    #region ciclo de vida
+    private void Awake()
+    {
+        drag = gameObject.GetComponent<Drag>();
+
+        if (!rb)
+        {
+            rb = gameObject.GetComponent<Rigidbody>();
+        }
+
+        if (!texto)
+        {
+            texto = getTextMeshPro();
+        }
+
+        conectoresManager = getConectoresManager();
+        boxCollider = GetComponent<BoxCollider>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        conectoresManager = getConectoresManager();
-
         silabaIzquierda = null;
         silabaDerecha = null;
+
+        silaba = RandomString(2); /*testing*/
+        texto.text = silaba;
     }
 
     // Update is called once per frame
@@ -49,53 +86,99 @@ public class SilabaController : MonoBehaviour
         
     }
 
+    #endregion ciclo de vida
 
+    #region getters
     ConectoresManager getConectoresManager(){
         return gameObject.transform.GetChild(2).gameObject.GetComponent<ConectoresManager>();
     }
 
-
-    private void OnMouseDown()
+    TMPro.TextMeshPro getTextMeshPro()
     {
-        acercarAPantalla();
-    }
-    void OnMouseDrag(){
-        moviendose = true;
+        return gameObject.transform.GetChild(1).gameObject.GetComponent<TMPro.TextMeshPro>();
     }
 
-    void OnMouseUp() {
-        moviendose = false;
-        colocarEnPosicionNormalRelativaAPantalla();
-    }
-
-    private void acercarAPantalla()
+    public float getAncho()
     {
-        //Vector3 posNueva = transform.position;
-        //posNueva.z -= 1;
-        //transform.position = posNueva;
+        return boxCollider.bounds.size.x;
     }
 
-    private void colocarEnPosicionNormalRelativaAPantalla()
+    public float getAlto()
     {
-        //Vector3 posNueva = transform.position;
-        //posNueva.z = 0;
-        //transform.position = posNueva;
+        return boxCollider.bounds.size.y;
     }
+    #endregion getters
 
+    public List<SilabaController> getSilabasPalabra()
+    {
+        SilabaController recorredorSilabas = null;
+        recorredorSilabas = this;
 
+        List<SilabaController> palabra = new List<SilabaController>();
+
+        //vamos a la primera silaba
+        while (recorredorSilabas.silabaIzquierda)
+        {
+              recorredorSilabas = recorredorSilabas.silabaIzquierda;            
+        }
+
+        //vamos a la ultima silaba y obtenemos la palabra
+        while (recorredorSilabas)
+        {
+            palabra.Add(recorredorSilabas);
+            recorredorSilabas = recorredorSilabas.silabaDerecha;
+        }
+
+        return palabra;
+    }
     public void dejarQuietaYQuitarControlDeMouse()
     {
         moviendose = false;
         drag.disableDrag();
     }
 
-    public void disableDrag()
+    public void separarSilaba()
     {
-        drag.enabled = false;
-    }
-    public void enableDrag()
-    {
-        drag.enabled = true;
+
+        if(silabaIzquierda | silabaDerecha) {
+            if (silabaIzquierda)
+            {
+                silabaIzquierda.silabaDerecha = null;
+                silabaIzquierda.conectoresManager.activarConectorDerecho();
+            }
+
+            if (silabaDerecha)
+            {
+                silabaDerecha.silabaIzquierda = null;
+                silabaDerecha.conectoresManager.activarConectorIzquierdo();
+            }
+
+            this.silabaIzquierda = null;
+            this.silabaDerecha  = null;
+
+            this.dejarQuietaYQuitarControlDeMouse();
+            this.transform.position.Scale( new Vector3(2,2,2));
+            Vector3 newPos = transform.position;
+            newPos.y += getAlto() * Mathf.Sign( random.Next(-1, 1));
+
+            transform.position = newPos;
+
+            conectoresManager.activarConectores();
+        }
     }
 
+
+    #region testing
+
+    //for testing purposes only
+    private static Random random = new Random();
+    public static string RandomString(int length)
+    {
+
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    #endregion testing
 }

@@ -7,10 +7,28 @@ public class SilabasController : MonoBehaviour
     private float anchoSilaba = 1;
     public GameObject sampleSilaba;
 
+    public GameManager gameManager;
+
+    // eventos
+    void OnEnable()
+    {
+        EventManager.SilabaEsClickeada += manejarClickASilaba;
+        EventManager.SilabasColisionan += UnirSilabas;
+    }
+
+    void OnDisable()
+    {
+        EventManager.SilabaEsClickeada -= manejarClickASilaba;
+        EventManager.SilabasColisionan -= UnirSilabas;
+    }
+
 
     private void Awake()
     {
-        EventManager.SilabasColisionan += UnirSilabas;
+        if (!gameManager)
+        {
+            gameManager = GameManager.GetInstance();
+        }
     }
 
     // Start is called before the first frame update
@@ -28,34 +46,49 @@ public class SilabasController : MonoBehaviour
         
     }
 
-    void UnirSilabas(SilabaController s1, SilabaController s2)
-    {
-        //s1 siempre es la que se está moviendo
-        GameObject silaba = s1.gameObject;
-        GameObject otraSilaba = s2.gameObject;
+    void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
+    {   //la primer silaba siempre es la que se está moviendo (checkear eventos)
+ 
+        float deltaX = silaba.transform.position.x - otraSilaba.transform.position.x;
 
-        float signoDistanciaSilabas = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x);
+        float signoDistanciaSilabas = Mathf.Sign(deltaX);
 
-        bool s2EstaALaIzquierda = Mathf.Sign(silaba.transform.position.x - otraSilaba.transform.position.x) > 0;
+        bool otraSilabaEstaALaIzquierda = signoDistanciaSilabas > 0;
 
         float xOffset = otraSilaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
         silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
 
         //quitamos el control al usuario
-        s1.dejarQuietaYQuitarControlDeMouse();
-        s2.dejarQuietaYQuitarControlDeMouse();
+        silaba.dejarQuietaYQuitarControlDeMouse();
+        otraSilaba.dejarQuietaYQuitarControlDeMouse();
 
-        if (s2EstaALaIzquierda)
+        SilabaController izquierda = silaba;
+        SilabaController derecha = otraSilaba;
+
+        if (otraSilabaEstaALaIzquierda)
         {
-            s2.silabaDerecha = s1;
-            s1.silabaIzquierda = s2;
+            izquierda = otraSilaba;
+            derecha = silaba;
+        }
+
+        //unirPalabras(izquierda.palabra(), derecha.palabra());
+
+        izquierda.silabaDerecha = derecha;
+        derecha.silabaIzquierda = izquierda;
+
+        //se envia primero silaba para asegurarnos de que enviamos la que se movio primero (por convencion)
+        EventManager.onSilabasUnidas(silaba, otraSilaba);
+    }
+
+    void manejarClickASilaba(SilabaController silaba)
+    {
+        if (gameManager.modoRomper)
+        {
+            silaba.separarSilaba();
         }
         else
         {
-            s2.silabaIzquierda = s1;
-            s1.silabaDerecha = s2;
+            //mover palabra
         }
-
-        EventManager.onSilabasUnidas(s1, s2);
     }
 }

@@ -34,14 +34,18 @@ public class ConectorController : MonoBehaviour
         {
             ConectorController otroConector = other.gameObject.GetComponent<ConectorController>();
 
-            //de esta manera evitamos que el evento se lance 2 veces
-            if (silabaController.moviendose){ 
-                //desactivamos conectores para no conectar en el medio
-                gameObject.SetActive(false);
-                other.gameObject.SetActive(false);
+            if(this.gameObject.name != other.gameObject.name)
+            {
+                //de esta manera evitamos que el evento se lance 2 veces
+                if (silabaController.moviendose){
 
-                //el primer argumento es la silaba que se está moviendo
-                EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);
+                    //el primer argumento es la silaba que se está moviendo
+                    EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);
+                
+                    //desactivamos conectores para no conectar en el medio una vez unidas
+                    gameObject.SetActive(false);
+                    other.gameObject.SetActive(false);
+                }
             }
         }
     }

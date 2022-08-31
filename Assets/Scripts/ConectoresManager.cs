@@ -27,13 +27,11 @@ public class ConectoresManager : MonoBehaviour
     // eventos
     void OnEnable()
     {
-        EventManager.ModoRomperActivado += activarConectores;
         EventManager.ModoRomperDesActivado += desActivarConectores;
     }
 
     void OnDisable()
     {
-        EventManager.ModoRomperActivado -= activarConectores;
         EventManager.ModoRomperDesActivado -= desActivarConectores;
     }
 
@@ -61,5 +59,14 @@ public class ConectoresManager : MonoBehaviour
         conectorHembra.activarConector();
         conectorMacho.activarConector();
     }
-    
+
+    internal void activarConectorDerecho()
+    {
+        conectorMacho.activarConector();
+    }
+
+    internal void activarConectorIzquierdo()
+    {
+        conectorHembra.activarConector();
+    }
 }

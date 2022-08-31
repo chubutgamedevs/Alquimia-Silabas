@@ -8,6 +8,7 @@ public class EventManager : MonoBehaviour
     public static event System.Action<SilabaController, SilabaController> SilabasUnidas = delegate { };
     public static event System.Action<SilabaController, SilabaController> SilabasSeparadas = delegate { };
     public static event System.Action<SilabaController, SilabaController> SilabasColisionan = delegate { };
+    public static event System.Action<SilabaController> SilabaEsClickeada = delegate { };
     public static event System.Action<SilabaController> SilabaEsBajada = delegate { };
 
     //eventos de juego general
@@ -43,6 +44,12 @@ public class EventManager : MonoBehaviour
         Debug.Log("onSilabasColisionan");
         //el primer argumento es la silaba que se está moviend
         SilabasColisionan(s1, s2);
+    }
+
+    public static void onSilabaEsClickeada(SilabaController silaba)
+    {
+        Debug.Log("onSilabaEsClickeada");
+        SilabaEsClickeada(silaba);
     }
 
     public static void onSilabaEsBajada(SilabaController silaba)
