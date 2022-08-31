@@ -26,10 +26,13 @@ public class SilabaController : MonoBehaviour
     #region eventos
     void OnEnable()
     {
+        EventManager.ModoRomperDesActivado += restablecerConectores;
+
     }
 
     void OnDisable()
     {
+        EventManager.ModoRomperDesActivado -= restablecerConectores;
     }
 
     private void OnMouseDown()
@@ -109,6 +112,7 @@ public class SilabaController : MonoBehaviour
     }
     #endregion getters
 
+    #region metodos
     public List<SilabaController> getSilabasPalabra()
     {
         SilabaController recorredorSilabas = null;
@@ -157,9 +161,8 @@ public class SilabaController : MonoBehaviour
             this.silabaDerecha  = null;
 
             this.dejarQuietaYQuitarControlDeMouse();
-            this.transform.position.Scale( new Vector3(2,2,2));
             Vector3 newPos = transform.position;
-            newPos.y += getAlto() * Mathf.Sign( random.Next(-1, 1));
+            newPos.y += getAlto() * Mathf.Sign(random.Next(-1, 1));
 
             transform.position = newPos;
 
@@ -167,6 +170,21 @@ public class SilabaController : MonoBehaviour
         }
     }
 
+    void restablecerConectores()
+    {
+        if (!silabaIzquierda)
+        {
+            conectoresManager.activarConectorIzquierdo();
+        }
+        if (!silabaDerecha)
+        {
+            conectoresManager.activarConectorDerecho();
+        }
+
+        drag.enableDrag();
+    }
+
+    #endregion
 
     #region testing
 

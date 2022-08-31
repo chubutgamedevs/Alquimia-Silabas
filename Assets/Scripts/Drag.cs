@@ -4,6 +4,8 @@ public class Drag : MonoBehaviour
 {
 
     private Vector3 dragOffset;
+    private Vector3 parentDragOffset;
+
     public Camera cam;
 
     public bool dragEnabled;
@@ -22,6 +24,7 @@ public class Drag : MonoBehaviour
     void OnMouseDown()
     {
         dragOffset = transform.position - GetMousePos();
+        parentDragOffset = transform.parent.position - GetMousePos();
     }
 
 
@@ -29,7 +32,14 @@ public class Drag : MonoBehaviour
     {
         if (dragEnabled)
         {
-            transform.position = GetMousePos() + dragOffset;
+            if(transform.parent.name == "Palabra")
+            {
+                transform.parent.position = GetMousePos() + parentDragOffset;
+            }
+            else
+            {
+                transform.position = GetMousePos() + dragOffset;
+            }
         }
     }
 

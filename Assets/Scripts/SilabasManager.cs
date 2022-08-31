@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SilabasController : MonoBehaviour
+public class SilabasManager : MonoBehaviour
 {
     private float anchoSilaba = 1;
     public GameObject sampleSilaba;
