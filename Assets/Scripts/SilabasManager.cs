@@ -36,7 +36,7 @@ public class SilabasManager : MonoBehaviour
     {
         if (sampleSilaba)
         {
-            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().bounds.size.x;
+            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().size.x;
         }
     }
 
@@ -55,7 +55,7 @@ public class SilabasManager : MonoBehaviour
 
         bool otraSilabaEstaALaIzquierda = signoDistanciaSilabas > 0;
 
-        float xOffset = silaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
+        float xOffset = otraSilaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
         silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
 
         //quitamos el control al usuario
@@ -71,13 +71,25 @@ public class SilabasManager : MonoBehaviour
             derecha = silaba;
         }
 
-        //unirPalabras(izquierda.palabra(), derecha.palabra());
 
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
 
+        //setteamos al padre de todas estas silabas como la misma palabra
+        unirPalabra(izquierda.getSilabasPalabra());
+
         //se envia primero silaba para asegurarnos de que enviamos la que se movio primero (por convencion)
         EventManager.onSilabasUnidas(silaba, otraSilaba);
+    }
+
+    void unirPalabra(List<SilabaController> silabasPalabra)
+    {
+        GameObject palabraObj = gameManager.nuevaPalabra();
+        PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
+
+        palabraController.setSilabas(silabasPalabra);
+
+
     }
 
     void manejarClickASilaba(SilabaController silaba)
@@ -85,10 +97,6 @@ public class SilabasManager : MonoBehaviour
         if (gameManager.modoRomper)
         {
             silaba.separarSilaba();
-        }
-        else
-        {
-            //mover palabra
         }
     }
 }

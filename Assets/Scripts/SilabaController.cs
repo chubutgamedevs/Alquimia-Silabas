@@ -11,6 +11,9 @@ public class SilabaController : MonoBehaviour
     public SilabaController silabaDerecha;
 
     private ConectoresManager conectoresManager;
+    
+    private GameObject palabraParent;
+    private PalabraController palabraController;
 
     public Rigidbody rb;
     
@@ -71,6 +74,8 @@ public class SilabaController : MonoBehaviour
 
         conectoresManager = getConectoresManager();
         boxCollider = GetComponent<BoxCollider>();
+
+        setPalabra(this.transform.parent.gameObject);
     }
 
     // Start is called before the first frame update
@@ -91,7 +96,7 @@ public class SilabaController : MonoBehaviour
 
     #endregion ciclo de vida
 
-    #region getters
+    #region getters & setters
     ConectoresManager getConectoresManager(){
         return gameObject.transform.GetChild(2).gameObject.GetComponent<ConectoresManager>();
     }
@@ -110,7 +115,26 @@ public class SilabaController : MonoBehaviour
     {
         return boxCollider.bounds.size.y;
     }
-    #endregion getters
+
+    public void setPalabra(GameObject palabraAux)
+    {
+        this.palabraParent = palabraAux;
+        this.transform.SetParent(this.palabraParent.transform);
+
+        this.palabraController = this.palabraParent.GetComponent<PalabraController>();
+    }
+
+    public GameObject getPalabra()
+    {
+        return this.palabraParent;
+    }
+
+    public PalabraController getPalabraController()
+    {
+        return this.palabraController;
+    }
+
+    #endregion 
 
     #region metodos
     public List<SilabaController> getSilabasPalabra()

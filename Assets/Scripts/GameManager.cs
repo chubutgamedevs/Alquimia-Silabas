@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     public bool modoRomper=false;
     private bool _modoRomper = false;
 
+    public GameObject palabraPrefab;
 
     #region singleton
     //singleton
@@ -89,11 +91,13 @@ public class GameManager : MonoBehaviour
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
         List<SilabaController> silabasAux = silaba.getSilabasPalabra();
+    }
 
-        Debug.Log("Silabas de la nueva palabra: ");
+    internal GameObject nuevaPalabra()
+    {
+        GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        Destroy(palabraObj.transform.GetChild(0).gameObject);
 
-        foreach (SilabaController sil in silabasAux)
-            Debug.Log(sil.silaba);
-
+        return palabraObj;
     }
 }
