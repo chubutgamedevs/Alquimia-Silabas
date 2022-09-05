@@ -35,17 +35,17 @@ public class GameManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.SilabasUnidas += comprobarPalabraFormada;
-        EventManager.ModoRomperActivado += ActivarModoRomper;
-        EventManager.ModoRomperDesActivado+= DesActivarModoRomper;
+        EventManager.silabasUnidas += comprobarPalabraFormada;
+        EventManager.modoRomperActivado += ActivarModoRomper;
+        EventManager.modoRomperDesActivado+= DesActivarModoRomper;
 
     }
 
     void OnDisable()
     {
-        EventManager.SilabasUnidas-= comprobarPalabraFormada;
-        EventManager.ModoRomperActivado -= ActivarModoRomper;
-        EventManager.ModoRomperDesActivado -= DesActivarModoRomper;
+        EventManager.silabasUnidas-= comprobarPalabraFormada;
+        EventManager.modoRomperActivado -= ActivarModoRomper;
+        EventManager.modoRomperDesActivado -= DesActivarModoRomper;
     }
     #endregion
 
@@ -96,7 +96,6 @@ public class GameManager : MonoBehaviour
     internal GameObject nuevaPalabra()
     {
         GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        Destroy(palabraObj.transform.GetChild(0).gameObject);
 
         return palabraObj;
     }

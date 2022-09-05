@@ -537,7 +537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modoRomper: 0
-  palabraPrefab: {fileID: 7977601284497516053, guid: b320b459dbbceae49aed9b72c74a080f, type: 3}
+  palabraPrefab: {fileID: 7977601284497516053, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
 --- !u!4 &1026310747
 Transform:
   m_ObjectHideFlags: 0

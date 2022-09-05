@@ -27,12 +27,11 @@ public class ConectoresManager : MonoBehaviour
     // eventos
     void OnEnable()
     {
-        EventManager.ModoRomperDesActivado += desActivarConectores;
+
     }
 
     void OnDisable()
     {
-        EventManager.ModoRomperDesActivado -= desActivarConectores;
     }
 
     // Start is called before the first frame update

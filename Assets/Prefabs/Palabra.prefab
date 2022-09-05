@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 2089732170693746366}
   m_Layer: 0
   m_Name: Palabra
-  m_TagString: Untagged
+  m_TagString: Palabra
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

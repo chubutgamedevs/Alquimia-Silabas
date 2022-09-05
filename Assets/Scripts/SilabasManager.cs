@@ -12,14 +12,14 @@ public class SilabasManager : MonoBehaviour
     // eventos
     void OnEnable()
     {
-        EventManager.SilabaEsClickeada += manejarClickASilaba;
-        EventManager.SilabasColisionan += UnirSilabas;
+        EventManager.silabaEsClickeada += manejarClickASilaba;
+        EventManager.silabasColisionan += UnirSilabas;
     }
 
     void OnDisable()
     {
-        EventManager.SilabaEsClickeada -= manejarClickASilaba;
-        EventManager.SilabasColisionan -= UnirSilabas;
+        EventManager.silabaEsClickeada -= manejarClickASilaba;
+        EventManager.silabasColisionan -= UnirSilabas;
     }
 
 
@@ -71,15 +71,16 @@ public class SilabasManager : MonoBehaviour
             derecha = silaba;
         }
 
-
+        //unimos palabra
+        PalabraController palabra = izquierda.getPalabraController();
+        palabra.aniadirPalabraAlFinal(derecha.getSilabasPalabra());
+       
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
 
-        //setteamos al padre de todas estas silabas como la misma palabra
-        unirPalabra(izquierda.getSilabasPalabra());
-
-        //se envia primero silaba para asegurarnos de que enviamos la que se movio primero (por convencion)
-        EventManager.onSilabasUnidas(silaba, otraSilaba);
+        izquierda.enableDrag();
+        derecha.enableDrag();
+        
     }
 
     void unirPalabra(List<SilabaController> silabasPalabra)
@@ -96,7 +97,7 @@ public class SilabasManager : MonoBehaviour
     {
         if (gameManager.modoRomper)
         {
-            silaba.separarSilaba();
+            silaba.separarSilabaDeOtrasSilabas();
         }
     }
 }

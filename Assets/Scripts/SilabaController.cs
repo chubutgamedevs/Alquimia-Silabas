@@ -29,13 +29,25 @@ public class SilabaController : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.ModoRomperDesActivado += restablecerConectores;
+        EventManager.modoRomperDesActivado += enableDrag;
+        EventManager.modoRomperActivado += disableDrag;
 
     }
 
     void OnDisable()
     {
-        EventManager.ModoRomperDesActivado -= restablecerConectores;
+        EventManager.modoRomperDesActivado -= enableDrag;
+        EventManager.modoRomperActivado -= disableDrag;
+    }
+
+    public void disableDrag()
+    {
+        this.drag.disableDrag();
+    }
+
+    public void enableDrag()
+    {
+        this.drag.enableDrag();
     }
 
     private void OnMouseDown()
@@ -124,6 +136,14 @@ public class SilabaController : MonoBehaviour
         this.palabraController = this.palabraParent.GetComponent<PalabraController>();
     }
 
+    public void setPalabra(GameObject palabraAux, PalabraController controller)
+    {
+        this.palabraParent = palabraAux;
+        this.transform.SetParent(this.palabraParent.transform);
+
+        this.palabraController = controller;
+    }
+
     public GameObject getPalabra()
     {
         return this.palabraParent;
@@ -165,7 +185,7 @@ public class SilabaController : MonoBehaviour
         drag.disableDrag();
     }
 
-    public void separarSilaba()
+    public void separarSilabaDeOtrasSilabas()
     {
 
         if(silabaIzquierda | silabaDerecha) {
@@ -191,6 +211,8 @@ public class SilabaController : MonoBehaviour
             transform.position = newPos;
 
             conectoresManager.activarConectores();
+
+            EventManager.onSilabaSeparadaDeSilaba(this);
         }
     }
 

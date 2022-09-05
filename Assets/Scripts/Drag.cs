@@ -32,7 +32,7 @@ public class Drag : MonoBehaviour
     {
         if (dragEnabled)
         {
-            if(transform.parent.name == "Palabra")
+            if(transform.parent.CompareTag("Palabra"))
             {
                 transform.parent.position = GetMousePos() + parentDragOffset;
             }

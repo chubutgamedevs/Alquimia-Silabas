@@ -1,74 +1,78 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    //eventos de silabas
-    public static event System.Action<SilabaController, SilabaController> SilabasUnidas = delegate { };
-    public static event System.Action<SilabaController, SilabaController> SilabasSeparadas = delegate { };
-    public static event System.Action<SilabaController, SilabaController> SilabasColisionan = delegate { };
-    public static event System.Action<SilabaController> SilabaEsClickeada = delegate { };
-    public static event System.Action<SilabaController> SilabaEsBajada = delegate { };
+    #region eventos de silabas (plural)
+    public static event System.Action<SilabaController, SilabaController> silabasUnidas = delegate { };
+    public static event System.Action<SilabaController, SilabaController> silabasSeparadas = delegate { };
+    public static event System.Action<SilabaController, SilabaController> silabasColisionan = delegate { };
 
-    //eventos de juego general
-    public static event System.Action ModoRomperActivado = delegate { };
-    public static event System.Action ModoRomperDesActivado = delegate { };
+    #endregion
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    #region eventos de silaba (singular)
+    public static event System.Action<SilabaController> silabaEsClickeada = delegate { };
+    public static event System.Action<SilabaController> silabaEsBajada = delegate { };
+    public static event System.Action<SilabaController> silabaSeparadaDeSilaba = delegate { };
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #region eventos de juego general
+    public static event System.Action modoRomperActivado = delegate { };
+    public static event System.Action modoRomperDesActivado = delegate { };
 
+    #endregion
+
+
+    #region notificacion de eventos
     public static void onSilabasUnidas(SilabaController s1, SilabaController s2)
     {
         Debug.Log("onSilabasUnidas");
-        SilabasUnidas(s1, s2);
+        silabasUnidas(s1, s2);
     }
 
     public static void onSilabasSeparadas(SilabaController s1, SilabaController s2)
     {
         Debug.Log("onSilabasSeparadas");
-        SilabasSeparadas(s1, s2);
+        silabasSeparadas(s1, s2);
     }
 
     public static void onSilabasColisionan(SilabaController s1, SilabaController s2)
     {
         Debug.Log("onSilabasColisionan");
         //el primer argumento es la silaba que se está moviend
-        SilabasColisionan(s1, s2);
+        silabasColisionan(s1, s2);
     }
 
     public static void onSilabaEsClickeada(SilabaController silaba)
     {
         Debug.Log("onSilabaEsClickeada");
-        SilabaEsClickeada(silaba);
+        silabaEsClickeada(silaba);
     }
 
     public static void onSilabaEsBajada(SilabaController silaba)
     {
         Debug.Log("onSilabaEsBajada");
-        SilabaEsBajada(silaba);
+        silabaEsBajada(silaba);
     }
 
     public static void onModoRomperActivado()
     {
         Debug.Log("onModoRomperActivado");
-        ModoRomperActivado();
+        modoRomperActivado();
     }
     public static void onModoRomperDesactivado()
     {
         Debug.Log("onModoRomperDesactivado");
-        ModoRomperDesActivado();
+        modoRomperDesActivado();
     }
 
+    internal static void onSilabaSeparadaDeSilaba(SilabaController silabaSeparada)
+    {
+        Debug.Log("onSilabaSeparadaDeSilaba");
+        silabaSeparadaDeSilaba(silabaSeparada);
+    }
 
-
+    #endregion
 }
