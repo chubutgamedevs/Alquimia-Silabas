@@ -1,4 +1,4 @@
-using System.Collections;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ public class SilabasManager : MonoBehaviour
     public GameObject sampleSilaba;
 
     public GameManager gameManager;
-
+    public Dictionary<string, List<string>> palabrasYSilabas;
     // eventos
     void OnEnable()
     {
@@ -29,6 +29,15 @@ public class SilabasManager : MonoBehaviour
         {
             gameManager = GameManager.GetInstance();
         }
+
+        palabrasYSilabas = cargarPalabrasYSilabas();
+    }
+
+    private Dictionary<string, List<string>> cargarPalabrasYSilabas()
+    {
+        TextAsset json = Resources.Load<TextAsset>("silabas");
+
+        return JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json.text);
     }
 
     // Start is called before the first frame update
@@ -80,6 +89,8 @@ public class SilabasManager : MonoBehaviour
 
         izquierda.enableDrag();
         derecha.enableDrag();
+
+        EventManager.onSilabasUnidas(izquierda,derecha);
         
     }
 

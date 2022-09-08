@@ -149,6 +149,11 @@ public class SilabaController : MonoBehaviour
         return this.palabraParent;
     }
 
+    public string getPalabraString()
+    {
+        return this.palabraController.getPalabraString();
+    }
+
     public PalabraController getPalabraController()
     {
         return this.palabraController;

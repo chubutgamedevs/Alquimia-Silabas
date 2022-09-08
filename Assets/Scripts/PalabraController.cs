@@ -68,7 +68,14 @@ public class PalabraController : MonoBehaviour
 
     public string getPalabraString()
     {
-        return silabas.Select(x => x.silaba).ToString();
+        string palabraAux = "";
+
+        foreach(SilabaController silaba in silabas)
+        {
+            palabraAux += silaba.silaba;
+        }
+
+        return palabraAux;
     }
     #endregion
 
