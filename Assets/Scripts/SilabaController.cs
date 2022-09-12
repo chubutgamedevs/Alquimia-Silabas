@@ -86,8 +86,6 @@ public class SilabaController : MonoBehaviour
 
         conectoresManager = getConectoresManager();
         boxCollider = GetComponent<BoxCollider>();
-
-        setPalabra(this.transform.parent.gameObject);
     }
 
     // Start is called before the first frame update
@@ -96,8 +94,10 @@ public class SilabaController : MonoBehaviour
         silabaIzquierda = null;
         silabaDerecha = null;
 
-        silaba = RandomString(2); /*testing*/
+        //silaba = RandomString(2); /*testing*/
         texto.text = silaba;
+
+        setPalabra(this.transform.parent.gameObject);
     }
 
     // Update is called once per frame
@@ -116,6 +116,11 @@ public class SilabaController : MonoBehaviour
     TMPro.TextMeshPro getTextMeshPro()
     {
         return gameObject.transform.GetChild(1).gameObject.GetComponent<TMPro.TextMeshPro>();
+    }
+
+    internal void setSilaba(string silaba)
+    {
+        this.silaba = silaba.ToUpper();
     }
 
     public float getAncho()
@@ -221,7 +226,13 @@ public class SilabaController : MonoBehaviour
         }
     }
 
-    void restablecerConectores()
+    public void empujarEnDireccionAleatoria()
+    {
+        //hardcoding bad
+        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
+    }
+
+    public void restablecerConectores()
     {
         if (!silabaIzquierda)
         {
@@ -235,6 +246,10 @@ public class SilabaController : MonoBehaviour
         drag.enableDrag();
     }
 
+    public void desactivarConectores()
+    {
+        conectoresManager.desActivarConectores();
+    }
     #endregion
 
     #region testing

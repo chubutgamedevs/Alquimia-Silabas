@@ -8,9 +8,10 @@ public class PalabraController : MonoBehaviour
 {
     List<SilabaController> silabas;
 
-    GameManager gameManager;
+    GameManager gameManager; 
 
     Boolean __flagged = false;
+
 
     #region eventos
     void OnEnable()
@@ -31,6 +32,7 @@ public class PalabraController : MonoBehaviour
     #region ciclo de vida
     void Awake()
     {
+        gameManager = GameManager.GetInstance();
         cargarSilabaInicial();
     }
 
@@ -53,6 +55,7 @@ public class PalabraController : MonoBehaviour
     #endregion
 
     #region setters y getters
+
     public void setSilabas(List<SilabaController> ls)
     {
         if(ls.Count == 0) { return; }
@@ -76,6 +79,13 @@ public class PalabraController : MonoBehaviour
         }
 
         return palabraAux;
+    }
+
+    public void setPalabra(string palabraString, List<string> silabas)
+    {
+        foreach(string silaba in silabas){
+
+        }
     }
     #endregion
 
@@ -162,6 +172,37 @@ public class PalabraController : MonoBehaviour
         palabraController.setSilabas(silabas);
 
         return palabraObj;
+    }
+
+    public void romperEnSilabasYColocarEnPantalla()
+    {
+        //si hay poco que hacer lo hacemos y retornamos por performance
+        if(silabas.Count == 0) { return; }
+        if(silabas.Count == 1)
+        {
+            silabas[0].empujarEnDireccionAleatoria();
+            return;
+        }
+
+        foreach (SilabaController sil in silabas)
+        {
+            sil.desactivarConectores();
+            sil.empujarEnDireccionAleatoria();
+            //habria que fijar la silaba en una posicion en una grilla
+            //sil.fijarAGrilla()
+            //sil.activarConectores()
+        }
+
+        for(int i = 0; i<silabas.Count; i++)
+        {   
+            //desconectamos las silabas y destruimos la palabra luego
+            this.separarEnSilaba(silabas[i]);
+        }
+    }
+
+    public void encontrarPadre()
+    {
+        transform.SetParent(gameManager.getJuegoGameObject().transform);
     }
 
     #region garbage collection

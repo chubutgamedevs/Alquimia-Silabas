@@ -8,8 +8,9 @@ public class SilabasManager : MonoBehaviour
     public GameObject sampleSilaba;
 
     public GameManager gameManager;
-    public Dictionary<string, List<string>> palabrasYSilabas;
-    // eventos
+
+
+    #region eventos
     void OnEnable()
     {
         EventManager.silabaEsClickeada += manejarClickASilaba;
@@ -22,6 +23,9 @@ public class SilabasManager : MonoBehaviour
         EventManager.silabasColisionan -= UnirSilabas;
     }
 
+    #endregion
+
+    #region ciclo de vida
 
     private void Awake()
     {
@@ -30,16 +34,7 @@ public class SilabasManager : MonoBehaviour
             gameManager = GameManager.GetInstance();
         }
 
-        palabrasYSilabas = cargarPalabrasYSilabas();
     }
-
-    private Dictionary<string, List<string>> cargarPalabrasYSilabas()
-    {
-        TextAsset json = Resources.Load<TextAsset>("silabas");
-
-        return JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json.text);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +50,10 @@ public class SilabasManager : MonoBehaviour
         
     }
 
+
+    #endregion
+
+    #region metodos
     void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
     {   //la primer silaba siempre es la que se está moviendo (checkear eventos)
  
@@ -111,4 +110,6 @@ public class SilabasManager : MonoBehaviour
             silaba.separarSilabaDeOtrasSilabas();
         }
     }
+
+    #endregion
 }
