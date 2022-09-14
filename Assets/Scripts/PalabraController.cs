@@ -11,7 +11,9 @@ public class PalabraController : MonoBehaviour
     GameManager gameManager; 
 
     Boolean __flagged = false;
+    public Boolean moviendose = false;
 
+    Rigidbody rb;
 
     #region eventos
     void OnEnable()
@@ -27,12 +29,22 @@ public class PalabraController : MonoBehaviour
         EventManager.silabaSeparadaDeSilaba -= flagForDestruction;
     }
 
+    void OnMouseDown()
+    {
+        this.dejarQuieta();
+    }
     #endregion
 
     #region ciclo de vida
     void Awake()
     {
+        if (!rb)
+        {
+            rb = gameObject.GetComponent<Rigidbody>();
+        }
+
         gameManager = GameManager.GetInstance();
+
         cargarSilabaInicial();
     }
 
@@ -65,7 +77,7 @@ public class PalabraController : MonoBehaviour
 
         foreach(SilabaController sil in ls)
         {
-            nuevaSilabaAlFinal(sil);
+            this.nuevaSilabaAlFinal(sil);
         }
     }
 
@@ -102,6 +114,16 @@ public class PalabraController : MonoBehaviour
     {
         silaba.getPalabraController().flagForDestruction();
         silaba.setPalabra(this.gameObject,this);
+
+        silaba.separarFuerteDeOtrasSilabas();
+
+        if(this.silabas.Count > 0)
+        {
+            SilabaController ultimaSilaba = silabas[silabas.Count - 1];
+            ultimaSilaba.silabaDerecha = silaba;
+            silaba.silabaIzquierda = ultimaSilaba;
+        }
+
         silabas.Add(silaba);
     }
 
@@ -181,6 +203,10 @@ public class PalabraController : MonoBehaviour
 
     internal void activarConectores()
     {
+        if(silabas.Count == 0)
+        {
+            return;
+        }
         //activamos el izquierdo de la silaba 0
         this.silabas[0].restablecerConectores();
         //activamos el derecho de la ultima silaba
@@ -192,8 +218,9 @@ public class PalabraController : MonoBehaviour
         //si hay poco que hacer lo hacemos y retornamos por performance
         if(silabas.Count == 0) { return; }
         if(silabas.Count == 1)
-        {
+        {   
             silabas[0].empujarEnDireccionAleatoria();
+            this.separarEnSilaba(silabas[0]);
             return;
         }
 
@@ -210,6 +237,16 @@ public class PalabraController : MonoBehaviour
         {   
             //desconectamos las silabas y destruimos la palabra luego
             this.separarEnSilaba(silabas[i]);
+        }
+    }
+
+    public void dejarQuieta()
+    {
+        this.rb.velocity = Vector3.zero;
+
+        foreach(SilabaController sil in silabas)
+        {
+            sil.dejarQuieta();
         }
     }
 

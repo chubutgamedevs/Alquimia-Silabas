@@ -18,6 +18,11 @@ public class EventManager : MonoBehaviour
     public static event System.Action<SilabaController> silabaSeparadaDeSilaba = delegate { };
     #endregion
 
+    #region eventos de palabras (plural)
+    public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
+    #endregion
+
+
     #region eventos de juego general
     public static event System.Action modoRomperActivado = delegate { };
     public static event System.Action modoRomperDesActivado = delegate { };

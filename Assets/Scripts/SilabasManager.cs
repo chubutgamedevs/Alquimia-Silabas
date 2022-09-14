@@ -56,7 +56,9 @@ public class SilabasManager : MonoBehaviour
     #region metodos
     void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
     {   //la primer silaba siempre es la que se está moviendo (checkear eventos)
- 
+        silaba.getPalabraController().dejarQuieta();
+        otraSilaba.getPalabraController().dejarQuieta();
+
         float deltaX = silaba.transform.position.x - otraSilaba.transform.position.x;
 
         float signoDistanciaSilabas = Mathf.Sign(deltaX);

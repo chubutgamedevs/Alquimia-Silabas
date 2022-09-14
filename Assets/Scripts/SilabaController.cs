@@ -16,13 +16,13 @@ public class SilabaController : MonoBehaviour
     private PalabraController palabraController;
 
     public Rigidbody rb;
+    private RigidbodyConstraints rbInitialConstraints;
     
     public String silaba = "CIS";
 
     public TMPro.TextMeshPro texto;
 
     private Drag drag;
-    public bool moviendose = false;
 
     private BoxCollider boxCollider;
 
@@ -53,18 +53,31 @@ public class SilabaController : MonoBehaviour
     private void OnMouseDown()
     {
         EventManager.onSilabaEsClickeada(this);
+        this.dejarQuieta();
     }
     void OnMouseDrag()
     {
         if (drag.dragEnabled)
         {
-
-        moviendose = true;
+            this.palabraController.moviendose = true;
         }
     }
+
+    internal void dejarQuieta()
+    {
+        this.rb.velocity = Vector3.zero;
+        this.rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    internal void habilitarMovimientoRb()
+    {
+        this.rb.constraints = this.rbInitialConstraints;
+    }
+
+
     void OnMouseUp()
     {
-        moviendose = false;
+        this.palabraController.moviendose = false;
     }
 
     #endregion eventos
@@ -78,6 +91,7 @@ public class SilabaController : MonoBehaviour
         {
             rb = gameObject.GetComponent<Rigidbody>();
         }
+        rbInitialConstraints = rb.constraints;
 
         if (!texto)
         {
@@ -191,8 +205,9 @@ public class SilabaController : MonoBehaviour
     }
     public void dejarQuietaYQuitarControlDeMouse()
     {
-        moviendose = false;
+        this.palabraController.moviendose = false;
         drag.disableDrag();
+        this.dejarQuieta();
     }
 
     public void separarSilabaDeOtrasSilabas()
@@ -226,11 +241,17 @@ public class SilabaController : MonoBehaviour
         }
     }
 
-
+    public void separarFuerteDeOtrasSilabas()
+    {
+        this.silabaIzquierda = null;
+        this.silabaDerecha = null;
+        this.separarSilabaDeOtrasSilabas();
+    }
 
     public void empujarEnDireccionAleatoria()
     {
         //hardcoding bad
+        habilitarMovimientoRb();
         this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
     }
 

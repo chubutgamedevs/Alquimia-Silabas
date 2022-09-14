@@ -37,7 +37,7 @@ public class ConectorController : MonoBehaviour
             if(this.gameObject.name != other.gameObject.name)
             {
                 //de esta manera evitamos que el evento se lance 2 veces
-                if (silabaController.moviendose){
+                if (silabaController.getPalabraController().moviendose){
 
                     //el primer argumento es la silaba que se está moviendo
                     EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);

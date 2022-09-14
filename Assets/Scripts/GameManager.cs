@@ -114,11 +114,19 @@ public class GameManager : MonoBehaviour
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
-        string palabraA = silaba.getPalabraString();
-        string palabraB = otraSilaba.getPalabraString();
+        string palabraAux = silaba.getPalabraString().ToUpper();
 
         Debug.Log("Palabra formada: ");
-        Debug.Log(palabraB);
+        Debug.Log(palabraAux);
+
+        Debug.Log("Palabra target: ");
+        Debug.Log(this.palabraActual);
+
+        if(palabraActual.ToUpper() == palabraAux)
+        {
+            Debug.Log("Palabra formada correctamente");
+        }
+
     }
 
     internal GameObject nuevaPalabra()
