@@ -65,8 +65,8 @@ public class SilabasManager : MonoBehaviour
 
         bool otraSilabaEstaALaIzquierda = signoDistanciaSilabas > 0;
 
-        float xOffset = otraSilaba.transform.position.x + (anchoSilaba * signoDistanciaSilabas); ;
-        silaba.transform.position = new Vector3(xOffset, otraSilaba.transform.position.y, otraSilaba.transform.position.z);
+        float xOffset = silaba.transform.position.x - (anchoSilaba * signoDistanciaSilabas); 
+        otraSilaba.transform.position = new Vector3(xOffset, silaba.transform.position.y, silaba.transform.position.z);
 
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
