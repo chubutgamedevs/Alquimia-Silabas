@@ -226,6 +226,8 @@ public class SilabaController : MonoBehaviour
         }
     }
 
+
+
     public void empujarEnDireccionAleatoria()
     {
         //hardcoding bad
@@ -250,6 +252,8 @@ public class SilabaController : MonoBehaviour
     {
         conectoresManager.desActivarConectores();
     }
+
+
     #endregion
 
     #region testing

@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
         int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         nuevaPalabraActual(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
         desordenarPalabras();
+        
     }
 
     internal PalabraController nuevaPalabraActual(string palabra, List<string> silabas)
@@ -168,6 +169,13 @@ public class GameManager : MonoBehaviour
             //rompemos todas
             palabra.romperEnSilabasYColocarEnPantalla();
         }
+
+        foreach (Transform hijo in _juego.transform)
+        {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
+            PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
+            palabraAux.activarConectoresDespuesDe(1f);
+        }
+
     }
 
     public GameObject getJuegoGameObject()

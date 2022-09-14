@@ -174,6 +174,19 @@ public class PalabraController : MonoBehaviour
         return palabraObj;
     }
 
+    internal void activarConectoresDespuesDe(float v)
+    {
+        Invoke("activarConectores", v);
+    }
+
+    internal void activarConectores()
+    {
+        //activamos el izquierdo de la silaba 0
+        this.silabas[0].restablecerConectores();
+        //activamos el derecho de la ultima silaba
+        this.silabas[silabas.Count-1].restablecerConectores();
+    }
+
     public void romperEnSilabasYColocarEnPantalla()
     {
         //si hay poco que hacer lo hacemos y retornamos por performance
