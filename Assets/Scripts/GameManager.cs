@@ -178,12 +178,17 @@ public class GameManager : MonoBehaviour
             palabra.romperEnSilabasYColocarEnPantalla();
         }
 
+        this.activarConectoresDespuesDe();
+
+    }
+
+    public void activarConectoresDespuesDe()
+    {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
             PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
             palabraAux.activarConectoresDespuesDe(1f);
         }
-
     }
 
     public GameObject getJuegoGameObject()

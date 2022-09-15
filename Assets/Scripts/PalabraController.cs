@@ -8,7 +8,9 @@ public class PalabraController : MonoBehaviour
 {
     List<SilabaController> silabas;
 
-    GameManager gameManager; 
+    GameManager gameManager;
+
+    int anchoSilaba = 1;
 
     Boolean __flagged = false;
     public Boolean moviendose = false;
@@ -99,9 +101,25 @@ public class PalabraController : MonoBehaviour
 
         }
     }
+
     #endregion
 
     #region metodos
+
+    internal void acomodarSilabasEnElEspacio()
+    {
+        if(silabas.Count == 0){return;}
+
+        Vector3 posInicial = silabas[0].transform.position;
+        Vector3 posActual = posInicial;
+        posActual.x += anchoSilaba;
+        //acomodamos las silabas de izquierda a derecha
+        for (int i = 1; i < silabas.Count; i++ )
+        {
+            silabas[i].transform.position = posActual;
+            posActual.x += anchoSilaba;
+        }
+    }
 
     public void aniadirPalabraAlFinal(List<SilabaController> silabasNuevas)
     {

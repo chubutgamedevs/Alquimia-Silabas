@@ -65,9 +65,6 @@ public class SilabasManager : MonoBehaviour
 
         bool otraSilabaEstaALaIzquierda = signoDistanciaSilabas > 0;
 
-        float xOffset = silaba.transform.position.x - (anchoSilaba * signoDistanciaSilabas); 
-        otraSilaba.transform.position = new Vector3(xOffset, silaba.transform.position.y, silaba.transform.position.z);
-
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
         otraSilaba.dejarQuietaYQuitarControlDeMouse();
@@ -87,6 +84,8 @@ public class SilabasManager : MonoBehaviour
        
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
+
+        izquierda.getPalabraController().acomodarSilabasEnElEspacio();
 
         izquierda.enableDrag();
         derecha.enableDrag();
@@ -109,7 +108,8 @@ public class SilabasManager : MonoBehaviour
     {
         if (gameManager.modoRomper)
         {
-            silaba.separarSilabaDeOtrasSilabas();
+            silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
+            gameManager.activarConectoresDespuesDe();
         }
     }
 

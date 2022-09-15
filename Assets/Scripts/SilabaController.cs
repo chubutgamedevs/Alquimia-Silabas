@@ -102,6 +102,11 @@ public class SilabaController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
     }
 
+    internal float getYReal()
+    {
+        return this.transform.position.y + palabraParent.transform.position.y;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
