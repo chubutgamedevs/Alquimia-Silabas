@@ -259,7 +259,6 @@ MonoBehaviour:
   rb: {fileID: 8338705390946974133}
   silaba: CIS
   texto: {fileID: 0}
-  moviendose: 0
 --- !u!54 &8338705390946974133
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -606,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd1d6eb85dcd214ca87ab539609e08a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moviendose: 0
 --- !u!54 &2089732170693746366
 Rigidbody:
   m_ObjectHideFlags: 0

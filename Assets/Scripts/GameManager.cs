@@ -83,7 +83,9 @@ public class GameManager : MonoBehaviour
 
     public void startGame()
     {
-        colocarEnPantallaPalabraActual();
+        palabrasTarget = generarPalabrasTargetRandom(4);
+        colocarEnPantallaPalabra(palabrasTarget[0]);
+        desordenarPalabras();
     }
 
     public void ActivarModoRomper()
@@ -132,17 +134,19 @@ public class GameManager : MonoBehaviour
         if(palabraActual.ToUpper() == palabraAux)
         {
             Debug.Log("Palabra formada correctamente");
-            continuarConSiguientePalabra();
+
+            Invoke("continuarConSiguientePalabra", 0.5f);
         }
 
     }
 
     private void continuarConSiguientePalabra()
     {
+         eliminarTodasLasPalabras();
         if(palabrasTarget.Count > 0)
         {
             palabrasTarget.RemoveAt(0);
-            colocarEnPantallaPalabraActual();
+            colocarEnPantallaPalabra(palabrasTarget[0]);
             desordenarPalabras();
         }
     }
@@ -166,22 +170,25 @@ public class GameManager : MonoBehaviour
         return palabrasAux;
     }
 
-    private void colocarEnPantallaPalabraActual()
+    private void colocarEnPantallaPalabra((string,List<string>) palabraTupla)
     {
-        nuevaPalabraActual(palabrasTarget[0]);
+        nuevaPalabraActual(palabraTupla);
     }
 
     public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
     {
+            
         int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        while (palabrasYSilabas[wordList[randomIndex]].Count == 1)
+        {
+            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        }
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
     }
 
     internal PalabraController nuevaPalabraActual((string palabra, List<string> silabas) palabra)
     {
         palabraActual = palabra.palabra;
-
-        eliminarTodasLasPalabras();
 
         GameObject palabraAux = nuevaPalabraVacia();
         PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
@@ -198,13 +205,14 @@ public class GameManager : MonoBehaviour
         return palabraAuxController;
     }
 
-    private void eliminarTodasLasPalabras()
+    public void eliminarTodasLasPalabras()
     {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo y las matamos a todas
             if (hijo.gameObject.CompareTag("Palabra")) 
             {
-                Destroy(hijo);
+                hijo.gameObject.tag = "PalabraDestruida";
+                GameObject.Destroy(hijo.gameObject);
             }
         }
     }
@@ -215,7 +223,10 @@ public class GameManager : MonoBehaviour
 
         foreach(Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo
-            palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
+            if (hijo.gameObject.CompareTag("Palabra"))
+            {
+                palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
+            }
         }
 
         foreach(PalabraController palabra in palabras)
@@ -241,7 +252,7 @@ public class GameManager : MonoBehaviour
     {
         if(!_juego)
         {               
-            _juego = GameObject.FindGameObjectWithTag("juego").transform.gameObject;
+            _juego = GameObject.FindGameObjectWithTag("juego").gameObject;
         }
         return _juego;
     }
