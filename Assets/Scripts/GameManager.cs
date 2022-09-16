@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
+    public List<(string,List<string>)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
     public string palabraActual = "";
 
     private GameObject _juego;
@@ -24,7 +25,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _juego = getJuegoGameObject();
+        palabrasTarget = generarPalabrasTargetRandom(4);
     }
 
     // Update is called once per frame
@@ -79,6 +81,11 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
+    public void startGame()
+    {
+        colocarEnPantallaPalabraActual();
+    }
+
     public void ActivarModoRomper()
     {
         modoRomper = true;
@@ -125,35 +132,63 @@ public class GameManager : MonoBehaviour
         if(palabraActual.ToUpper() == palabraAux)
         {
             Debug.Log("Palabra formada correctamente");
+            continuarConSiguientePalabra();
         }
 
     }
 
-    internal GameObject nuevaPalabra()
+    private void continuarConSiguientePalabra()
+    {
+        if(palabrasTarget.Count > 0)
+        {
+            palabrasTarget.RemoveAt(0);
+            colocarEnPantallaPalabraActual();
+            desordenarPalabras();
+        }
+    }
+
+    internal GameObject nuevaPalabraVacia()
     {
         GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         return palabraObj;
     }
 
-    public void nuevaPalabraRandom()
+    private List<(string, List<string>)> generarPalabrasTargetRandom(int v)
     {
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        nuevaPalabraActual(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
-        desordenarPalabras();
-        
+        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
+
+        for (int i = 0; i < v; i++)
+        {
+            palabrasAux.Add(nuevaPalabraRandom());
+        }
+
+        return palabrasAux;
     }
 
-    internal PalabraController nuevaPalabraActual(string palabra, List<string> silabas)
+    private void colocarEnPantallaPalabraActual()
     {
-        palabraActual = palabra;
+        nuevaPalabraActual(palabrasTarget[0]);
+    }
 
-        GameObject palabraAux = nuevaPalabra();
+    public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
+    {
+        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
+    }
+
+    internal PalabraController nuevaPalabraActual((string palabra, List<string> silabas) palabra)
+    {
+        palabraActual = palabra.palabra;
+
+        eliminarTodasLasPalabras();
+
+        GameObject palabraAux = nuevaPalabraVacia();
         PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
 
         palabraAuxController.encontrarPadre();
 
-        foreach (string silaba in silabas) {
+        foreach (string silaba in palabra.silabas) {
             SilabaController silabaAux = nuevaSilaba(silaba);
             silabaAux.setPalabra(palabraAux);
             palabraAuxController.nuevaSilabaAlFinal(silabaAux);
@@ -161,6 +196,17 @@ public class GameManager : MonoBehaviour
 
 
         return palabraAuxController;
+    }
+
+    private void eliminarTodasLasPalabras()
+    {
+        foreach (Transform hijo in _juego.transform)
+        {   //conseguimos las palabras hijo y las matamos a todas
+            if (hijo.gameObject.CompareTag("Palabra")) 
+            {
+                Destroy(hijo);
+            }
+        }
     }
 
     public void desordenarPalabras()
@@ -178,11 +224,11 @@ public class GameManager : MonoBehaviour
             palabra.romperEnSilabasYColocarEnPantalla();
         }
 
-        this.activarConectoresDespuesDe();
+        this.activarConectoresDespuesDe1Seg();
 
     }
 
-    public void activarConectoresDespuesDe()
+    public void activarConectoresDespuesDe1Seg()
     {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba

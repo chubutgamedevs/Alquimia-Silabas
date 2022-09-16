@@ -108,7 +108,9 @@ public class PalabraController : MonoBehaviour
 
     internal void acomodarSilabasEnElEspacio()
     {
-        if(silabas.Count == 0){return;}
+        if(silabas.Count <= 1){return;}
+
+        //ajustamos la pos de la primera silaba
 
         Vector3 posInicial = silabas[0].transform.position;
         Vector3 posActual = posInicial;
@@ -206,7 +208,7 @@ public class PalabraController : MonoBehaviour
 
     public GameObject nuevaPalabra(List<SilabaController> silabas)
     {
-        GameObject palabraObj = gameManager.nuevaPalabra();
+        GameObject palabraObj = gameManager.nuevaPalabraVacia();
         PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
 
         palabraController.setSilabas(silabas);
