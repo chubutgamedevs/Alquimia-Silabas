@@ -8,6 +8,7 @@ TagManager:
   - macho
   - Palabra
   - juego
+  - PalabraDestruida
   layers:
   - Default
   - TransparentFX

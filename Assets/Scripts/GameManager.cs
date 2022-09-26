@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
+    public GameObject silabasOcultadas;
+
     public List<(string,List<string>)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
     public string palabraActual = "";
 
@@ -27,6 +29,22 @@ public class GameManager : MonoBehaviour
     {
         _juego = getJuegoGameObject();
         palabrasTarget = generarPalabrasTargetRandom(4);
+        generarSilabasOcultadas();
+    }
+
+    private void generarSilabasOcultadas()
+    {
+        //destruimos las que haya antes
+        foreach(Transform palOcultada in silabasOcultadas.transform)
+        {
+            Destroy(palOcultada);
+        }
+
+        //añadimos cada palabra target como hijo de silabasOcultadas
+        foreach((string, List<string>) palabraTarget in palabrasTarget)
+        {
+            //silabasOcultadas.transform.
+        }
     }
 
     // Update is called once per frame
