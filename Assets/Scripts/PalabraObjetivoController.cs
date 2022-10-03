@@ -14,16 +14,27 @@ public class PalabraObjetivoController : MonoBehaviour
     {
         this.palabra = palabra;
         this.silabas = silabas;
+
+        settearSilabasControllers();
     }
 
     void settearSilabasControllers()
     {
         eliminarSilabasHijasTransform();
 
+        int indiceSilaba = 0;
+
         foreach(string silaba in silabas)
         {
-            SilabaObjetivoController silAux = nuevaSilabaObjetivoVacia().GetComponent<SilabaObjetivoController>();
+            GameObject silAuxObj = nuevaSilabaObjetivoVacia();
+            
+            SilabaObjetivoController silAux = silAuxObj.GetComponent<SilabaObjetivoController>();
+            silAux.transform.SetParent(this.transform);
             silAux.settearSilaba(silaba);
+            silAux.ubicarSilaba(indiceSilaba);
+
+            indiceSilaba++;
+
             silabasControllers.Add(silAux);
         }
     }

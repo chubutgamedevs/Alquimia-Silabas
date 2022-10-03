@@ -43,7 +43,10 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
         foreach ((string, List<string>) palabra in palabras)
         {
-            PalabraObjetivoController palabraObj = nuevaPalabraObjetivoVacia().GetComponent<PalabraObjetivoController>();
+            GameObject palabraObject = nuevaPalabraObjetivoVacia();
+            palabraObject.transform.SetParent(this.transform);
+
+            PalabraObjetivoController palabraObj = palabraObject.GetComponent<PalabraObjetivoController>();
             palabraObj.settearPalabraObjetivo(palabra.Item1,palabra.Item2);
 
             palabrasObjetivo.Add(palabraObj);
