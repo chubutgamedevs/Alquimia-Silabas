@@ -13,7 +13,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
         foreach(string silaba in silabas)
         {
-
+            Debug.Log("silaba " + silaba);
         }
     }
 }
