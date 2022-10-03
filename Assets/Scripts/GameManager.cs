@@ -34,17 +34,17 @@ public class GameManager : MonoBehaviour
 
     private void generarSilabasOcultadas()
     {
-        //destruimos las que haya antes
-        foreach(Transform palOcultada in silabasOcultadas.transform)
-        {
-            Destroy(palOcultada);
-        }
+        ////destruimos las que haya antes
+        //foreach(Transform palOcultada in silabasOcultadas.transform)
+        //{
+        //    Destroy(palOcultada);
+        //}
 
-        //añadimos cada palabra target como hijo de silabasOcultadas
-        foreach((string, List<string>) palabraTarget in palabrasTarget)
-        {
-            //silabasOcultadas.transform.
-        }
+        ////añadimos cada palabra target como hijo de silabasOcultadas
+        //foreach((string, List<string>) palabraTarget in palabrasTarget)
+        //{
+        //    //silabasOcultadas.transform.
+        //}
     }
 
     // Update is called once per frame
