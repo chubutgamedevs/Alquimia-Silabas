@@ -95,6 +95,7 @@ public class PalabraController : MonoBehaviour
         return palabraAux;
     }
 
+
     public void setPalabra(string palabraString, List<string> silabas)
     {
         foreach(string silaba in silabas){
