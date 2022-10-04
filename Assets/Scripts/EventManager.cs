@@ -79,5 +79,10 @@ public class EventManager : MonoBehaviour
         silabaSeparadaDeSilaba(silabaSeparada);
     }
 
+    internal static void onTamanioFuenteNuevo(float v)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 }

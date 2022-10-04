@@ -6,12 +6,31 @@ public class PalabrasObjetivoManager : MonoBehaviour
 {
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
+
     private void Start()
     {
         palabrasObjetivo = obtenerPalabrasObjetivoHijas();
         destruirPalabrasObjetivoHijas();
         testSettearPalabraObjetivo();
     }
+
+
+    public void esclarecerPalabras()
+    {
+        foreach(PalabraObjetivoController pal in palabrasObjetivo)
+        {
+            pal.esclarecerSilabas();
+        }
+    }
+
+    public void oscurecerPalabras()
+    {
+        foreach (PalabraObjetivoController pal in palabrasObjetivo)
+        {
+            pal.oscurecerSilabas();
+        }
+    }
+
 
     List<PalabraObjetivoController> obtenerPalabrasObjetivoHijas()
     {
@@ -41,6 +60,8 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         destruirPalabrasObjetivoHijas();
 
+        int indicePalabra = 0;
+
         foreach ((string, List<string>) palabra in palabras)
         {
             GameObject palabraObject = nuevaPalabraObjetivoVacia();
@@ -48,8 +69,11 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
             PalabraObjetivoController palabraObj = palabraObject.GetComponent<PalabraObjetivoController>();
             palabraObj.settearPalabraObjetivo(palabra.Item1,palabra.Item2);
+            palabraObj.ubicarPalabra(indicePalabra);
 
             palabrasObjetivo.Add(palabraObj);
+
+            indicePalabra++;
         }
     }
 
@@ -69,8 +93,16 @@ public class PalabrasObjetivoManager : MonoBehaviour
         silabas.Add("ña");
         silabas.Add("na");
 
+        string palabra1 = "silabas";
+        List<string> silabas1 = new List<string>();
+        silabas1.Add("si");
+        silabas1.Add("la");
+        silabas1.Add("bas");
+
         List<(string, List<string>)> palabrasObj = new List<(string, List<string>)>();
+
         palabrasObj.Add((palabra, silabas));
+        palabrasObj.Add((palabra1, silabas1));
 
         settearPalabrasObjetivo(palabrasObj);
     }

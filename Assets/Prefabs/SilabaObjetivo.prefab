@@ -187,6 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   texto: {fileID: 0}
+  fondoObj: {fileID: 8881584638401142410}
+  fondo: {fileID: 0}
 --- !u!1 &8881584638401142410
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,10 +6,37 @@ public class PalabraObjetivoController : MonoBehaviour
 {
     string palabra = "";
 
+    int anchoPalabra = -35;
+
+    [SerializeField] float minFontSize = 20;
+
     public GameObject SilabaObjetivoPrefab;
 
     List<string> silabas;
     List<SilabaObjetivoController> silabasControllers;
+
+    private RectTransform rectTransform;
+
+    private void Awake()
+    {
+        if (!rectTransform)
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
+
+        settearPosicionInicial();
+    }
+
+    private void Start()
+    {
+       
+    }
+
+    void settearPosicionInicial()
+    {
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+    }
+
     public void settearPalabraObjetivo(string palabra, List<string> silabas)
     {
         this.palabra = palabra;
@@ -37,6 +64,26 @@ public class PalabraObjetivoController : MonoBehaviour
 
             silabasControllers.Add(silAux);
         }
+
+        //hay que esperar a que se acomode la interfaz
+        Invoke("settearTamanioFuenteDeTodasLasSilabas", 0.1f);
+    }
+    void settearTamanioFuenteDeTodasLasSilabas()
+    {
+        float tamanioFuenteAux = minFontSize;
+        foreach (SilabaObjetivoController sil in silabasControllers)
+        {
+            tamanioFuenteAux = sil.getFontSize();
+            if (tamanioFuenteAux < minFontSize)
+            {
+                minFontSize = tamanioFuenteAux;
+            }
+        }
+
+        foreach (SilabaObjetivoController sil in silabasControllers)
+        {
+            sil.setFontSize(minFontSize);
+        }
     }
 
     void eliminarSilabasHijasTransform()
@@ -49,10 +96,35 @@ public class PalabraObjetivoController : MonoBehaviour
         silabasControllers = new List<SilabaObjetivoController>();
     }
 
+    public void esclarecerSilabas()
+    {
+        foreach(SilabaObjetivoController sil in silabasControllers)
+        {
+            sil.esclarecerFondo();
+        }
+    }
+
+    public void oscurecerSilabas()
+    {
+        foreach (SilabaObjetivoController sil in silabasControllers)
+        {
+            sil.oscurecerFondo();
+        }
+    }
+
+
     internal GameObject nuevaSilabaObjetivoVacia()
     {
         GameObject SilabaObj = Instantiate(SilabaObjetivoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         return SilabaObj;
+    }
+
+    public void ubicarPalabra(int numPalabra)
+    {
+        Vector2 position = new Vector2();
+        position.y +=  numPalabra * anchoPalabra;
+
+        rectTransform.anchoredPosition = position;
     }
 }

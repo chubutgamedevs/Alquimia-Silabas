@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SilabaObjetivoController : MonoBehaviour
 {
@@ -8,14 +9,38 @@ public class SilabaObjetivoController : MonoBehaviour
     int anchoSilaba = 30;
 
 
-    public TMPro.TextMeshProUGUI texto;
+    TMPro.TextMeshProUGUI texto;
+    public GameObject fondoObj;
+    Image fondo;
     void Awake()
     {
         if (!texto)
         {
             texto = getTextMeshPro();
         }
+
+        if (!fondo)
+        {
+            fondo = fondoObj.GetComponent<Image>();
+        }
+
     }
+
+    private void Start()
+    {
+        oscurecerFondo();
+    }
+
+    public void oscurecerFondo()
+    {
+        fondo.color = new Color(0, 0, 0);
+    }
+    public void esclarecerFondo()
+    {
+        fondo.color = new Color(255, 255, 255);
+    }
+
+
     TMPro.TextMeshProUGUI getTextMeshPro()
     {
         return gameObject.transform.GetChild(1).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
@@ -34,4 +59,15 @@ public class SilabaObjetivoController : MonoBehaviour
 
         gameObject.transform.position = position;
     }
+
+    public void setFontSize(float size)
+    {
+        this.texto.fontSizeMax = size;
+        this.texto.fontSizeMin = size;
+    }
+    public float getFontSize()
+    {
+        return this.texto.fontSize;
+    }
+
 }
