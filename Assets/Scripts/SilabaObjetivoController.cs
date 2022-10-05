@@ -12,6 +12,9 @@ public class SilabaObjetivoController : MonoBehaviour
     TMPro.TextMeshProUGUI texto;
     public GameObject fondoObj;
     Image fondo;
+
+    #region ciclo de vida
+
     void Awake()
     {
         if (!texto)
@@ -31,15 +34,10 @@ public class SilabaObjetivoController : MonoBehaviour
         oscurecerFondo();
     }
 
-    public void oscurecerFondo()
-    {
-        fondo.color = new Color(0, 0, 0);
-    }
-    public void esclarecerFondo()
-    {
-        fondo.color = new Color(255, 255, 255);
-    }
 
+    #endregion
+
+    #region getters & setters
 
     TMPro.TextMeshProUGUI getTextMeshPro()
     {
@@ -52,14 +50,6 @@ public class SilabaObjetivoController : MonoBehaviour
         texto.text = this.silaba;
     }
 
-    public void ubicarSilaba(int numSilaba)
-    {
-        Vector3 position = gameObject.transform.position;
-        position.x += numSilaba * anchoSilaba;
-
-        gameObject.transform.position = position;
-    }
-
     public void setFontSize(float size)
     {
         this.texto.fontSizeMax = size;
@@ -69,5 +59,34 @@ public class SilabaObjetivoController : MonoBehaviour
     {
         return this.texto.fontSize;
     }
+
+
+    #endregion
+
+    #region metodos
+
+
+    public void oscurecerFondo()
+    {
+        fondo.color = new Color(0, 0, 0);
+    }
+    public void esclarecerFondo()
+    {
+        fondo.color = new Color(255, 255, 255);
+    }
+
+    public void ubicarSilaba(int numSilaba)
+    {
+        Vector3 position = gameObject.transform.position;
+        position.x += numSilaba * anchoSilaba;
+
+        gameObject.transform.position = position;
+    }
+
+
+    #endregion
+
+
+
 
 }

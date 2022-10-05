@@ -17,6 +17,8 @@ public class PalabraObjetivoController : MonoBehaviour
 
     private RectTransform rectTransform;
 
+    #region ciclo de vida
+
     private void Awake()
     {
         if (!rectTransform)
@@ -31,6 +33,10 @@ public class PalabraObjetivoController : MonoBehaviour
     {
        
     }
+
+    #endregion
+
+    #region getters & setters
 
     void settearPosicionInicial()
     {
@@ -51,10 +57,10 @@ public class PalabraObjetivoController : MonoBehaviour
 
         int indiceSilaba = 0;
 
-        foreach(string silaba in silabas)
+        foreach (string silaba in silabas)
         {
             GameObject silAuxObj = nuevaSilabaObjetivoVacia();
-            
+
             SilabaObjetivoController silAux = silAuxObj.GetComponent<SilabaObjetivoController>();
             silAux.transform.SetParent(this.transform);
             silAux.settearSilaba(silaba);
@@ -86,9 +92,12 @@ public class PalabraObjetivoController : MonoBehaviour
         }
     }
 
+    #endregion
+
+    #region metodos
     void eliminarSilabasHijasTransform()
     {
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
@@ -98,7 +107,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
     public void esclarecerSilabas()
     {
-        foreach(SilabaObjetivoController sil in silabasControllers)
+        foreach (SilabaObjetivoController sil in silabasControllers)
         {
             sil.esclarecerFondo();
         }
@@ -123,8 +132,12 @@ public class PalabraObjetivoController : MonoBehaviour
     public void ubicarPalabra(int numPalabra)
     {
         Vector2 position = new Vector2();
-        position.y +=  numPalabra * anchoPalabra;
+        position.y += numPalabra * anchoPalabra;
 
         rectTransform.anchoredPosition = position;
     }
 }
+
+#endregion
+
+
