@@ -12,14 +12,15 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
-    public GameObject silabasOcultadas;
-
     public List<(string,List<string>)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
     public string palabraActual = "";
 
     private GameObject _juego;
 
+
+    //sacados de palabras.json
     public Dictionary<string, List<string>> palabrasYSilabas;
+    //lista de palabras
     List<string> wordList;
 
     #region ciclo de vida
@@ -29,22 +30,7 @@ public class GameManager : MonoBehaviour
     {
         _juego = getJuegoGameObject();
         palabrasTarget = generarPalabrasTargetRandom(4);
-        generarSilabasOcultadas();
-    }
-
-    private void generarSilabasOcultadas()
-    {
-        ////destruimos las que haya antes
-        //foreach(Transform palOcultada in silabasOcultadas.transform)
-        //{
-        //    Destroy(palOcultada);
-        //}
-
-        ////añadimos cada palabra target como hijo de silabasOcultadas
-        //foreach((string, List<string>) palabraTarget in palabrasTarget)
-        //{
-        //    //silabasOcultadas.transform.
-        //}
+        startGame();
     }
 
     // Update is called once per frame
@@ -102,8 +88,15 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         palabrasTarget = generarPalabrasTargetRandom(4);
+        anunciarPalabrasTarget();
         colocarEnPantallaPalabra(palabrasTarget[0]);
         desordenarPalabras();
+    }
+
+    void anunciarPalabrasTarget()
+    {
+        //larga vida a las tuplas
+        EventManager.onPalabrasSeleccionadasParaJuego(palabrasTarget);
     }
 
     public void ActivarModoRomper()
@@ -131,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     }
 
+    #region json handling
     private void cargarPalabrasYSilabas()
     {
         TextAsset json = Resources.Load<TextAsset>("silabas");
@@ -138,10 +132,12 @@ public class GameManager : MonoBehaviour
         palabrasYSilabas = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json.text);
         wordList = new List<string>(palabrasYSilabas.Keys);
     }
+    #endregion
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
         string palabraAux = silaba.getPalabraString().ToUpper();
+        PalabraController palabraFormada = silaba.getPalabraController();
 
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
@@ -152,15 +148,16 @@ public class GameManager : MonoBehaviour
         if(palabraActual.ToUpper() == palabraAux)
         {
             Debug.Log("Palabra formada correctamente");
-
             Invoke("continuarConSiguientePalabra", 0.5f);
+
+            EventManager.onPalabraFormada(palabraFormada, palabraAux);
         }
 
     }
 
     private void continuarConSiguientePalabra()
     {
-         eliminarTodasLasPalabras();
+        eliminarTodasLasPalabrasEnPantalla();
         if(palabrasTarget.Count > 0)
         {
             palabrasTarget.RemoveAt(0);
@@ -219,11 +216,10 @@ public class GameManager : MonoBehaviour
             palabraAuxController.nuevaSilabaAlFinal(silabaAux);
         }
 
-
         return palabraAuxController;
     }
 
-    public void eliminarTodasLasPalabras()
+    public void eliminarTodasLasPalabrasEnPantalla()
     {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo y las matamos a todas

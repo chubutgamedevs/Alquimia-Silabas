@@ -20,6 +20,12 @@ public class EventManager : MonoBehaviour
 
     #region eventos de palabras (plural)
     public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
+    public static event System.Action<List<(string, List<string>)>> palabrasSeleccionadasParaJuego = delegate { };
+    #endregion
+
+    #region eventos de palabra (singular)
+    public static event System.Action<string, List<string>> palabraSeleccionadaParaJuego = delegate { };
+    public static event System.Action<PalabraController, string> palabraFormada = delegate { };
     #endregion
 
 
@@ -73,15 +79,28 @@ public class EventManager : MonoBehaviour
         modoRomperDesActivado();
     }
 
-    internal static void onSilabaSeparadaDeSilaba(SilabaController silabaSeparada)
+    public static void onSilabaSeparadaDeSilaba(SilabaController silabaSeparada)
     {
         Debug.Log("onSilabaSeparadaDeSilaba");
         silabaSeparadaDeSilaba(silabaSeparada);
     }
 
-    internal static void onTamanioFuenteNuevo(float v)
+    public static void onPalabraFormada(PalabraController palabra, string palabraString)
     {
-        throw new NotImplementedException();
+        Debug.Log("onPalabraFormada");
+        palabraFormada(palabra, palabraString);
+    }
+
+    public static void onPalabraSeleccionadaParaJuego(string palabra, List<string> silabas)
+    {
+        Debug.Log("onPalabraSeleccionadaParaJuego");
+        palabraSeleccionadaParaJuego(palabra, silabas);
+    }
+
+    public static void onPalabrasSeleccionadasParaJuego(List<(string palabra, List<string> silabas)> palabras)
+    {
+        Debug.Log("onPalabrasSeleccionadasParaJuego");
+        palabrasSeleccionadasParaJuego(palabras);
     }
 
     #endregion

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PalabraObjetivoController : MonoBehaviour
 {
-    string palabra = "";
+    public string palabra = "";
 
     int anchoPalabra = -35;
 

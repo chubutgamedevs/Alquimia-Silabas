@@ -7,14 +7,62 @@ public class PalabrasObjetivoManager : MonoBehaviour
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
 
-    private void Start()
+
+    #region eventos
+    void OnEnable()
     {
-        palabrasObjetivo = obtenerPalabrasObjetivoHijas();
-        destruirPalabrasObjetivoHijas();
-        testSettearPalabraObjetivo();
+        EventManager.palabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
+        EventManager.palabraFormada += esclarecerPalabra;
     }
 
+    void OnDisable()
+    {
+        EventManager.palabrasSeleccionadasParaJuego -= settearPalabrasObjetivo;
+        EventManager.palabraFormada -= esclarecerPalabra;
+    }
+    #endregion
 
+    #region ciclo de vida
+
+    private void Start()
+    {
+        //palabrasObjetivo = obtenerPalabrasObjetivoHijas();
+        //destruirPalabrasObjetivoHijas();
+        //testSettearPalabraObjetivo(); //testing
+    }
+
+    #endregion
+
+    #region setters & getters
+    List<PalabraObjetivoController> obtenerPalabrasObjetivoHijas()
+    {
+        List<PalabraObjetivoController> palabrasObjetivoAux = new List<PalabraObjetivoController>();
+        foreach (Transform child in transform)
+        {
+            PalabraObjetivoController aux = child.gameObject.GetComponent<PalabraObjetivoController>();
+            palabrasObjetivoAux.Add(aux);
+        }
+
+        return palabrasObjetivoAux;
+    }
+
+    public void settearPalabrasObjetivo(List<(string, List<string>)> palabras)
+    {
+        destruirPalabrasObjetivoHijas();
+
+        int indicePalabra = 0;
+
+        foreach ((string, List<string>) palabra in palabras)
+        {
+            colocarNuevaPalabraObjetivo(palabra.Item1, palabra.Item2,indicePalabra);
+
+            indicePalabra++;
+        }
+    }
+    #endregion
+
+
+    #region metodos
     public void esclarecerPalabras()
     {
         foreach(PalabraObjetivoController pal in palabrasObjetivo)
@@ -23,6 +71,16 @@ public class PalabrasObjetivoManager : MonoBehaviour
         }
     }
 
+    public void esclarecerPalabra(PalabraController palabra, string palabraAComparar)
+    {
+        foreach (PalabraObjetivoController pal in palabrasObjetivo)
+        {
+            if(pal.palabra.ToLower() == palabraAComparar.ToLower())
+            {
+                pal.esclarecerSilabas();
+            }
+        }
+    }
     public void oscurecerPalabras()
     {
         foreach (PalabraObjetivoController pal in palabrasObjetivo)
@@ -32,17 +90,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
     }
 
 
-    List<PalabraObjetivoController> obtenerPalabrasObjetivoHijas()
-    {
-        List<PalabraObjetivoController> palabrasObjetivoAux = new List<PalabraObjetivoController>();
-        foreach(Transform child in transform)
-        {
-            PalabraObjetivoController aux = child.gameObject.GetComponent<PalabraObjetivoController>();
-            palabrasObjetivoAux.Add(aux);
-        }
-
-        return palabrasObjetivoAux;
-    }
 
     void destruirPalabrasObjetivoHijas()
     {
@@ -56,26 +103,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
         palabrasObjetivo = new List<PalabraObjetivoController>();
     }
 
-    public void settearPalabrasObjetivo(List<(string, List<string>)> palabras)
-    {
-        destruirPalabrasObjetivoHijas();
-
-        int indicePalabra = 0;
-
-        foreach ((string, List<string>) palabra in palabras)
-        {
-            GameObject palabraObject = nuevaPalabraObjetivoVacia();
-            palabraObject.transform.SetParent(this.transform);
-
-            PalabraObjetivoController palabraObj = palabraObject.GetComponent<PalabraObjetivoController>();
-            palabraObj.settearPalabraObjetivo(palabra.Item1,palabra.Item2);
-            palabraObj.ubicarPalabra(indicePalabra);
-
-            palabrasObjetivo.Add(palabraObj);
-
-            indicePalabra++;
-        }
-    }
 
 
     internal GameObject nuevaPalabraObjetivoVacia()
@@ -84,6 +111,26 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
         return palabraObj;
     }
+
+
+    internal void colocarNuevaPalabraObjetivo(string palabra, List<string> silabas, int indicePalabra)
+    {
+        GameObject palabraObject = nuevaPalabraObjetivoVacia();
+        palabraObject.transform.SetParent(this.transform);
+
+        PalabraObjetivoController palabraObj = palabraObject.GetComponent<PalabraObjetivoController>();
+        palabraObj.settearPalabraObjetivo(palabra, silabas);
+        palabraObj.ubicarPalabra(indicePalabra);
+
+        palabrasObjetivo.Add(palabraObj);
+    }
+
+    #endregion
+
+
+
+
+    #region testing
 
     public void testSettearPalabraObjetivo()
     {
@@ -105,5 +152,9 @@ public class PalabrasObjetivoManager : MonoBehaviour
         palabrasObj.Add((palabra1, silabas1));
 
         settearPalabrasObjetivo(palabrasObj);
+
+        Invoke("esclarecerPalabraTest", 0.7f);
     }
+
+    #endregion
 }
