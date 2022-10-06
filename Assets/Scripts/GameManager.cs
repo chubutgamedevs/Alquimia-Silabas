@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
-    public List<(string,List<string>)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
+    public List<(string palabra,List<string> silabas)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
+    public List<string> poolDeSilabas;
     public string palabraActual = "";
 
     private GameObject _juego;
@@ -29,7 +30,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _juego = getJuegoGameObject();
-        palabrasTarget = generarPalabrasTargetRandom(4);
         startGame();
     }
 
@@ -88,9 +88,41 @@ public class GameManager : MonoBehaviour
     public void startGame()
     {
         palabrasTarget = generarPalabrasTargetRandom(4);
+        poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
-        colocarEnPantallaPalabra(palabrasTarget[0]);
+        //colocarEnPantallaPalabra(palabrasTarget[0]);
+        colocarEnPantallaSilabas();
         desordenarPalabras();
+    }
+
+    List<string> generarPoolDeSilabas(List<(string palabra, List<string> silabas)> palabras)
+    {
+        List<string> pool = new List<string>();
+
+        foreach((string palabra, List<string> silabas) palabra in palabras)
+        {
+            pool.AddRange(palabra.silabas);
+        }
+
+
+        var silabasSinRepeticion = new HashSet<string>(pool);
+
+        return new List<string>(silabasSinRepeticion);
+    }
+
+    void colocarEnPantallaSilabas()
+    {
+        foreach(string silaba in poolDeSilabas)
+        {
+            GameObject palabraAux = nuevaPalabraVacia();
+            PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
+
+            palabraAuxController.encontrarPadre();
+
+            SilabaController silabaAux = nuevaSilaba(silaba);
+            silabaAux.setPalabra(palabraAux);
+            palabraAuxController.nuevaSilabaAlFinal(silabaAux);
+        }
     }
 
     void anunciarPalabrasTarget()
