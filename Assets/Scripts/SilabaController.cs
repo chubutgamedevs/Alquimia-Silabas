@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = System.Random;
+using RandomU = UnityEngine.Random;
 
 public class SilabaController : MonoBehaviour
 {
@@ -68,6 +69,17 @@ public class SilabaController : MonoBehaviour
         this.rb.velocity = Vector3.zero;
         this.rb.constraints = RigidbodyConstraints.FreezeAll;
     }
+    internal void dejarQuietaDespuesDe(float segundos)
+    {
+        Invoke("dejarQuieta", segundos);
+    }
+
+    internal void dejarQuietaDespuesDeRandom(float segundos)
+    {
+        Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
+    }
+
+    
 
     internal void habilitarMovimientoRb()
     {
@@ -113,7 +125,6 @@ public class SilabaController : MonoBehaviour
         silabaIzquierda = null;
         silabaDerecha = null;
 
-        //silaba = RandomString(2); /*testing*/
         texto.text = silaba;
 
         setPalabra(this.transform.parent.gameObject);

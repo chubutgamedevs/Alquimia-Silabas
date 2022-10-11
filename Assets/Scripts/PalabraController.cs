@@ -236,12 +236,13 @@ public class PalabraController : MonoBehaviour
 
     public void romperEnSilabasYColocarEnPantalla()
     {
+        float segundosAntesDeQuieta = 2;
         //si hay poco que hacer lo hacemos y retornamos por performance
         if(silabas.Count == 0) { return; }
         if(silabas.Count == 1)
         {   
             silabas[0].empujarEnDireccionAleatoria();
-            this.separarEnSilaba(silabas[0]);
+            silabas[0].dejarQuietaDespuesDeRandom(segundosAntesDeQuieta);
             return;
         }
 
@@ -249,9 +250,7 @@ public class PalabraController : MonoBehaviour
         {
             sil.desactivarConectores();
             sil.empujarEnDireccionAleatoria();
-            //habria que fijar la silaba en una posicion en una grilla
-            //sil.fijarAGrilla()
-            //sil.activarConectores()
+            sil.dejarQuietaDespuesDe(segundosAntesDeQuieta);
         }
 
         for(int i = 0; i<silabas.Count; i++)

@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _juego = getJuegoGameObject();
-        startGame();
+        startGameConPool();
     }
 
     // Update is called once per frame
@@ -85,12 +85,11 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
-    public void startGame()
+    public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandom(4);
+        palabrasTarget = generarPalabrasTargetRandomConSilabas(3,2);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
-        //colocarEnPantallaPalabra(palabrasTarget[0]);
         colocarEnPantallaSilabas();
         desordenarPalabras();
     }
@@ -122,6 +121,8 @@ public class GameManager : MonoBehaviour
             SilabaController silabaAux = nuevaSilaba(silaba);
             silabaAux.setPalabra(palabraAux);
             palabraAuxController.nuevaSilabaAlFinal(silabaAux);
+
+            palabraAuxController.romperEnSilabasYColocarEnPantalla();
         }
     }
 
@@ -179,7 +180,6 @@ public class GameManager : MonoBehaviour
 
         if(palabraActual.ToUpper() == palabraAux)
         {
-            Debug.Log("Palabra formada correctamente");
             Invoke("continuarConSiguientePalabra", 0.5f);
 
             EventManager.onPalabraFormada(palabraFormada, palabraAux);
@@ -217,6 +217,20 @@ public class GameManager : MonoBehaviour
         return palabrasAux;
     }
 
+    private List<(string, List<string>)> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
+    {
+        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
+
+        for (int i = 0; i < cantPalabras; i++)
+        {
+            palabrasAux.Add(nuevaPalabraRandomConSilabas(cantSilabas));
+        }
+
+        return palabrasAux;
+    }
+
+    
+
     private void colocarEnPantallaPalabra((string,List<string>) palabraTupla)
     {
         nuevaPalabraActual(palabraTupla);
@@ -231,6 +245,26 @@ public class GameManager : MonoBehaviour
             randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         }
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
+    }
+
+    public (string, List<string>) nuevaPalabraRandomConSilabas(int cantSilabas)
+    {
+        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        while (palabrasYSilabas[wordList[randomIndex]].Count != cantSilabas)
+        {
+            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        }
+        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+    }
+
+    public (string, List<string>) nuevaPalabraRandomMaxSilabas(int maxSilabas)
+    {
+        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        while (palabrasYSilabas[wordList[randomIndex]].Count < maxSilabas)
+        {
+            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+        }
+        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
     internal PalabraController nuevaPalabraActual((string palabra, List<string> silabas) palabra)

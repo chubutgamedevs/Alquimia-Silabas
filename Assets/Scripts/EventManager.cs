@@ -39,67 +39,56 @@ public class EventManager : MonoBehaviour
     #region notificacion de eventos
     public static void onSilabasUnidas(SilabaController s1, SilabaController s2)
     {
-        Debug.Log("onSilabasUnidas");
         silabasUnidas(s1, s2);
     }
 
     public static void onSilabasSeparadas(SilabaController s1, SilabaController s2)
     {
-        Debug.Log("onSilabasSeparadas");
         silabasSeparadas(s1, s2);
     }
 
     public static void onSilabasColisionan(SilabaController s1, SilabaController s2)
     {
-        Debug.Log("onSilabasColisionan");
         //el primer argumento es la silaba que se está moviend
         silabasColisionan(s1, s2);
     }
 
     public static void onSilabaEsClickeada(SilabaController silaba)
     {
-        Debug.Log("onSilabaEsClickeada");
         silabaEsClickeada(silaba);
     }
 
     public static void onSilabaEsBajada(SilabaController silaba)
     {
-        Debug.Log("onSilabaEsBajada");
-        silabaEsBajada(silaba);
+            silabaEsBajada(silaba);
     }
 
     public static void onModoRomperActivado()
     {
-        Debug.Log("onModoRomperActivado");
         modoRomperActivado();
     }
     public static void onModoRomperDesactivado()
     {
-        Debug.Log("onModoRomperDesactivado");
         modoRomperDesActivado();
     }
 
     public static void onSilabaSeparadaDeSilaba(SilabaController silabaSeparada)
     {
-        Debug.Log("onSilabaSeparadaDeSilaba");
         silabaSeparadaDeSilaba(silabaSeparada);
     }
 
     public static void onPalabraFormada(PalabraController palabra, string palabraString)
     {
-        Debug.Log("onPalabraFormada");
         palabraFormada(palabra, palabraString);
     }
 
     public static void onPalabraSeleccionadaParaJuego(string palabra, List<string> silabas)
     {
-        Debug.Log("onPalabraSeleccionadaParaJuego");
         palabraSeleccionadaParaJuego(palabra, silabas);
     }
 
     public static void onPalabrasSeleccionadasParaJuego(List<(string palabra, List<string> silabas)> palabras)
     {
-        Debug.Log("onPalabrasSeleccionadasParaJuego");
         palabrasSeleccionadasParaJuego(palabras);
     }
 
