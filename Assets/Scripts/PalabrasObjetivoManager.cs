@@ -46,15 +46,15 @@ public class PalabrasObjetivoManager : MonoBehaviour
         return palabrasObjetivoAux;
     }
 
-    public void settearPalabrasObjetivo(List<(string, List<string>)> palabras)
+    public void settearPalabrasObjetivo(List<Palabra> palabras)
     {
         destruirPalabrasObjetivoHijas();
 
         int indicePalabra = 0;
 
-        foreach ((string, List<string>) palabra in palabras)
+        foreach (Palabra palabra in palabras)
         {
-            colocarNuevaPalabraObjetivo(palabra.Item1, palabra.Item2,indicePalabra);
+            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas,indicePalabra);
 
             indicePalabra++;
         }
@@ -146,10 +146,10 @@ public class PalabrasObjetivoManager : MonoBehaviour
         silabas1.Add("la");
         silabas1.Add("bas");
 
-        List<(string, List<string>)> palabrasObj = new List<(string, List<string>)>();
+        List<Palabra> palabrasObj = new List<Palabra>();
 
-        palabrasObj.Add((palabra, silabas));
-        palabrasObj.Add((palabra1, silabas1));
+        palabrasObj.Add(new Palabra(palabra, silabas));
+        palabrasObj.Add(new Palabra(palabra1, silabas1));
 
         settearPalabrasObjetivo(palabrasObj);
 

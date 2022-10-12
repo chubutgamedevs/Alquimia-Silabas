@@ -4,15 +4,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Constants
+{
+    public int tres = 3;
+}
+
+enum Modo
+{
+    Secuencial = 0,
+    Pool = 1,
+}
+
+public class Palabra
+{
+    public string palabra = "";
+    public List<String> silabas = new List<string>();
+
+    public Palabra(string v, List<string> list)
+    {
+        this.palabra = v;
+        this.silabas = list;
+    }
+}
+
 public class GameManager : MonoBehaviour
 {
+    private Modo modo = Modo.Pool;
+
     public bool modoRomper = false;
     private bool _modoRomper = false;
 
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
-    public List<(string palabra,List<string> silabas)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
+    public List<Palabra> palabrasTarget;
     public List<string> poolDeSilabas;
     public string palabraActual = "";
 
@@ -30,7 +55,19 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _juego = getJuegoGameObject();
-        startGameConPool();
+
+        switch (modo)
+        {
+            case Modo.Secuencial:
+                break;
+            case Modo.Pool:
+                startGameConPool();
+                break;
+            default:
+                Console.WriteLine("GAMEMANAGER.START El modo no existe");
+                break;
+        }
+
     }
 
     // Update is called once per frame
@@ -94,11 +131,11 @@ public class GameManager : MonoBehaviour
         desordenarPalabras();
     }
 
-    List<string> generarPoolDeSilabas(List<(string palabra, List<string> silabas)> palabras)
+    List<string> generarPoolDeSilabas(List<Palabra> palabras)
     {
         List<string> pool = new List<string>();
 
-        foreach((string palabra, List<string> silabas) palabra in palabras)
+        foreach(Palabra palabra in palabras)
         {
             pool.AddRange(palabra.silabas);
         }
@@ -217,9 +254,9 @@ public class GameManager : MonoBehaviour
         return palabrasAux;
     }
 
-    private List<(string, List<string>)> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
+    private List<Palabra> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
     {
-        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
+        List<Palabra> palabrasAux = new List<Palabra>();
 
         for (int i = 0; i < cantPalabras; i++)
         {
@@ -231,9 +268,9 @@ public class GameManager : MonoBehaviour
 
     
 
-    private void colocarEnPantallaPalabra((string,List<string>) palabraTupla)
+    private void colocarEnPantallaPalabra(Palabra palabra)
     {
-        nuevaPalabraActual(palabraTupla);
+        nuevaPalabraActual(palabra);
     }
 
     public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
@@ -247,14 +284,14 @@ public class GameManager : MonoBehaviour
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
     }
 
-    public (string, List<string>) nuevaPalabraRandomConSilabas(int cantSilabas)
+    public Palabra nuevaPalabraRandomConSilabas(int cantSilabas)
     {
         int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         while (palabrasYSilabas[wordList[randomIndex]].Count != cantSilabas)
         {
             randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+        return new Palabra(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
     public (string, List<string>) nuevaPalabraRandomMaxSilabas(int maxSilabas)
@@ -267,7 +304,7 @@ public class GameManager : MonoBehaviour
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
-    internal PalabraController nuevaPalabraActual((string palabra, List<string> silabas) palabra)
+    internal PalabraController nuevaPalabraActual(Palabra palabra)
     {
         palabraActual = palabra.palabra;
 

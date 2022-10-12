@@ -20,7 +20,7 @@ public class EventManager : MonoBehaviour
 
     #region eventos de palabras (plural)
     public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
-    public static event System.Action<List<(string, List<string>)>> palabrasSeleccionadasParaJuego = delegate { };
+    public static event System.Action<List<Palabra>> palabrasSeleccionadasParaJuego = delegate { };
     #endregion
 
     #region eventos de palabra (singular)
@@ -87,7 +87,7 @@ public class EventManager : MonoBehaviour
         palabraSeleccionadaParaJuego(palabra, silabas);
     }
 
-    public static void onPalabrasSeleccionadasParaJuego(List<(string palabra, List<string> silabas)> palabras)
+    public static void onPalabrasSeleccionadasParaJuego(List<Palabra> palabras)
     {
         palabrasSeleccionadasParaJuego(palabras);
     }
