@@ -39,9 +39,10 @@ public class GameManager : MonoBehaviour
 
     public List<Palabra> palabrasTarget;
     public List<string> poolDeSilabas;
-    public string palabraActual = "";
 
     private GameObject _juego;
+
+    private string palabraActual = "";
 
 
     //sacados de palabras.json
@@ -109,6 +110,7 @@ public class GameManager : MonoBehaviour
         EventManager.silabasUnidas += comprobarPalabraFormada;
         EventManager.modoRomperActivado += ActivarModoRomper;
         EventManager.modoRomperDesActivado += DesActivarModoRomper;
+        EventManager.palabraFormada += handlePalabraFormada;
 
     }
 
@@ -117,6 +119,16 @@ public class GameManager : MonoBehaviour
         EventManager.silabasUnidas -= comprobarPalabraFormada;
         EventManager.modoRomperActivado -= ActivarModoRomper;
         EventManager.modoRomperDesActivado -= DesActivarModoRomper;
+        EventManager.palabraFormada -= handlePalabraFormada;
+    }
+
+
+    void handlePalabraFormada(PalabraController palabraController, string palabra)
+    {
+        if(modo == Modo.Pool)
+        {
+            this.desordenarPalabras();
+        }
     }
     #endregion
 
@@ -130,6 +142,7 @@ public class GameManager : MonoBehaviour
         colocarEnPantallaSilabas();
         desordenarPalabras();
     }
+
 
     List<string> generarPoolDeSilabas(List<Palabra> palabras)
     {
@@ -212,14 +225,27 @@ public class GameManager : MonoBehaviour
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
 
-        Debug.Log("Palabra target: ");
-        Debug.Log(this.palabraActual);
-
-        if(palabraActual.ToUpper() == palabraAux)
+        if(modo == Modo.Pool)
         {
-            Invoke("continuarConSiguientePalabra", 0.5f);
+            foreach (Palabra palabra in this.palabrasTarget)
+            {
+                if (palabra.palabra.ToUpper() == palabraAux)
+                {
+                    EventManager.onPalabraFormada(palabraFormada, palabraAux);
+                    return;
+                }
+            }
 
-            EventManager.onPalabraFormada(palabraFormada, palabraAux);
+        }
+        else if(modo == Modo.Secuencial)
+        {
+            if (palabraActual.ToUpper() == palabraAux)
+            {
+                Invoke("continuarConSiguientePalabra", 0.5f);
+
+                EventManager.onPalabraFormada(palabraFormada, palabraAux);
+                return;
+            }
         }
 
     }
