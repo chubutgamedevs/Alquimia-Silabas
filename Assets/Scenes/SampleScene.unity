@@ -1723,7 +1723,6 @@ MonoBehaviour:
   palabraPrefab: {fileID: 7977601284497516053, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
   silabaPrefab: {fileID: 7832757445997255160, guid: d97617529bd812f558b1757d9dc2efa6, type: 3}
   poolDeSilabas: []
-  palabraActual: 
 --- !u!4 &1026310747
 Transform:
   m_ObjectHideFlags: 0

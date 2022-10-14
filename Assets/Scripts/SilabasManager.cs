@@ -78,10 +78,18 @@ public class SilabasManager : MonoBehaviour
             derecha = silaba;
         }
 
-        //unimos palabra
-        PalabraController palabra = izquierda.getPalabraController();
-        palabra.aniadirPalabraAlFinal(derecha.getSilabasPalabra());
-       
+        if (otraSilabaEstaALaIzquierda)
+        {
+            //unimos palabra
+            PalabraController palabra = derecha.getPalabraController();
+            palabra.aniadirPalabraAlPrincipio(izquierda.getSilabasPalabra());
+        }
+        else { 
+            //unimos palabra
+            PalabraController palabra = izquierda.getPalabraController();
+            palabra.aniadirPalabraAlFinal(derecha.getSilabasPalabra());
+        }
+
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
 
@@ -90,8 +98,8 @@ public class SilabasManager : MonoBehaviour
         izquierda.enableDrag();
         derecha.enableDrag();
 
-        EventManager.onSilabasUnidas(izquierda,derecha);
-        
+        EventManager.onSilabasUnidas(izquierda, derecha);
+
     }
 
     void unirPalabra(List<SilabaController> silabasPalabra)
@@ -108,8 +116,8 @@ public class SilabasManager : MonoBehaviour
     {
         if (gameManager.modoRomper)
         {
-            silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            gameManager.activarConectoresDespuesDe1Seg();
+            //silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
+            //gameManager.activarConectoresDespuesDe1Seg();
         }
     }
 

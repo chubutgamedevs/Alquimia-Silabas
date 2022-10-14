@@ -8,6 +8,7 @@ public class SilabaObjetivoController : MonoBehaviour
     string silaba = "si";
     int anchoSilaba = 30;
 
+    public Animator miAnimator;
 
     TMPro.TextMeshProUGUI texto;
     public GameObject fondoObj;
@@ -17,6 +18,7 @@ public class SilabaObjetivoController : MonoBehaviour
 
     void Awake()
     {
+
         if (!texto)
         {
             texto = getTextMeshPro();
@@ -26,7 +28,11 @@ public class SilabaObjetivoController : MonoBehaviour
         {
             fondo = fondoObj.GetComponent<Image>();
         }
-
+        if (!miAnimator)
+        {
+            miAnimator = transform.GetChild(0).GetComponent<Animator>();
+        }
+        
     }
 
     private void Start()
@@ -68,11 +74,11 @@ public class SilabaObjetivoController : MonoBehaviour
 
     public void oscurecerFondo()
     {
-        fondo.color = new Color(0, 0, 0);
+        miAnimator.Play("oscurecer");
     }
     public void esclarecerFondo()
     {
-        fondo.color = new Color(255, 255, 255);
+        miAnimator.Play("esclarecer");
     }
 
     public void ubicarSilaba(int numSilaba)

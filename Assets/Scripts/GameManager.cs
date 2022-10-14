@@ -108,8 +108,6 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.modoRomperActivado += ActivarModoRomper;
-        EventManager.modoRomperDesActivado += DesActivarModoRomper;
         EventManager.palabraFormada += handlePalabraFormada;
 
     }
@@ -117,8 +115,6 @@ public class GameManager : MonoBehaviour
     void OnDisable()
     {
         EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.modoRomperActivado -= ActivarModoRomper;
-        EventManager.modoRomperDesActivado -= DesActivarModoRomper;
         EventManager.palabraFormada -= handlePalabraFormada;
     }
 
@@ -127,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         if(modo == Modo.Pool)
         {
-            this.desordenarPalabras();
+            //separar palabra y agitarla
         }
     }
     #endregion
@@ -161,18 +157,14 @@ public class GameManager : MonoBehaviour
 
     void colocarEnPantallaSilabas()
     {
-        foreach(string silaba in poolDeSilabas)
+        if(modo == Modo.Pool)
         {
-            GameObject palabraAux = nuevaPalabraVacia();
-            PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
+            foreach (string silaba in poolDeSilabas)
+            {
 
-            palabraAuxController.encontrarPadre();
-
-            SilabaController silabaAux = nuevaSilaba(silaba);
-            silabaAux.setPalabra(palabraAux);
-            palabraAuxController.nuevaSilabaAlFinal(silabaAux);
-
-            palabraAuxController.romperEnSilabasYColocarEnPantalla();
+                PalabraController palabraAuxController = nuevaPalabra(silaba);
+                palabraAuxController.sacudirYColocarEnPantalla();
+            }
         }
     }
 
@@ -180,31 +172,6 @@ public class GameManager : MonoBehaviour
     {
         //larga vida a las tuplas
         EventManager.onPalabrasSeleccionadasParaJuego(palabrasTarget);
-    }
-
-    public void ActivarModoRomper()
-    {
-        modoRomper = true;
-    }
-
-    public void DesActivarModoRomper()
-    {
-        modoRomper = false;
-    }
-
-    public void ToggleModoRomper()
-    {
-        if (_modoRomper)
-        {
-            EventManager.onModoRomperDesactivado();
-        }
-        else
-        {
-            EventManager.onModoRomperActivado();
-        }
-
-        _modoRomper = !_modoRomper;
-
     }
 
     #region json handling
@@ -219,8 +186,8 @@ public class GameManager : MonoBehaviour
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
-        string palabraAux = silaba.getPalabraString().ToUpper();
         PalabraController palabraFormada = silaba.getPalabraController();
+        string palabraAux = palabraFormada.getPalabraString().ToUpper();
 
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
@@ -266,6 +233,16 @@ public class GameManager : MonoBehaviour
         GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         return palabraObj;
+    }
+
+    internal PalabraController nuevaPalabra(string silaba)
+    {
+        GameObject palabraObj = nuevaPalabraVacia();
+        PalabraController controller = palabraObj.GetComponent<PalabraController>();
+
+        controller.setSilaba(silaba);
+
+        return controller;
     }
 
     private List<(string, List<string>)> generarPalabrasTargetRandom(int v)
@@ -337,7 +314,6 @@ public class GameManager : MonoBehaviour
         GameObject palabraAux = nuevaPalabraVacia();
         PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
 
-        palabraAuxController.encontrarPadre();
 
         foreach (string silaba in palabra.silabas) {
             SilabaController silabaAux = nuevaSilaba(silaba);
@@ -352,10 +328,11 @@ public class GameManager : MonoBehaviour
     {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo y las matamos a todas
-            if (hijo.gameObject.CompareTag("Palabra")) 
+            GameObject hijoAux = hijo.gameObject;
+            if (hijoAux.CompareTag("Palabra")) 
             {
-                hijo.gameObject.tag = "PalabraDestruida";
-                GameObject.Destroy(hijo.gameObject);
+                hijoAux.tag = "PalabraDestruida";
+                GameObject.Destroy(hijoAux);
             }
         }
     }
@@ -364,18 +341,19 @@ public class GameManager : MonoBehaviour
     {
         List<PalabraController> palabras = new List<PalabraController>();
 
-        foreach(Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo
-            if (hijo.gameObject.CompareTag("Palabra"))
-            {
-                palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
-            }
-        }
-
         foreach(PalabraController palabra in palabras)
         {   
             //rompemos todas
-            palabra.romperEnSilabasYColocarEnPantalla();
+            //palabra.romperEnSilabasYColocarEnPantalla();
+        }
+
+        foreach (Transform hijo in _juego.transform)
+        {   //conseguimos las palabras hijo
+            GameObject hijoAux = hijo.gameObject;
+            if (hijoAux.CompareTag("Palabra"))
+            {
+                palabras.Add(hijoAux.GetComponent<PalabraController>());
+            }
         }
 
         this.activarConectoresDespuesDe1Seg();
@@ -408,6 +386,25 @@ public class GameManager : MonoBehaviour
 
         return silabaCont;
     }
+
+    public GameObject nuevaPalabra(List<SilabaController> silabas)
+    {
+        GameObject palabraObj = this.nuevaPalabraVacia();
+        PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
+
+        palabraController.setSilabas(silabas);
+
+        return palabraObj;
+    }
+
+    public GameObject nuevaPalabra(SilabaController silaba)
+    {
+        List<SilabaController> aux = new List<SilabaController>();
+        aux.Add(silaba);
+
+        return nuevaPalabra(aux);
+    }
+
 
     #endregion
 }

@@ -114,10 +114,6 @@ public class SilabaController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
     }
 
-    internal float getYReal()
-    {
-        return this.transform.position.y + palabraParent.transform.position.y;
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -229,7 +225,8 @@ public class SilabaController : MonoBehaviour
     public void separarSilabaDeOtrasSilabas()
     {
 
-        if(silabaIzquierda | silabaDerecha) {
+        if (silabaIzquierda | silabaDerecha)
+        {
             if (silabaIzquierda)
             {
                 silabaIzquierda.silabaDerecha = null;
@@ -243,13 +240,7 @@ public class SilabaController : MonoBehaviour
             }
 
             this.silabaIzquierda = null;
-            this.silabaDerecha  = null;
-
-            this.dejarQuietaYQuitarControlDeMouse();
-            Vector3 newPos = transform.position;
-            newPos.y += getAlto() * Mathf.Sign(random.Next(-1, 1));
-
-            transform.position = newPos;
+            this.silabaDerecha = null;
 
             conectoresManager.activarConectores();
 

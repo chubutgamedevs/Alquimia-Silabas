@@ -50,7 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e48351408bb4d514fb192f71bd063d29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SilabaObjetivoPrefab: {fileID: 6799269825215299568, guid: adf88f2f08ec3c84489f19bb90a0b4ac, type: 3}
+  palabra: 
+  minFontSize: 20
+  SilabaObjetivoPrefab: {fileID: 8812646469344745306, guid: adf88f2f08ec3c84489f19bb90a0b4ac, type: 3}
 --- !u!222 &-881200902251744751
 CanvasRenderer:
   m_ObjectHideFlags: 0
