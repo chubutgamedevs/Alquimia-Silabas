@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Constants
+public static class Constants
 {
-    public int tres = 3;
+    public static float tiempoHastaDejarQuieta = 2;
 }
 
 enum Modo
@@ -161,10 +161,8 @@ public class GameManager : MonoBehaviour
         {
             foreach (string silaba in poolDeSilabas)
             {
-
                 PalabraController palabraAuxController = nuevaPalabra(silaba);
-                palabraAuxController.sacudirYColocarEnPantalla();
-            }
+              }
         }
     }
 
@@ -341,19 +339,18 @@ public class GameManager : MonoBehaviour
     {
         List<PalabraController> palabras = new List<PalabraController>();
 
-        foreach(PalabraController palabra in palabras)
-        {   
-            //rompemos todas
-            //palabra.romperEnSilabasYColocarEnPantalla();
-        }
-
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo
-            GameObject hijoAux = hijo.gameObject;
-            if (hijoAux.CompareTag("Palabra"))
+            if (hijo.gameObject.CompareTag("Palabra"))
             {
-                palabras.Add(hijoAux.GetComponent<PalabraController>());
+                palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
             }
+        }
+
+        foreach (PalabraController palabra in palabras)
+        {
+            //rompemos todas
+            palabra.romperEnSilabasYColocarEnPantalla();
         }
 
         this.activarConectoresDespuesDe1Seg();
@@ -387,17 +384,17 @@ public class GameManager : MonoBehaviour
         return silabaCont;
     }
 
-    public GameObject nuevaPalabra(List<SilabaController> silabas)
+    public PalabraController nuevaPalabra(List<SilabaController> silabas)
     {
         GameObject palabraObj = this.nuevaPalabraVacia();
         PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
 
         palabraController.setSilabas(silabas);
 
-        return palabraObj;
+        return palabraController;
     }
 
-    public GameObject nuevaPalabra(SilabaController silaba)
+    public PalabraController nuevaPalabra(SilabaController silaba)
     {
         List<SilabaController> aux = new List<SilabaController>();
         aux.Add(silaba);

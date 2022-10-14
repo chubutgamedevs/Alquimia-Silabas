@@ -11,9 +11,7 @@ public class PalabraController : MonoBehaviour
     GameManager gameManager;
 
     int anchoSilaba = 1;
-    float segundosAntesDeQuieta = 2;
 
-    Boolean __flagged = false;
     public Boolean moviendose = false;
 
     Rigidbody rb;
@@ -22,14 +20,11 @@ public class PalabraController : MonoBehaviour
     void OnEnable()
     {
         EventManager.silabaSeparadaDeSilaba += separarEnSilaba;
-        EventManager.silabaSeparadaDeSilaba += flagForDestruction;
-
     }
 
     void OnDisable()
     {
         EventManager.silabaSeparadaDeSilaba -= separarEnSilaba;
-        EventManager.silabaSeparadaDeSilaba -= flagForDestruction;
     }
 
     void OnMouseDown()
@@ -117,6 +112,7 @@ public class PalabraController : MonoBehaviour
 
     #region metodos
 
+    #region separar unir y acomodar
     internal void acomodarSilabasEnElEspacio()
     {
         if(silabas.Count <= 1){return;}
@@ -152,7 +148,6 @@ public class PalabraController : MonoBehaviour
 
     public void nuevaSilabaAlFinal(SilabaController silaba)
     {
-        silaba.getPalabraController().flagForDestruction();
         silaba.setPalabra(this.gameObject,this);
 
         if(this.silabas.Count > 0)
@@ -167,15 +162,8 @@ public class PalabraController : MonoBehaviour
 
     public void nuevaSilabaAlPrincipio(SilabaController silaba)
     {
-        silaba.getPalabraController().flagForDestruction();
         silaba.setPalabra(this.gameObject,this);
         silabas.Insert(0,silaba);
-    }
-
-
-    public void sacudirYColocarEnPantalla()
-    {
-        Debug.Log("sacudirYColocarEnPantalla NO implementado");
     }
 
     private void separarEnSilaba(SilabaController silabaASeparar)
@@ -222,14 +210,54 @@ public class PalabraController : MonoBehaviour
             gameManager.nuevaPalabra(silabasDespues);
 
             this.silabas = new List<SilabaController>();
-            tryToDestroy(); //descanse en paz
         }
 
         
     }
 
+    public void romperEnSilabasYColocarEnPantalla()
+    {
+        //si hay poco que hacer lo hacemos y retornamos por performance
+        if (silabas.Count == 0) { return; }
+        if (silabas.Count == 1)
+        {
+            silabas[0].desactivarConectores();
+            silabas[0].separarFuerteDeOtrasSilabas();
+            silabas[0].empujarAleatoriamenteYDejarQuietaLuego();
+            return;
+        }
 
+        foreach (SilabaController sil in silabas)
+        {
+            sil.desactivarConectores();
+            sil.separarFuerteDeOtrasSilabas();
+            sil.empujarAleatoriamenteYDejarQuietaLuego();
+        }
 
+        for (int i = 0; i < silabas.Count; i++)
+        {
+            //desconectamos las silabas y destruimos la palabra luego
+            silabas[i].restablecerConectores();
+            this.separarEnSilaba(silabas[i]);
+        }
+    }
+
+    public void sacudirSilabas()
+    {
+        foreach(SilabaController sil in silabas)
+        {
+            sil.empujarAleatoriamenteYDejarQuietaLuego();
+
+        }
+    }
+    public void dejarQuieta()
+    {
+        foreach (SilabaController sil in silabas)
+        {
+            sil.dejarQuieta();
+        }
+    }
+    #endregion
 
     internal void activarConectoresDespuesDe(float v)
     {
@@ -248,67 +276,11 @@ public class PalabraController : MonoBehaviour
         this.silabas[silabas.Count-1].restablecerConectores();
     }
 
-    public void romperEnSilabas()
-    {
-        if(silabas.Count == 0 || silabas.Count == 1) { return; }
-
-        foreach (SilabaController sil in silabas)
-        {
-            sil.separarSilabaDeOtrasSilabas();
-            gameManager.nuevaPalabra(sil);
-        }
-
-        this.silabas = new List<SilabaController>();
-        flagForDestruction();
-
-    }
-
-    public void dejarQuieta()
-    {
-        foreach(SilabaController sil in silabas)
-        {
-            sil.dejarQuieta();
-        }
-    }
-
     private void encontrarPadre()
     {
         transform.SetParent(gameManager.getJuegoGameObject().transform);
     }
 
-    #region garbage collection
-
-    public void flagForDestruction(SilabaController s)
-    {
-        flagForDestruction();
-    }
-
-    public void flagForDestruction()
-    {
-        if (!__flagged) { 
-            Invoke("tryToDestroy", 6f);
-            __flagged = true;
-        }
-    }
-
-    private void tryToDestroy()
-    {
-        if (silabas.Count == 0)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            __flagged = false;
-        }
-    }
-
-    #endregion
-
-    private void imprimirPalabra()
-    {
-        Debug.Log("palabra formada: " + getPalabraString());
-    }
 
 
     #endregion

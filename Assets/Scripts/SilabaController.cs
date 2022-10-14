@@ -255,11 +255,12 @@ public class SilabaController : MonoBehaviour
         this.separarSilabaDeOtrasSilabas();
     }
 
-    public void empujarEnDireccionAleatoria()
+    public void empujarAleatoriamenteYDejarQuietaLuego()
     {
         //hardcoding bad
         habilitarMovimientoRb();
         this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
+        dejarQuietaDespuesDeRandom(Constants.tiempoHastaDejarQuieta);
     }
 
     public void restablecerConectores()
