@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SilabasManager : MonoBehaviour
 {
-    private float anchoSilaba = 1;
     public GameObject sampleSilaba;
 
     public GameManager gameManager;
@@ -40,10 +39,7 @@ public class SilabasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (sampleSilaba)
-        {
-            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().size.x;
-        }
+
     }
 
     // Update is called once per frame

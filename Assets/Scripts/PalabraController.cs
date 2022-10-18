@@ -113,6 +113,16 @@ public class PalabraController : MonoBehaviour
     #region metodos
 
     #region separar unir y acomodar
+
+    public void playAnimacionPalabraCorrecta()
+    {
+        foreach (SilabaController sil in silabas)
+        {
+            sil.playAnimacionSilabaCorrecta();
+        }
+    }
+
+
     internal void acomodarSilabasEnElEspacio()
     {
         if(silabas.Count <= 1){return;}

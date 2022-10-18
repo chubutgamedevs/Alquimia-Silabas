@@ -8,8 +8,6 @@ public class ConectorController : MonoBehaviour
     private SilabaController silabaController;
     public GameObject silaba;
 
-    float anchoSilaba;
-
     private void Awake()
     {
         if (!silaba)

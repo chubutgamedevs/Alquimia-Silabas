@@ -27,6 +27,8 @@ public class SilabaController : MonoBehaviour
 
     private BoxCollider boxCollider;
 
+    public Animator animadorSilaba;
+
     #region eventos
     void OnEnable()
     {
@@ -193,6 +195,12 @@ public class SilabaController : MonoBehaviour
     #endregion 
 
     #region metodos
+
+    public void playAnimacionSilabaCorrecta()
+    {
+        animadorSilaba.Play("silabaGreenearOK");
+    }
+
     public List<SilabaController> getSilabasPalabra()
     {
         SilabaController recorredorSilabas = null;

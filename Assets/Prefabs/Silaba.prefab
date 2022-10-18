@@ -383,6 +383,7 @@ MonoBehaviour:
   rb: {fileID: 2615391286704428856}
   silaba: CIS
   texto: {fileID: 0}
+  animadorSilaba: {fileID: 7543526463886386269}
 --- !u!54 &2615391286704428856
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using UnityEngine;
 public static class Constants
 {
     public static float tiempoHastaDejarQuieta = 2;
+    public static float tiempoDeAnimacionPalabraCorrecta = 0.4f;
 }
 
 enum Modo
@@ -121,10 +122,13 @@ public class GameManager : MonoBehaviour
 
     void handlePalabraFormada(PalabraController palabraController, string palabra)
     {
-        if(modo == Modo.Pool)
-        {
-            palabraController.romperEnSilabasYColocarEnPantalla();
-        }
+        StartCoroutine(handlePalabraFormadaRutina(palabraController,palabra));
+    }
+    IEnumerator handlePalabraFormadaRutina(PalabraController palabraController,string palabra)
+    {
+        palabraController.playAnimacionPalabraCorrecta();
+        yield return new WaitForSeconds(Constants.tiempoDeAnimacionPalabraCorrecta);
+        palabraController.romperEnSilabasYColocarEnPantalla();
     }
     #endregion
 
