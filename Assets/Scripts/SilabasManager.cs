@@ -15,12 +15,14 @@ public class SilabasManager : MonoBehaviour
     {
         EventManager.silabaEsClickeada += manejarClickASilaba;
         EventManager.silabasColisionan += UnirSilabas;
+        EventManager.activarConectoresDespuesDe += activarConectoresDespuesDe;
     }
 
     void OnDisable()
     {
         EventManager.silabaEsClickeada -= manejarClickASilaba;
         EventManager.silabasColisionan -= UnirSilabas;
+        EventManager.activarConectoresDespuesDe -= activarConectoresDespuesDe;
     }
 
     #endregion
@@ -100,6 +102,14 @@ public class SilabasManager : MonoBehaviour
 
         EventManager.onSilabasUnidas(izquierda, derecha);
 
+    }
+
+    void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)
+    {
+        foreach(SilabaController silAux in silabasAux)
+        {
+            silAux.restablecerConectoresDespuesDe(t);
+        }
     }
 
     void unirPalabra(List<SilabaController> silabasPalabra)

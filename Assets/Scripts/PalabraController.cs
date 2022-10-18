@@ -219,6 +219,9 @@ public class PalabraController : MonoBehaviour
     {
         //si hay poco que hacer lo hacemos y retornamos por performance
         if (silabas.Count == 0) { return; }
+
+        EventManager.onActivarConectoresDespuesDe(silabas,1f);
+
         if (silabas.Count == 1)
         {
             silabas[0].desactivarConectores();

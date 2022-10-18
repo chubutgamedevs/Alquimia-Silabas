@@ -9,6 +9,8 @@ public class EventManager : MonoBehaviour
     public static event System.Action<SilabaController, SilabaController> silabasUnidas = delegate { };
     public static event System.Action<SilabaController, SilabaController> silabasSeparadas = delegate { };
     public static event System.Action<SilabaController, SilabaController> silabasColisionan = delegate { };
+    public static event System.Action<List<SilabaController>, float> activarConectoresDespuesDe = delegate { };
+    
 
     #endregion
 
@@ -90,6 +92,11 @@ public class EventManager : MonoBehaviour
     public static void onPalabrasSeleccionadasParaJuego(List<Palabra> palabras)
     {
         palabrasSeleccionadasParaJuego(palabras);
+    }
+
+    public static void onActivarConectoresDespuesDe(List<SilabaController> silabas, float tiempo)
+    {
+        activarConectoresDespuesDe(silabas, tiempo);
     }
 
     #endregion

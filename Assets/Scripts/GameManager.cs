@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         if(modo == Modo.Pool)
         {
-            //separar palabra y agitarla
+            palabraController.romperEnSilabasYColocarEnPantalla();
         }
     }
     #endregion
@@ -353,7 +353,6 @@ public class GameManager : MonoBehaviour
             palabra.romperEnSilabasYColocarEnPantalla();
         }
 
-        this.activarConectoresDespuesDe1Seg();
 
     }
 

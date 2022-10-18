@@ -56,6 +56,7 @@ public class SilabaController : MonoBehaviour
         EventManager.onSilabaEsClickeada(this);
         this.dejarQuieta();
     }
+
     void OnMouseDrag()
     {
         if (drag.dragEnabled)
@@ -77,9 +78,7 @@ public class SilabaController : MonoBehaviour
     internal void dejarQuietaDespuesDeRandom(float segundos)
     {
         Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
-    }
-
-    
+    }   
 
     internal void habilitarMovimientoRb()
     {
@@ -90,6 +89,7 @@ public class SilabaController : MonoBehaviour
     void OnMouseUp()
     {
         this.palabraController.moviendose = false;
+        //habilitarMovimientoRb();
     }
 
     #endregion eventos
@@ -259,8 +259,13 @@ public class SilabaController : MonoBehaviour
     {
         //hardcoding bad
         habilitarMovimientoRb();
-        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
+        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 2, ForceMode.Impulse);
         dejarQuietaDespuesDeRandom(Constants.tiempoHastaDejarQuieta);
+    }
+
+    public void restablecerConectoresDespuesDe(float t)
+    {
+        Invoke("restablecerConectores", t);
     }
 
     public void restablecerConectores()
