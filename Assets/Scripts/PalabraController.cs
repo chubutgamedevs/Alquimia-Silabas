@@ -80,16 +80,11 @@ public class PalabraController : MonoBehaviour
         }
     }
 
-    public void setSilaba(string sil)
+    public void setSilaba(string sil, Vector3 punto)
     {
-        SilabaController silaba = gameManager.nuevaSilaba(sil);
+        SilabaController silaba = gameManager.nuevaSilaba(sil,punto);
 
         silaba.setPalabra(this.gameObject, this);
-
-        if (this.silabas.Count > 0)
-        {
-            //eliminarSilabas();
-        }
 
         silabas.Add(silaba);
     }
@@ -272,6 +267,10 @@ public class PalabraController : MonoBehaviour
     }
     #endregion
 
+    public bool tieneUnaSolaSilaba()
+    {
+        return this.silabas.Count == 1;
+    }
     internal void activarConectoresDespuesDe(float v)
     {
         Invoke("activarConectores", v);

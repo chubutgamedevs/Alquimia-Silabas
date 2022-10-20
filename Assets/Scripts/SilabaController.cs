@@ -29,18 +29,19 @@ public class SilabaController : MonoBehaviour
 
     public Animator animadorSilaba;
 
+    private Vector3 puntoInicial = new Vector3(0,0,0);
+
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += enableDrag;
-        EventManager.modoRomperActivado += disableDrag;
-
+        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.modoRomperActivado += handleModoRomperActivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= enableDrag;
-        EventManager.modoRomperActivado -= disableDrag;
+        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.modoRomperActivado -= handleModoRomperActivado;
     }
 
     public void disableDrag()
@@ -91,7 +92,11 @@ public class SilabaController : MonoBehaviour
     void OnMouseUp()
     {
         this.palabraController.moviendose = false;
-        //habilitarMovimientoRb();
+        if (this.palabraController.tieneUnaSolaSilaba())
+        {
+        this.irAlPuntoInicial();
+
+        }
     }
 
     #endregion eventos
@@ -137,6 +142,10 @@ public class SilabaController : MonoBehaviour
     #endregion ciclo de vida
 
     #region getters & setters
+    public void setPunto(Vector3 punto)
+    {
+        this.puntoInicial = punto;
+    }
     ConectoresManager getConectoresManager(){
         return gameObject.transform.GetChild(2).gameObject.GetComponent<ConectoresManager>();
     }
@@ -192,13 +201,21 @@ public class SilabaController : MonoBehaviour
         return this.palabraController;
     }
 
-    #endregion 
+    #endregion
 
     #region metodos
-
-    public void playAnimacionSilabaCorrecta()
+  
+    void handleModoRomperActivado()
     {
-        animadorSilaba.Play("silabaGreenearOK");
+        this.disableDrag();
+        this.entrarAnimacionModoRomper();
+        this.desactivarConectores();
+    }
+    void handleModoRomperDesactivado()
+    {
+        this.enableDrag();
+        this.salirDeTodasLasAnimaciones();
+        this.restablecerConectores();
     }
 
     public List<SilabaController> getSilabasPalabra()
@@ -265,10 +282,17 @@ public class SilabaController : MonoBehaviour
 
     public void empujarAleatoriamenteYDejarQuietaLuego()
     {
-        //hardcoding bad
-        habilitarMovimientoRb();
-        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 2, ForceMode.Impulse);
-        dejarQuietaDespuesDeRandom(Constants.tiempoHastaDejarQuieta);
+        dejarQuieta();
+        irAlPuntoInicial();
+    }
+
+    public void irAlPuntoInicial()
+    {
+        irAlPunto(this.puntoInicial);
+    }
+    public void irAlPunto(Vector3 punto)
+    {
+        StartCoroutine(MovedorDeSilabas.IrHaciaElPuntoEn(this.transform,punto, Constants.tiempoHastaIrAlPunto));
     }
 
     public void restablecerConectoresDespuesDe(float t)
@@ -288,6 +312,7 @@ public class SilabaController : MonoBehaviour
         }
 
         drag.enableDrag();
+        
     }
 
     public void desactivarConectores()
@@ -296,6 +321,24 @@ public class SilabaController : MonoBehaviour
     }
 
 
+    #endregion
+
+
+    #region animaciones
+    public void playAnimacionSilabaCorrecta()
+    {
+        animadorSilaba.Play("silabaGreenearOK");
+    }
+
+    public void entrarAnimacionModoRomper()
+    {
+        animadorSilaba.Play("silabaEnModoRomper");
+    }
+
+    public void salirDeTodasLasAnimaciones()
+    {
+        animadorSilaba.Play("rest");
+    }
     #endregion
 
     #region testing
@@ -312,3 +355,36 @@ public class SilabaController : MonoBehaviour
 
     #endregion testing
 }
+
+
+
+#region clases auxiliares
+
+static class MovedorDeSilabas
+{
+    public static IEnumerator IrHaciaElPuntoEn(Transform transformToMove, Vector3 targetPosition, float tiempoHastaDejarQuieta)
+    {
+        var startPosition = transformToMove;
+
+        var timePassed = 0f;
+        while (timePassed < tiempoHastaDejarQuieta*0.4f)
+        {
+            var factor = timePassed / tiempoHastaDejarQuieta;
+            //optional add ease -in and -out
+            factor = Mathf.SmoothStep(0, 1f, factor);
+
+            transformToMove.position = Vector3.Lerp(transformToMove.position, targetPosition, factor);
+
+            timePassed += Time.deltaTime;
+
+            // important! This tells Unity to interrupt here, render this frame
+            // and continue from here in the next frame
+            yield return null;
+        }
+
+        // to be sure to end with exact values set the target rotation fix when done
+        transformToMove.position = targetPosition;
+    }
+}
+
+#endregion

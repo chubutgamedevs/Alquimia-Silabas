@@ -67,10 +67,12 @@ public class EventManager : MonoBehaviour
 
     public static void onModoRomperActivado()
     {
+        Debug.Log("onModoRomperActivado");
         modoRomperActivado();
     }
     public static void onModoRomperDesactivado()
     {
+        Debug.Log("onModoRomperDesactivado");
         modoRomperDesActivado();
     }
 

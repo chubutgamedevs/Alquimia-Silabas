@@ -122,8 +122,8 @@ public class SilabasManager : MonoBehaviour
     {
         if (gameManager.modoRomper)
         {
-            //silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            //gameManager.activarConectoresDespuesDe1Seg();
+            silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
+            EventManager.onModoRomperDesactivado();
         }
     }
 
