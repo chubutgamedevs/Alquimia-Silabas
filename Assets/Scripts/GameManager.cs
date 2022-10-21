@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
     #region modo romper
     public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandomConSilabas(4,2);
+        palabrasTarget = generarPalabrasTargetRandomConSilabas(4,5);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
