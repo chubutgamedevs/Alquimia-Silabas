@@ -277,7 +277,6 @@ public class SilabaController : MonoBehaviour
     {
         this.silabaIzquierda = null;
         this.silabaDerecha = null;
-        this.separarSilabaDeOtrasSilabas();
     }
 
     public void empujarAleatoriamenteYDejarQuietaLuego()

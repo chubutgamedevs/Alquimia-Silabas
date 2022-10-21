@@ -225,7 +225,7 @@ public class PalabraController : MonoBehaviour
         //si hay poco que hacer lo hacemos y retornamos por performance
         if (silabas.Count == 0) { return; }
 
-        EventManager.onActivarConectoresDespuesDe(silabas,1f);
+        //EventManager.onActivarConectoresDespuesDe(silabas,1f);
 
         if (silabas.Count == 1)
         {
@@ -246,8 +246,11 @@ public class PalabraController : MonoBehaviour
         {
             //desconectamos las silabas y destruimos la palabra luego
             silabas[i].restablecerConectores();
-            this.separarEnSilaba(silabas[i]);
+            gameManager.nuevaPalabra(silabas[i]);
+
         }
+
+        this.silabas = new List<SilabaController>();
     }
 
     public void sacudirSilabas()
