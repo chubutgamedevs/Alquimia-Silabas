@@ -94,8 +94,7 @@ public class SilabaController : MonoBehaviour
         this.palabraController.moviendose = false;
         if (this.palabraController.tieneUnaSolaSilaba())
         {
-        this.irAlPuntoInicial();
-
+            this.irAlPuntoInicial();
         }
     }
 
