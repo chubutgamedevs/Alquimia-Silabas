@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public static class Constants
@@ -123,11 +124,16 @@ public class GameManager : MonoBehaviour
     #region modo romper
     public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandomConSilabas(4,5);
+        palabrasTarget = generarPalabrasTargetRandomConSilabas(2,3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
         desordenarPalabras();
+    }
+
+    public void recargarEscena()
+    {
+        this.startGameConPool();
     }
 
     public void toggleModoRomper()
