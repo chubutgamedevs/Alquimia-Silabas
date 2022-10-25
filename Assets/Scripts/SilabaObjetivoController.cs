@@ -81,6 +81,8 @@ public class SilabaObjetivoController : MonoBehaviour
         miAnimator.Play("esclarecer");
     }
 
+
+
     public void ubicarSilaba(int numSilaba)
     {
         Vector3 position = gameObject.transform.position;

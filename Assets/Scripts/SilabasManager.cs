@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SilabasManager : MonoBehaviour
 {
-    private float anchoSilaba = 1;
     public GameObject sampleSilaba;
 
     public GameManager gameManager;
@@ -14,12 +13,14 @@ public class SilabasManager : MonoBehaviour
     {
         EventManager.silabaEsClickeada += manejarClickASilaba;
         EventManager.silabasColisionan += UnirSilabas;
+        EventManager.activarConectoresDespuesDe += activarConectoresDespuesDe;
     }
 
     void OnDisable()
     {
         EventManager.silabaEsClickeada -= manejarClickASilaba;
         EventManager.silabasColisionan -= UnirSilabas;
+        EventManager.activarConectoresDespuesDe -= activarConectoresDespuesDe;
     }
 
     #endregion
@@ -37,10 +38,7 @@ public class SilabasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (sampleSilaba)
-        {
-            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().size.x;
-        }
+
     }
 
     // Update is called once per frame
@@ -101,6 +99,14 @@ public class SilabasManager : MonoBehaviour
 
     }
 
+    void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)
+    {
+        foreach(SilabaController silAux in silabasAux)
+        {
+            silAux.restablecerConectoresDespuesDe(t);
+        }
+    }
+
     void unirPalabra(List<SilabaController> silabasPalabra)
     {
         GameObject palabraObj = gameManager.nuevaPalabraVacia();
@@ -115,8 +121,8 @@ public class SilabasManager : MonoBehaviour
     {
         if (gameManager.modoRomper)
         {
-            //silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            //gameManager.activarConectoresDespuesDe1Seg();
+            silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
+            EventManager.onModoRomperDesactivado();
         }
     }
 

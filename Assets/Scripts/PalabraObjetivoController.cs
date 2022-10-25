@@ -105,6 +105,8 @@ public class PalabraObjetivoController : MonoBehaviour
         silabasControllers = new List<SilabaObjetivoController>();
     }
 
+
+    #region animaciones
     public void esclarecerSilabas()
     {
         foreach (SilabaObjetivoController sil in silabasControllers)
@@ -121,6 +123,8 @@ public class PalabraObjetivoController : MonoBehaviour
         }
     }
 
+
+    #endregion
 
     internal GameObject nuevaSilabaObjetivoVacia()
     {

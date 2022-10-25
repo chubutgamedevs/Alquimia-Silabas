@@ -314,6 +314,7 @@ GameObject:
   - component: {fileID: 7832757445997255163}
   - component: {fileID: 8553341146070515039}
   - component: {fileID: 2615391286704428856}
+  - component: {fileID: 1759486620938069792}
   m_Layer: 0
   m_Name: Silaba
   m_TagString: Untagged
@@ -383,6 +384,7 @@ MonoBehaviour:
   rb: {fileID: 2615391286704428856}
   silaba: CIS
   texto: {fileID: 0}
+  animadorSilaba: {fileID: 7543526463886386269}
 --- !u!54 &2615391286704428856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -399,6 +401,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!95 &1759486620938069792
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832757445997255160}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4f321fe2abf2d2d41a8d584f17e692e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7832757446619522362
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +592,7 @@ GameObject:
   - component: {fileID: 7832757446965612367}
   - component: {fileID: 7832757446965612362}
   - component: {fileID: 7832757446965612361}
+  - component: {fileID: 7543526463886386269}
   m_Layer: 0
   m_Name: Ficha
   m_TagString: Untagged
@@ -609,7 +632,7 @@ MeshRenderer:
   m_GameObject: {fileID: 7832757446965612366}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -620,7 +643,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 55088396e0e7b4c46b491ce626a3d229, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -642,3 +665,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &7543526463886386269
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7832757446965612366}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c2474006e70c99469e56fc6f1e79403, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

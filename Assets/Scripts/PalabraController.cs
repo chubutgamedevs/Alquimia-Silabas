@@ -80,16 +80,11 @@ public class PalabraController : MonoBehaviour
         }
     }
 
-    public void setSilaba(string sil)
+    public void setSilaba(string sil, Vector3 punto)
     {
-        SilabaController silaba = gameManager.nuevaSilaba(sil);
+        SilabaController silaba = gameManager.nuevaSilaba(sil,punto);
 
         silaba.setPalabra(this.gameObject, this);
-
-        if (this.silabas.Count > 0)
-        {
-            //eliminarSilabas();
-        }
 
         silabas.Add(silaba);
     }
@@ -113,6 +108,16 @@ public class PalabraController : MonoBehaviour
     #region metodos
 
     #region separar unir y acomodar
+
+    public void playAnimacionPalabraCorrecta()
+    {
+        foreach (SilabaController sil in silabas)
+        {
+            sil.playAnimacionSilabaCorrecta();
+        }
+    }
+
+
     internal void acomodarSilabasEnElEspacio()
     {
         if(silabas.Count <= 1){return;}
@@ -219,6 +224,9 @@ public class PalabraController : MonoBehaviour
     {
         //si hay poco que hacer lo hacemos y retornamos por performance
         if (silabas.Count == 0) { return; }
+
+        //EventManager.onActivarConectoresDespuesDe(silabas,1f);
+
         if (silabas.Count == 1)
         {
             silabas[0].desactivarConectores();
@@ -238,8 +246,11 @@ public class PalabraController : MonoBehaviour
         {
             //desconectamos las silabas y destruimos la palabra luego
             silabas[i].restablecerConectores();
-            this.separarEnSilaba(silabas[i]);
+            gameManager.nuevaPalabra(silabas[i]);
+
         }
+
+        this.silabas = new List<SilabaController>();
     }
 
     public void sacudirSilabas()
@@ -259,6 +270,10 @@ public class PalabraController : MonoBehaviour
     }
     #endregion
 
+    public bool tieneUnaSolaSilaba()
+    {
+        return this.silabas.Count == 1;
+    }
     internal void activarConectoresDespuesDe(float v)
     {
         Invoke("activarConectores", v);

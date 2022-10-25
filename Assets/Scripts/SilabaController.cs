@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 using RandomU = UnityEngine.Random;
+using DG.Tweening;
 
 public class SilabaController : MonoBehaviour
 {
@@ -27,18 +28,21 @@ public class SilabaController : MonoBehaviour
 
     private BoxCollider boxCollider;
 
+    public Animator animadorSilaba;
+
+    private Vector3 puntoInicial = new Vector3(0,0,0);
+
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += enableDrag;
-        EventManager.modoRomperActivado += disableDrag;
-
+        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.modoRomperActivado += handleModoRomperActivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= enableDrag;
-        EventManager.modoRomperActivado -= disableDrag;
+        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.modoRomperActivado -= handleModoRomperActivado;
     }
 
     public void disableDrag()
@@ -56,6 +60,7 @@ public class SilabaController : MonoBehaviour
         EventManager.onSilabaEsClickeada(this);
         this.dejarQuieta();
     }
+
     void OnMouseDrag()
     {
         if (drag.dragEnabled)
@@ -77,9 +82,7 @@ public class SilabaController : MonoBehaviour
     internal void dejarQuietaDespuesDeRandom(float segundos)
     {
         Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
-    }
-
-    
+    }   
 
     internal void habilitarMovimientoRb()
     {
@@ -90,6 +93,10 @@ public class SilabaController : MonoBehaviour
     void OnMouseUp()
     {
         this.palabraController.moviendose = false;
+        if (this.palabraController.tieneUnaSolaSilaba())
+        {
+            this.irAlPuntoInicial();
+        }
     }
 
     #endregion eventos
@@ -135,6 +142,10 @@ public class SilabaController : MonoBehaviour
     #endregion ciclo de vida
 
     #region getters & setters
+    public void setPunto(Vector3 punto)
+    {
+        this.puntoInicial = punto;
+    }
     ConectoresManager getConectoresManager(){
         return gameObject.transform.GetChild(2).gameObject.GetComponent<ConectoresManager>();
     }
@@ -190,9 +201,23 @@ public class SilabaController : MonoBehaviour
         return this.palabraController;
     }
 
-    #endregion 
+    #endregion
 
     #region metodos
+  
+    void handleModoRomperActivado()
+    {
+        this.disableDrag();
+        this.entrarAnimacionModoRomper();
+        this.desactivarConectores();
+    }
+    void handleModoRomperDesactivado()
+    {
+        this.enableDrag();
+        this.salirDeTodasLasAnimaciones();
+        this.restablecerConectores();
+    }
+
     public List<SilabaController> getSilabasPalabra()
     {
         SilabaController recorredorSilabas = null;
@@ -252,15 +277,26 @@ public class SilabaController : MonoBehaviour
     {
         this.silabaIzquierda = null;
         this.silabaDerecha = null;
-        this.separarSilabaDeOtrasSilabas();
     }
 
     public void empujarAleatoriamenteYDejarQuietaLuego()
     {
-        //hardcoding bad
-        habilitarMovimientoRb();
-        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
-        dejarQuietaDespuesDeRandom(Constants.tiempoHastaDejarQuieta);
+        dejarQuieta();
+        irAlPuntoInicial();
+    }
+
+    public void irAlPuntoInicial()
+    {
+        irAlPunto(this.puntoInicial);
+    }
+    public void irAlPunto(Vector3 punto)
+    {
+        transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
+    }
+
+    public void restablecerConectoresDespuesDe(float t)
+    {
+        Invoke("restablecerConectores", t);
     }
 
     public void restablecerConectores()
@@ -275,6 +311,7 @@ public class SilabaController : MonoBehaviour
         }
 
         drag.enableDrag();
+        
     }
 
     public void desactivarConectores()
@@ -283,6 +320,24 @@ public class SilabaController : MonoBehaviour
     }
 
 
+    #endregion
+
+
+    #region animaciones
+    public void playAnimacionSilabaCorrecta()
+    {
+        animadorSilaba.Play("silabaGreenearOK");
+    }
+
+    public void entrarAnimacionModoRomper()
+    {
+        animadorSilaba.Play("silabaEnModoRomper");
+    }
+
+    public void salirDeTodasLasAnimaciones()
+    {
+        animadorSilaba.Play("rest");
+    }
     #endregion
 
     #region testing
@@ -299,3 +354,4 @@ public class SilabaController : MonoBehaviour
 
     #endregion testing
 }
+
