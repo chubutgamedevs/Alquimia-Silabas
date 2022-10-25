@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Constants
@@ -15,18 +15,6 @@ enum Modo
     Pool = 1,
 }
 
-public class Palabra
-{
-    public string palabra = "";
-    public List<String> silabas = new List<string>();
-
-    public Palabra(string v, List<string> list)
-    {
-        this.palabra = v;
-        this.silabas = list;
-    }
-}
-
 public class GameManager : MonoBehaviour
 {
     private Modo modo = Modo.Pool;
@@ -37,7 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
-    public List<Palabra> palabrasTarget;
+    public List<PalabraSilabas> palabrasTarget;
     public List<string> poolDeSilabas;
 
     private GameObject _juego;
@@ -140,11 +128,11 @@ public class GameManager : MonoBehaviour
     }
 
 
-    List<string> generarPoolDeSilabas(List<Palabra> palabras)
+    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabras)
     {
         List<string> pool = new List<string>();
 
-        foreach(Palabra palabra in palabras)
+        foreach(PalabraSilabas palabra in palabras)
         {
             pool.AddRange(palabra.silabas);
         }
@@ -176,8 +164,8 @@ public class GameManager : MonoBehaviour
     private void cargarPalabrasYSilabas()
     {
         TextAsset json = Resources.Load<TextAsset>("silabas");
-
-        palabrasYSilabas = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json.text);
+        Palabras palabras = JsonUtility.FromJson<Palabras>(json.ToString());
+        palabrasYSilabas = palabras.palabras.ToDictionary(x => x.palabra, x => x.silabas);
         wordList = new List<string>(palabrasYSilabas.Keys);
     }
     #endregion
@@ -192,7 +180,7 @@ public class GameManager : MonoBehaviour
 
         if(modo == Modo.Pool)
         {
-            foreach (Palabra palabra in this.palabrasTarget)
+            foreach (PalabraSilabas palabra in this.palabrasTarget)
             {
                 if (palabra.palabra.ToUpper() == palabraAux)
                 {
@@ -255,9 +243,9 @@ public class GameManager : MonoBehaviour
         return palabrasAux;
     }
 
-    private List<Palabra> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
+    private List<PalabraSilabas> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
     {
-        List<Palabra> palabrasAux = new List<Palabra>();
+        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
 
         for (int i = 0; i < cantPalabras; i++)
         {
@@ -269,7 +257,7 @@ public class GameManager : MonoBehaviour
 
     
 
-    private void colocarEnPantallaPalabra(Palabra palabra)
+    private void colocarEnPantallaPalabra(PalabraSilabas palabra)
     {
         nuevaPalabraActual(palabra);
     }
@@ -285,14 +273,14 @@ public class GameManager : MonoBehaviour
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
     }
 
-    public Palabra nuevaPalabraRandomConSilabas(int cantSilabas)
+    public PalabraSilabas nuevaPalabraRandomConSilabas(int cantSilabas)
     {
         int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         while (palabrasYSilabas[wordList[randomIndex]].Count != cantSilabas)
         {
             randomIndex = UnityEngine.Random.Range(0, wordList.Count);
         }
-        return new Palabra(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+        return new PalabraSilabas(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
     public (string, List<string>) nuevaPalabraRandomMaxSilabas(int maxSilabas)
@@ -305,7 +293,7 @@ public class GameManager : MonoBehaviour
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
-    internal PalabraController nuevaPalabraActual(Palabra palabra)
+    internal PalabraController nuevaPalabraActual(PalabraSilabas palabra)
     {
         palabraActual = palabra.palabra;
 

@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,7 +54,7 @@ public class SilabasManager : MonoBehaviour
 
     #region metodos
     void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
-    {   //la primer silaba siempre es la que se está moviendo (checkear eventos)
+    {   //la primer silaba siempre es la que se estï¿½ moviendo (checkear eventos)
         silaba.getPalabraController().dejarQuieta();
         otraSilaba.getPalabraController().dejarQuieta();
 

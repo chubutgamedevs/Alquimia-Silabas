@@ -46,13 +46,13 @@ public class PalabrasObjetivoManager : MonoBehaviour
         return palabrasObjetivoAux;
     }
 
-    public void settearPalabrasObjetivo(List<Palabra> palabras)
+    public void settearPalabrasObjetivo(List<PalabraSilabas> palabras)
     {
         destruirPalabrasObjetivoHijas();
 
         int indicePalabra = 0;
 
-        foreach (Palabra palabra in palabras)
+        foreach (PalabraSilabas palabra in palabras)
         {
             colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas,indicePalabra);
 
@@ -134,10 +134,10 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     public void testSettearPalabraObjetivo()
     {
-        string palabra = "mañana";
+        string palabra = "maï¿½ana";
         List<string> silabas = new List<string>();
         silabas.Add("ma");
-        silabas.Add("ña");
+        silabas.Add("ï¿½a");
         silabas.Add("na");
 
         string palabra1 = "silabas";
@@ -146,10 +146,10 @@ public class PalabrasObjetivoManager : MonoBehaviour
         silabas1.Add("la");
         silabas1.Add("bas");
 
-        List<Palabra> palabrasObj = new List<Palabra>();
+        List<PalabraSilabas> palabrasObj = new List<PalabraSilabas>();
 
-        palabrasObj.Add(new Palabra(palabra, silabas));
-        palabrasObj.Add(new Palabra(palabra1, silabas1));
+        palabrasObj.Add(new PalabraSilabas(palabra, silabas));
+        palabrasObj.Add(new PalabraSilabas(palabra1, silabas1));
 
         settearPalabrasObjetivo(palabrasObj);
 
