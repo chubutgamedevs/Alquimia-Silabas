@@ -22,7 +22,7 @@ public class EventManager : MonoBehaviour
 
     #region eventos de palabras (plural)
     public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
-    public static event System.Action<List<Palabra>> palabrasSeleccionadasParaJuego = delegate { };
+    public static event System.Action<List<PalabraSilabas>> palabrasSeleccionadasParaJuego = delegate { };
     #endregion
 
     #region eventos de palabra (singular)
@@ -51,7 +51,7 @@ public class EventManager : MonoBehaviour
 
     public static void onSilabasColisionan(SilabaController s1, SilabaController s2)
     {
-        //el primer argumento es la silaba que se está moviend
+        //el primer argumento es la silaba que se estï¿½ moviend
         silabasColisionan(s1, s2);
     }
 
@@ -91,7 +91,7 @@ public class EventManager : MonoBehaviour
         palabraSeleccionadaParaJuego(palabra, silabas);
     }
 
-    public static void onPalabrasSeleccionadasParaJuego(List<Palabra> palabras)
+    public static void onPalabrasSeleccionadasParaJuego(List<PalabraSilabas> palabras)
     {
         palabrasSeleccionadasParaJuego(palabras);
     }
