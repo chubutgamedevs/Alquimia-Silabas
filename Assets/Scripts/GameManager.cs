@@ -11,6 +11,13 @@ public static class Constants
     public static float tiempoHastaDejarQuieta = 2;
     public static float tiempoDeAnimacionPalabraCorrecta = 4f;
     public static float tiempoHastaIrAlPunto = 0.8f;
+
+    public static float maxY = 4;
+    public static float minY = -4;
+
+    public static float maxX = 10;
+    public static float minX = -10;
+
 }
 
 public class Palabra
