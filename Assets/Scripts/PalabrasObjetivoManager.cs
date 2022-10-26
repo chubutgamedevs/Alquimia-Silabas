@@ -54,7 +54,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
         foreach (PalabraSilabas palabra in palabras)
         {
-            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas,indicePalabra);
+            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
 
             indicePalabra++;
         }
@@ -65,7 +65,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     #region metodos
     public void esclarecerPalabras()
     {
-        foreach(PalabraObjetivoController pal in palabrasObjetivo)
+        foreach (PalabraObjetivoController pal in palabrasObjetivo)
         {
             pal.esclarecerSilabas();
         }
@@ -75,7 +75,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         foreach (PalabraObjetivoController pal in palabrasObjetivo)
         {
-            if(pal.palabra.ToLower() == palabraAComparar.ToLower())
+            if (pal.palabra.ToLower() == palabraAComparar.ToLower())
             {
                 pal.esclarecerSilabas();
             }

@@ -31,7 +31,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
     private void Start()
     {
-       
+
     }
 
     #endregion
@@ -64,6 +64,7 @@ public class PalabraObjetivoController : MonoBehaviour
             SilabaObjetivoController silAux = silAuxObj.GetComponent<SilabaObjetivoController>();
             silAux.transform.SetParent(this.transform);
             silAux.settearSilaba(silaba);
+            silAux.ubicarSilaba(indiceSilaba);
 
             indiceSilaba++;
 
@@ -142,5 +143,3 @@ public class PalabraObjetivoController : MonoBehaviour
 }
 
 #endregion
-
-

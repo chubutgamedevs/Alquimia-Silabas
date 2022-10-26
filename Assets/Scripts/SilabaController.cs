@@ -208,7 +208,7 @@ public class SilabaController : MonoBehaviour
     {
         if (!Ubicador.estaDentroDelJuego(this.transform.position)) 
         {
-            palabraController.irAlPunto(Ubicador.nuevoPunto());
+            palabraController.irAlPunto(new Vector3(0,0,0));
         }
     }
 

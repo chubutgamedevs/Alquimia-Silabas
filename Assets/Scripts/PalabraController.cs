@@ -47,12 +47,6 @@ public class PalabraController : MonoBehaviour
         desactivarConectores();
         activarConectoresDespuesDe(Constants.tiempoHastaIrAlPunto);
         transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
-        Invoke("comprobarPosicion", 0.1f);
-    }
-
-    private void comprobarPosicion()
-    {
-        //EventManager.onComprobarBounds();
     }
 
 
