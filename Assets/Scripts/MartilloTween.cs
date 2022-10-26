@@ -22,15 +22,10 @@ public class MartilloTween : MonoBehaviour
         EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
     }
     #endregion
-    void Start()
+
+    private void Start()
     {
         coroutine = animarMartillo();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     #region metodos
@@ -43,6 +38,10 @@ public class MartilloTween : MonoBehaviour
     {
         StopCoroutine(coroutine);
 
+        if(this.transform == null)
+        {
+            return;
+        }
         Vector3 vectorRotacion = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z);
 
         transform.DOLocalRotate(-vectorRotacion, tiempoRotacion, RotateMode.Fast)
@@ -53,7 +52,6 @@ public class MartilloTween : MonoBehaviour
     {
         while (true)
         {
-            //transform.DOShakePosition(1);
             transform.DOLocalRotate(new Vector3(0f, 0f, anguloRotacion), tiempoRotacion, RotateMode.Fast)
                 .SetEase(Ease.InExpo);
 

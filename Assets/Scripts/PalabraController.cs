@@ -47,6 +47,10 @@ public class PalabraController : MonoBehaviour
     {
         desactivarConectores();
         activarConectoresDespuesDe(Constants.tiempoHastaIrAlPunto);
+        if (this.transform == null)
+        {
+            return;
+        }
         transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
     }
 
@@ -193,8 +197,12 @@ public class PalabraController : MonoBehaviour
     IEnumerator destruirseFinDelJuego()
     {
         dejarQuieta();
-       
+
+        if (!(this.transform == null))
+        {
         transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic)    ;
+        }
+
         yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion);
         
     }

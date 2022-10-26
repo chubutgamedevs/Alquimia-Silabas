@@ -17,6 +17,8 @@ public static class Constants
     public static float maxX = 4;
     public static float minX = -10;
 
+    public static float factorAgrandarGrid = 1.4f;
+
     public static float anchoSilaba = 1;
 }
 
@@ -25,20 +27,15 @@ public class GameManager : MonoBehaviour
 
     public bool modoRomper = false;
 
-    public GameObject palabraPrefab;
-    public GameObject silabaPrefab;
-
     public List<PalabraSilabas> palabrasTarget;
     public List<string> poolDeSilabas;
 
     private GameObject _juego;
 
-    private Ubicador ubicador;
+    private PalabrasDeserializer palabrasDeserializer;
 
-    //sacados de palabras.json
-    public Dictionary<string, List<string>> palabrasYSilabas;
-    //lista de palabras
-    List<string> wordList;
+    public GameObject palabraPrefab;
+    public GameObject silabaPrefab;
 
     #region ciclo de vida
 
@@ -46,7 +43,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _juego = getJuegoGameObject();
-        ubicador = new Ubicador(Screen.width, Screen.height);
+        palabrasDeserializer = new PalabrasDeserializer("silabas");
 
         startGameConPool();
     }
@@ -69,8 +66,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        cargarPalabrasYSilabas();
-
         if (instance == null)
         {
             instance = this;
@@ -107,9 +102,9 @@ public class GameManager : MonoBehaviour
 
     void handlePalabraFormada(PalabraController palabraController, string palabra)
     {
-        StartCoroutine(handlePalabraFormadaRutina(palabraController,palabra));
+        StartCoroutine(handlePalabraFormadaRutina(palabraController, palabra));
     }
-    IEnumerator handlePalabraFormadaRutina(PalabraController palabraController,string palabra)
+    IEnumerator handlePalabraFormadaRutina(PalabraController palabraController, string palabra)
     {
         palabraController.playAnimacionPalabraCorrecta();
         yield return new WaitForSeconds(Constants.tiempoDeAnimacionPalabraCorrecta);
@@ -124,21 +119,16 @@ public class GameManager : MonoBehaviour
         eliminarTodasLasPalabrasEnPantallalFinDelJuego();
     }
 
-    #region modo romper
     public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandomConSilabas(1,2);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(4, 3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
-        Invoke("desordenarPalabras",0.1f);
+        Invoke("desordenarPalabras", 0.01f);
     }
 
-    public void recargarEscena()
-    {
-        this.startGameConPool();
-    }
-
+    #region modo romper
     public void toggleModoRomper()
     {
         modoRomper = !modoRomper;
@@ -168,7 +158,7 @@ public class GameManager : MonoBehaviour
     {
         List<string> pool = new List<string>();
 
-        foreach(PalabraSilabas palabra in palabras)
+        foreach (PalabraSilabas palabra in palabras)
         {
             pool.AddRange(palabra.silabas);
         }
@@ -180,10 +170,10 @@ public class GameManager : MonoBehaviour
 
     void colocarEnPantallaSilabas()
     {
-            foreach (string silaba in poolDeSilabas)
-            {
-                PalabraController palabraAuxController = nuevaPalabra(silaba, Ubicador.nuevoPunto());
-            }
+        foreach (string silaba in poolDeSilabas)
+        {
+            PalabraController palabraAuxController = this.nuevaPalabra(silaba, Ubicador.nuevoPunto());
+        }
     }
 
     void anunciarPalabrasTarget()
@@ -192,15 +182,6 @@ public class GameManager : MonoBehaviour
         EventManager.onPalabrasSeleccionadasParaJuego(palabrasTarget);
     }
 
-    #region json handling
-    private void cargarPalabrasYSilabas()
-    {
-        TextAsset json = Resources.Load<TextAsset>("silabas");
-        Palabras palabras = JsonUtility.FromJson<Palabras>(json.ToString());
-        palabrasYSilabas = palabras.palabras.ToDictionary(x => x.palabra, x => x.silabas);
-        wordList = new List<string>(palabrasYSilabas.Keys);
-    }
-    #endregion
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
@@ -218,79 +199,6 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-    }
-
-
-    internal GameObject nuevaPalabraVacia()
-    {
-        GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-        return palabraObj;
-    }
-
-    internal PalabraController nuevaPalabra(string silaba, Vector3 punto)
-    {
-        GameObject palabraObj = nuevaPalabraVacia();
-        PalabraController controller = palabraObj.GetComponent<PalabraController>();
-
-        controller.setSilaba(silaba,punto);
-
-        return controller;
-    }
-
-    private List<(string, List<string>)> generarPalabrasTargetRandom(int v)
-    {
-        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
-
-        for (int i = 0; i < v; i++)
-        {
-            palabrasAux.Add(nuevaPalabraRandom());
-        }
-
-        return palabrasAux;
-    }
-
-    private List<PalabraSilabas> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
-    {
-        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
-
-        for (int i = 0; i < cantPalabras; i++)
-        {
-            palabrasAux.Add(nuevaPalabraRandomConSilabas(cantSilabas));
-        }
-
-        return palabrasAux;
-    }
-
-    public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
-    {
-            
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count == 1)
-        {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
-    }
-
-    public PalabraSilabas nuevaPalabraRandomConSilabas(int cantSilabas)
-    {
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count != cantSilabas)
-        {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        }
-        return new PalabraSilabas(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
-    }
-
-    public (string, List<string>) nuevaPalabraRandomMaxSilabas(int maxSilabas)
-    {
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count < maxSilabas)
-        {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
     public void eliminarTodasLasPalabrasEnPantallalFinDelJuego()
@@ -327,8 +235,6 @@ public class GameManager : MonoBehaviour
             //rompemos todas
             palabra.romperEnSilabasYColocarEnPantalla();
         }
-
-
     }
 
     public void activarConectoresDespuesDe1Seg()
@@ -339,7 +245,6 @@ public class GameManager : MonoBehaviour
             palabraAux.activarConectoresDespuesDe(1f);
         }
     }
-
     public GameObject getJuegoGameObject()
     {
         if(!_juego)
@@ -348,9 +253,15 @@ public class GameManager : MonoBehaviour
         }
         return _juego;
     }
-    internal SilabaController nuevaSilaba(string silaba, Vector3 punto)
+
+    #endregion
+}
+
+public static class Instantiator
+{
+    internal static SilabaController nuevaSilaba(this GameManager gm, string silaba, Vector3 punto)
     {
-        GameObject silabaObj = Instantiate(silabaPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject silabaObj = GameManager.Instantiate(gm.silabaPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         SilabaController silabaCont = silabaObj.GetComponent<SilabaController>();
         silabaCont.setPunto(punto);
         silabaCont.setSilaba(silaba);
@@ -358,9 +269,26 @@ public class GameManager : MonoBehaviour
         return silabaCont;
     }
 
-    public PalabraController nuevaPalabra(List<SilabaController> silabas)
+    internal static GameObject nuevaPalabraVacia(this GameManager gm)
     {
-        GameObject palabraObj = this.nuevaPalabraVacia();
+        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        return palabraObj;
+    }
+
+    internal static PalabraController nuevaPalabra(this GameManager gm,string silaba, Vector3 punto)
+    {
+        GameObject palabraObj = gm.nuevaPalabraVacia();
+        PalabraController controller = palabraObj.GetComponent<PalabraController>();
+
+        controller.setSilaba(silaba, punto);
+
+        return controller;
+    }
+
+    public static PalabraController nuevaPalabra(this GameManager gm,List<SilabaController> silabas)
+    {
+        GameObject palabraObj = gm.nuevaPalabraVacia();
         PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
 
         palabraController.setSilabas(silabas);
@@ -368,47 +296,13 @@ public class GameManager : MonoBehaviour
         return palabraController;
     }
 
-    public PalabraController nuevaPalabra(SilabaController silaba)
+    public static PalabraController nuevaPalabra(this GameManager gm,SilabaController silaba)
     {
         List<SilabaController> aux = new List<SilabaController>();
         aux.Add(silaba);
 
-        return nuevaPalabra(aux);
+        return gm.nuevaPalabra(aux);
     }
 
 
-    #endregion
-}
-
-public class Ubicador
-{
-    private float w;
-    private float h;
-
-    private static List<Vector3> puntos = new List<Vector3>();
-
-    public Ubicador(float w,float h)
-    {
-        puntos = new List<Vector3>();
-        this.w = w;
-        this.h = h;
-    }
-
-    public static Vector3 nuevoPunto()
-    {
-        Vector3 nuevoPunto = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4),0);
-        while (puntos.Contains(nuevoPunto))
-        {
-            nuevoPunto = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4), 0);
-        }
-
-        puntos.Add(nuevoPunto);
-
-        return nuevoPunto;
-    }
-
-    public static bool estaDentroDelJuego(Vector3 punto)
-    {
-        return (punto.x > Constants.minX && punto.x < Constants.maxX && punto.y > Constants.minY && punto.y < Constants.maxY);
-    }
 }
