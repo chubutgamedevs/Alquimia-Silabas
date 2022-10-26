@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
 
 
 public class PalabraController : MonoBehaviour
@@ -183,6 +184,20 @@ public class PalabraController : MonoBehaviour
     }
 
     #endregion
+
+    public void iniciarDestruccionFinDelJuego()
+    {
+        StartCoroutine(destruirseFinDelJuego());
+    }
+
+    IEnumerator destruirseFinDelJuego()
+    {
+        dejarQuieta();
+       
+        transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic)    ;
+        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion);
+        
+    }
 
     public bool tieneUnaSolaSilaba()
     {

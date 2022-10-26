@@ -38,6 +38,7 @@ public class EventManager : MonoBehaviour
     #region eventos de juego general
     public static event System.Action modoRomperActivado = delegate { };
     public static event System.Action modoRomperDesActivado = delegate { };
+    public static event System.Action ganaste = delegate { };
 
     #endregion
 
@@ -113,6 +114,11 @@ public class EventManager : MonoBehaviour
     public static void onComprobarBounds()
     {
         comprobarBounds();
+    }
+
+    public static void onGanaste()
+    {
+        ganaste();
     }
     #endregion
 }

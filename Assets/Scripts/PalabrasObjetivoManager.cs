@@ -78,6 +78,12 @@ public class PalabrasObjetivoManager : MonoBehaviour
             if (pal.palabra.ToLower() == palabraAComparar.ToLower())
             {
                 pal.esclarecerSilabas();
+                palabrasObjetivo.Remove(pal);
+                if(palabrasObjetivo.Count == 0)
+                {
+                    EventManager.onGanaste();
+                }
+                return;
             }
         }
     }
@@ -127,34 +133,4 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     #endregion
 
-
-
-
-    #region testing
-
-    public void testSettearPalabraObjetivo()
-    {
-        string palabra = "ma�ana";
-        List<string> silabas = new List<string>();
-        silabas.Add("ma");
-        silabas.Add("�a");
-        silabas.Add("na");
-
-        string palabra1 = "silabas";
-        List<string> silabas1 = new List<string>();
-        silabas1.Add("si");
-        silabas1.Add("la");
-        silabas1.Add("bas");
-
-        List<PalabraSilabas> palabrasObj = new List<PalabraSilabas>();
-
-        palabrasObj.Add(new PalabraSilabas(palabra, silabas));
-        palabrasObj.Add(new PalabraSilabas(palabra1, silabas1));
-
-        settearPalabrasObjetivo(palabrasObj);
-
-        Invoke("esclarecerPalabraTest", 0.7f);
-    }
-
-    #endregion
 }

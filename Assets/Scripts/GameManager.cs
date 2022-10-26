@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public static class Constants
@@ -11,6 +9,7 @@ public static class Constants
     public static float tiempoHastaDejarQuieta = 2;
     public static float tiempoDeAnimacionPalabraCorrecta = 4f;
     public static float tiempoHastaIrAlPunto = 0.5f;
+    public static float tiempoAnimacionDestruccion = 1f;
 
     public static float maxY = 4;
     public static float minY = -4;
@@ -92,6 +91,7 @@ public class GameManager : MonoBehaviour
         EventManager.palabraFormada += handlePalabraFormada;
         EventManager.modoRomperActivado += activarModoRomper;
         EventManager.modoRomperDesActivado += desActivarModoRomper;
+        EventManager.ganaste += handleGanaste;
 
     }
 
@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         EventManager.palabraFormada -= handlePalabraFormada;
         EventManager.modoRomperActivado -= activarModoRomper;
         EventManager.modoRomperDesActivado -= desActivarModoRomper;
+        EventManager.ganaste -= handleGanaste;
     }
 
 
@@ -117,10 +118,16 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
+    public void handleGanaste()
+    {
+        Debug.Log("ganaste");
+        eliminarTodasLasPalabrasEnPantallalFinDelJuego();
+    }
+
     #region modo romper
     public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandomConSilabas(2,3);
+        palabrasTarget = generarPalabrasTargetRandomConSilabas(1,2);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
@@ -286,15 +293,14 @@ public class GameManager : MonoBehaviour
         return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
     }
 
-    public void eliminarTodasLasPalabrasEnPantalla()
+    public void eliminarTodasLasPalabrasEnPantallalFinDelJuego()
     {
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo y las matamos a todas
             GameObject hijoAux = hijo.gameObject;
             if (hijoAux.CompareTag("Palabra")) 
             {
-                hijoAux.tag = "PalabraDestruida";
-                GameObject.Destroy(hijoAux);
+                hijoAux.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego() ;
             }
         }
     }
