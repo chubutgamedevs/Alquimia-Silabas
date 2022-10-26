@@ -10,14 +10,15 @@ public static class Constants
 {
     public static float tiempoHastaDejarQuieta = 2;
     public static float tiempoDeAnimacionPalabraCorrecta = 4f;
-    public static float tiempoHastaIrAlPunto = 0.8f;
+    public static float tiempoHastaIrAlPunto = 0.5f;
 
     public static float maxY = 4;
     public static float minY = -4;
 
-    public static float maxX = 10;
+    public static float maxX = 4;
     public static float minX = -10;
 
+    public static float anchoSilaba = 1;
 }
 
 public class GameManager : MonoBehaviour
@@ -123,7 +124,7 @@ public class GameManager : MonoBehaviour
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
-        desordenarPalabras();
+        Invoke("desordenarPalabras",0.1f);
     }
 
     public void recargarEscena()
@@ -174,7 +175,7 @@ public class GameManager : MonoBehaviour
     {
             foreach (string silaba in poolDeSilabas)
             {
-                PalabraController palabraAuxController = nuevaPalabra(silaba, ubicador.nuevoPunto());
+                PalabraController palabraAuxController = nuevaPalabra(silaba, Ubicador.nuevoPunto());
             }
     }
 
@@ -298,6 +299,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ordenarPalabras()
+    {
+        EventManager.onOrdenarPalabras();
+    }
+
     public void desordenarPalabras()
     {
         List<PalabraController> palabras = new List<PalabraController>();
@@ -373,7 +379,7 @@ public class Ubicador
     private float w;
     private float h;
 
-    private List<Vector3> puntos;
+    private static List<Vector3> puntos = new List<Vector3>();
 
     public Ubicador(float w,float h)
     {
@@ -382,7 +388,7 @@ public class Ubicador
         this.h = h;
     }
 
-    public Vector3 nuevoPunto()
+    public static Vector3 nuevoPunto()
     {
         Vector3 nuevoPunto = new Vector3(Random.Range(-4, 4), Random.Range(-4, 4),0);
         while (puntos.Contains(nuevoPunto))
@@ -393,5 +399,10 @@ public class Ubicador
         puntos.Add(nuevoPunto);
 
         return nuevoPunto;
+    }
+
+    public static bool estaDentroDelJuego(Vector3 punto)
+    {
+        return (punto.x > Constants.minX && punto.x < Constants.maxX && punto.y > Constants.minY && punto.y < Constants.maxY);
     }
 }

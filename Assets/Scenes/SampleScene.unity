@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rem
+  m_text: Ord
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -1201,7 +1201,7 @@ GameObject:
   - component: {fileID: 803297086}
   - component: {fileID: 803297085}
   m_Layer: 5
-  m_Name: ButtonDestroy
+  m_Name: ButtonOrdenar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1274,7 +1274,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1026310746}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: eliminarTodasLasPalabras
+        m_MethodName: ordenarPalabras
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1671,6 +1671,7 @@ MonoBehaviour:
   modoRomper: 0
   palabraPrefab: {fileID: 7977601284497516053, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
   silabaPrefab: {fileID: 7832757445997255160, guid: d97617529bd812f558b1757d9dc2efa6, type: 3}
+  palabrasTarget: []
   poolDeSilabas: []
 --- !u!4 &1026310747
 Transform:

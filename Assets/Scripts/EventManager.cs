@@ -18,11 +18,15 @@ public class EventManager : MonoBehaviour
     public static event System.Action<SilabaController> silabaEsClickeada = delegate { };
     public static event System.Action<SilabaController> silabaEsBajada = delegate { };
     public static event System.Action<SilabaController> silabaSeparadaDeSilaba = delegate { };
+    public static event System.Action comprobarBounds = delegate { };
+
     #endregion
 
     #region eventos de palabras (plural)
     public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
     public static event System.Action<List<PalabraSilabas>> palabrasSeleccionadasParaJuego = delegate { };
+    public static event System.Action ordenarPalabras = delegate { };
+    
     #endregion
 
     #region eventos de palabra (singular)
@@ -101,5 +105,14 @@ public class EventManager : MonoBehaviour
         activarConectoresDespuesDe(silabas, tiempo);
     }
 
+    public static  void onOrdenarPalabras()
+    {
+        ordenarPalabras();
+    }
+
+    public static void onComprobarBounds()
+    {
+        comprobarBounds();
+    }
     #endregion
 }

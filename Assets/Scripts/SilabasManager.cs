@@ -53,10 +53,17 @@ public class SilabasManager : MonoBehaviour
     #region metodos
     void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
     {   //la primer silaba siempre es la que se est� moviendo (checkear eventos)
-        silaba.getPalabraController().dejarQuieta();
-        otraSilaba.getPalabraController().dejarQuieta();
+        PalabraController pController1 = silaba.getPalabraController();
+        PalabraController pController2 = otraSilaba.getPalabraController();
 
-        float deltaX = silaba.transform.position.x - otraSilaba.transform.position.x;
+        pController1.dejarQuieta();
+        pController2.dejarQuieta();
+
+        //otraSilaba.transform.position = new Vector3(0,silaba.transform.position.y,0);
+
+        silaba.disableDrag();
+
+        float deltaX = pController1.transform.position.x - pController2.transform.position.x;
 
         float signoDistanciaSilabas = Mathf.Sign(deltaX);
 
@@ -65,6 +72,7 @@ public class SilabasManager : MonoBehaviour
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
         otraSilaba.dejarQuietaYQuitarControlDeMouse();
+
 
         SilabaController izquierda = silaba;
         SilabaController derecha = otraSilaba;
@@ -75,28 +83,29 @@ public class SilabasManager : MonoBehaviour
             derecha = silaba;
         }
 
+        List<SilabaController> todasLasSilabas = izquierda.getSilabasPalabra();
+        todasLasSilabas.AddRange(derecha.getSilabasPalabra());
+
         if (otraSilabaEstaALaIzquierda)
         {
-            //unimos palabra
-            PalabraController palabra = derecha.getPalabraController();
-            palabra.aniadirPalabraAlPrincipio(izquierda.getSilabasPalabra());
+            pController1.setSilabas(todasLasSilabas);
         }
-        else { 
-            //unimos palabra
-            PalabraController palabra = izquierda.getPalabraController();
-            palabra.aniadirPalabraAlFinal(derecha.getSilabasPalabra());
+        else
+        {
+            pController1.setSilabas(todasLasSilabas);
         }
+
+        Destroy(pController2.gameObject);
 
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
 
-        izquierda.getPalabraController().acomodarSilabasEnElEspacio();
-
         izquierda.enableDrag();
         derecha.enableDrag();
 
-        EventManager.onSilabasUnidas(izquierda, derecha);
+        pController1.acomodarSilabasEnElEspacio();
 
+        EventManager.onSilabasUnidas(izquierda, derecha);
     }
 
     void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)

@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = System.Random;
 using RandomU = UnityEngine.Random;
-using DG.Tweening;
+
 
 public class SilabaController : MonoBehaviour
 {
@@ -17,8 +17,7 @@ public class SilabaController : MonoBehaviour
     private GameObject palabraParent;
     private PalabraController palabraController;
 
-    public Rigidbody rb;
-    private RigidbodyConstraints rbInitialConstraints;
+
     
     public String silaba = "CIS";
 
@@ -30,19 +29,21 @@ public class SilabaController : MonoBehaviour
 
     public Animator animadorSilaba;
 
-    private Vector3 puntoInicial = new Vector3(0,0,0);
+    internal Vector3 puntoInicial = new Vector3(0,0,0);
 
     #region eventos
     void OnEnable()
     {
         EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
         EventManager.modoRomperActivado += handleModoRomperActivado;
+        EventManager.comprobarBounds += comprobarBounds;
     }
 
     void OnDisable()
     {
         EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
         EventManager.modoRomperActivado -= handleModoRomperActivado;
+        EventManager.comprobarBounds += comprobarBounds;
     }
 
     public void disableDrag()
@@ -58,7 +59,7 @@ public class SilabaController : MonoBehaviour
     private void OnMouseDown()
     {
         EventManager.onSilabaEsClickeada(this);
-        this.dejarQuieta();
+        this.palabraController.dejarQuieta();
     }
 
     void OnMouseDrag()
@@ -69,11 +70,7 @@ public class SilabaController : MonoBehaviour
         }
     }
 
-    internal void dejarQuieta()
-    {
-        this.rb.velocity = Vector3.zero;
-        this.rb.constraints = RigidbodyConstraints.FreezeAll;
-    }
+
     internal void dejarQuietaDespuesDe(float segundos)
     {
         Invoke("dejarQuieta", segundos);
@@ -82,21 +79,16 @@ public class SilabaController : MonoBehaviour
     internal void dejarQuietaDespuesDeRandom(float segundos)
     {
         Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
-    }   
-
-    internal void habilitarMovimientoRb()
-    {
-        this.rb.constraints = this.rbInitialConstraints;
     }
+
+
+
 
 
     void OnMouseUp()
     {
-        this.palabraController.moviendose = false;
-        if (this.palabraController.tieneUnaSolaSilaba())
-        {
-            this.irAlPuntoInicial();
-        }
+        this.palabraController.irAlPuntoInicial();
+        EventManager.onComprobarBounds();
     }
 
     #endregion eventos
@@ -105,12 +97,6 @@ public class SilabaController : MonoBehaviour
     private void Awake()
     {
         drag = gameObject.GetComponent<Drag>();
-
-        if (!rb)
-        {
-            rb = gameObject.GetComponent<Rigidbody>();
-        }
-        rbInitialConstraints = rb.constraints;
 
         if (!texto)
         {
@@ -218,6 +204,14 @@ public class SilabaController : MonoBehaviour
         this.restablecerConectores();
     }
 
+    void comprobarBounds()
+    {
+        if (!Ubicador.estaDentroDelJuego(this.transform.position)) 
+        {
+            palabraController.irAlPunto(Ubicador.nuevoPunto());
+        }
+    }
+
     public List<SilabaController> getSilabasPalabra()
     {
         SilabaController recorredorSilabas = null;
@@ -244,7 +238,7 @@ public class SilabaController : MonoBehaviour
     {
         this.palabraController.moviendose = false;
         drag.disableDrag();
-        this.dejarQuieta();
+        this.palabraController.dejarQuieta();
     }
 
     public void separarSilabaDeOtrasSilabas()
@@ -279,20 +273,6 @@ public class SilabaController : MonoBehaviour
         this.silabaDerecha = null;
     }
 
-    public void empujarAleatoriamenteYDejarQuietaLuego()
-    {
-        dejarQuieta();
-        irAlPuntoInicial();
-    }
-
-    public void irAlPuntoInicial()
-    {
-        irAlPunto(this.puntoInicial);
-    }
-    public void irAlPunto(Vector3 punto)
-    {
-        transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
-    }
 
     public void restablecerConectoresDespuesDe(float t)
     {

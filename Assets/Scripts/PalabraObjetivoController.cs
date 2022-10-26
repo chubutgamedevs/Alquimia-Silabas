@@ -64,7 +64,6 @@ public class PalabraObjetivoController : MonoBehaviour
             SilabaObjetivoController silAux = silAuxObj.GetComponent<SilabaObjetivoController>();
             silAux.transform.SetParent(this.transform);
             silAux.settearSilaba(silaba);
-            silAux.ubicarSilaba(indiceSilaba);
 
             indiceSilaba++;
 

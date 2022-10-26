@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class PalabraController : MonoBehaviour
 {
@@ -10,36 +10,71 @@ public class PalabraController : MonoBehaviour
 
     GameManager gameManager;
 
-    int anchoSilaba = 1;
-
     public Boolean moviendose = false;
+    public Rigidbody rb;
+    private RigidbodyConstraints rbInitialConstraints;
 
-    Rigidbody rb;
+    #region 
 
-    #region eventos
     void OnEnable()
     {
-        EventManager.silabaSeparadaDeSilaba += separarEnSilaba;
+        EventManager.modoRomperDesActivado += acomodarSilabasEnElEspacio;
     }
 
     void OnDisable()
     {
-        EventManager.silabaSeparadaDeSilaba -= separarEnSilaba;
+        EventManager.modoRomperDesActivado -= acomodarSilabasEnElEspacio;
     }
+
 
     void OnMouseDown()
     {
         this.dejarQuieta();
     }
+
+
     #endregion
 
+    #region rb y movimiento
+
+    public void irAlPuntoInicial()
+    {
+        irAlPunto(silabas[0].puntoInicial);
+
+    }
+    public void irAlPunto(Vector3 punto)
+    {
+        desactivarConectores();
+        activarConectoresDespuesDe(Constants.tiempoHastaIrAlPunto);
+        transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
+        Invoke("comprobarPosicion", 0.1f);
+    }
+
+    private void comprobarPosicion()
+    {
+        EventManager.onComprobarBounds();
+    }
+
+
+    internal void habilitarMovimientoRb()
+    {
+        this.rb.constraints = this.rbInitialConstraints;
+    }
+    internal void dejarQuieta()
+    {
+        this.rb.velocity = Vector3.zero;
+        this.rb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+    #endregion
     #region ciclo de vida
     void Awake()
     {
+
         if (!rb)
         {
             rb = gameObject.GetComponent<Rigidbody>();
         }
+        rbInitialConstraints = rb.constraints;
 
         gameManager = GameManager.GetInstance();
 
@@ -69,14 +104,11 @@ public class PalabraController : MonoBehaviour
 
     public void setSilabas(List<SilabaController> ls)
     {
-        if(ls.Count == 0) { return; }
-
-        GameObject padreDeSilabas = ls[0].getPalabra().transform.parent.gameObject;
-        this.transform.SetParent(padreDeSilabas.transform);
+        this.silabas = ls;
 
         foreach(SilabaController sil in ls)
         {
-            this.nuevaSilabaAlFinal(sil);
+            sil.setPalabra(this.gameObject,this);
         }
     }
 
@@ -120,104 +152,13 @@ public class PalabraController : MonoBehaviour
 
     internal void acomodarSilabasEnElEspacio()
     {
-        if(silabas.Count <= 1){return;}
-
-        //ajustamos la pos de la primera silaba
-
-        Vector3 posInicial = silabas[0].transform.position;
-        Vector3 posActual = posInicial;
-        posActual.x += anchoSilaba;
+        Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
+       
         //acomodamos las silabas de izquierda a derecha
-        for (int i = 1; i < silabas.Count; i++)
+        for (int i = 0; i < silabas.Count; i++)
         {
-            silabas[i].transform.position = posActual;
-            posActual.x += anchoSilaba;
+            silabas[i].transform.localPosition= posBase*i;
         }
-    }
-
-    public void aniadirPalabraAlFinal(List<SilabaController> silabasNuevas)
-    {
-        foreach (SilabaController s in silabasNuevas)
-        {
-            nuevaSilabaAlFinal(s);
-        }
-    }
-
-    public void aniadirPalabraAlPrincipio(List<SilabaController> silabasNuevas)
-    {
-        for(int i = silabasNuevas.Count - 1; i>=0;i--)
-        {
-            nuevaSilabaAlPrincipio(silabasNuevas[i]);
-        }
-    }
-
-    public void nuevaSilabaAlFinal(SilabaController silaba)
-    {
-        silaba.setPalabra(this.gameObject,this);
-
-        if(this.silabas.Count > 0)
-        {
-            SilabaController ultimaSilaba = silabas[silabas.Count - 1];
-            ultimaSilaba.silabaDerecha = silaba;
-            silaba.silabaIzquierda = ultimaSilaba;
-        }
-
-        silabas.Add(silaba);
-    }
-
-    public void nuevaSilabaAlPrincipio(SilabaController silaba)
-    {
-        silaba.setPalabra(this.gameObject,this);
-        silabas.Insert(0,silaba);
-    }
-
-    private void separarEnSilaba(SilabaController silabaASeparar)
-    {
-        if (!silabas.Contains(silabaASeparar)) {
-            return;
-        }
-
-        int indexSilabaASeparar = silabas.FindIndex(x => x == silabaASeparar);
-        int finalDeLista = silabas.Count - 1;
-
-
-        List<SilabaController> silabasAntes = new List<SilabaController>();
-        List<SilabaController> listaSilabaASeparar = new List<SilabaController>();
-        List<SilabaController> silabasDespues = new List<SilabaController>();
-
-
-        //tener en cuenta esto
-        listaSilabaASeparar.Add(silabaASeparar);
-
-        //casos faciles (principio y final)
-        if (indexSilabaASeparar == finalDeLista || indexSilabaASeparar == 0) //esta al principio/final de la lista
-        {
-            silabas.Remove(silabaASeparar);
-
-            gameManager.nuevaPalabra(listaSilabaASeparar);
-        }
-        else //la silaba está en el medio
-        {
-            for(int i = 0; i<silabas.Count; i++)
-            {
-                if(i < indexSilabaASeparar)
-                {
-                    silabasAntes.Add(silabas[i]);
-                }
-                if(i > indexSilabaASeparar)
-                {
-                    silabasDespues.Add(silabas[i]);
-                }
-            }
-
-            gameManager.nuevaPalabra(silabasAntes);
-            gameManager.nuevaPalabra(listaSilabaASeparar);
-            gameManager.nuevaPalabra(silabasDespues);
-
-            this.silabas = new List<SilabaController>();
-        }
-
-        
     }
 
     public void romperEnSilabasYColocarEnPantalla()
@@ -225,49 +166,28 @@ public class PalabraController : MonoBehaviour
         //si hay poco que hacer lo hacemos y retornamos por performance
         if (silabas.Count == 0) { return; }
 
-        //EventManager.onActivarConectoresDespuesDe(silabas,1f);
-
-        if (silabas.Count == 1)
-        {
-            silabas[0].desactivarConectores();
-            silabas[0].separarFuerteDeOtrasSilabas();
-            silabas[0].empujarAleatoriamenteYDejarQuietaLuego();
-            return;
-        }
-
         foreach (SilabaController sil in silabas)
         {
             sil.desactivarConectores();
             sil.separarFuerteDeOtrasSilabas();
-            sil.empujarAleatoriamenteYDejarQuietaLuego();
         }
 
         for (int i = 0; i < silabas.Count; i++)
         {
             //desconectamos las silabas y destruimos la palabra luego
+            PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
+            nuevaPalabra.irAlPuntoInicial();
             silabas[i].restablecerConectores();
-            gameManager.nuevaPalabra(silabas[i]);
-
         }
 
-        this.silabas = new List<SilabaController>();
+        Destroy(this.gameObject);
     }
 
     public void sacudirSilabas()
     {
-        foreach(SilabaController sil in silabas)
-        {
-            sil.empujarAleatoriamenteYDejarQuietaLuego();
+        romperEnSilabasYColocarEnPantalla();
+    }
 
-        }
-    }
-    public void dejarQuieta()
-    {
-        foreach (SilabaController sil in silabas)
-        {
-            sil.dejarQuieta();
-        }
-    }
     #endregion
 
     public bool tieneUnaSolaSilaba()
@@ -290,6 +210,17 @@ public class PalabraController : MonoBehaviour
         //activamos el derecho de la ultima silaba
         this.silabas[silabas.Count-1].restablecerConectores();
     }
+
+    internal void desactivarConectores()
+    {
+        if (silabas.Count == 0)
+        {
+            return;
+        }
+        this.silabas[0].desactivarConectores();
+        this.silabas[silabas.Count - 1].desactivarConectores();
+    }
+
 
     private void encontrarPadre()
     {
