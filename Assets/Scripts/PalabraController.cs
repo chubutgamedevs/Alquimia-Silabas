@@ -52,7 +52,7 @@ public class PalabraController : MonoBehaviour
 
     private void comprobarPosicion()
     {
-        EventManager.onComprobarBounds();
+        //EventManager.onComprobarBounds();
     }
 
 
