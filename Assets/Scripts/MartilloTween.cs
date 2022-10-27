@@ -22,8 +22,7 @@ public class MartilloTween : MonoBehaviour
         EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
     }
     #endregion
-
-    private void Start()
+    private void Awake()
     {
         coroutine = animarMartillo();
     }

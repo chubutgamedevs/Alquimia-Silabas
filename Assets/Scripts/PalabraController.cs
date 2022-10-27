@@ -20,11 +20,13 @@ public class PalabraController : MonoBehaviour
     void OnEnable()
     {
         EventManager.modoRomperDesActivado += acomodarSilabasEnElEspacio;
+        EventManager.comprobarBounds += comprobarBounds;
     }
 
     void OnDisable()
     {
         EventManager.modoRomperDesActivado -= acomodarSilabasEnElEspacio;
+        EventManager.comprobarBounds -= comprobarBounds;
     }
 
 
@@ -100,7 +102,26 @@ public class PalabraController : MonoBehaviour
     #endregion
 
     #region setters y getters
+    void comprobarBounds()
+    {
+        Vector3 vectorAux = new Vector3(Constants.anchoSilaba, 0, 0);
 
+        for (int i = 0; i<silabas.Count;i++)
+        {
+            //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
+            if (!Ubicador.estaDentroDelJuego(silabas[0].puntoInicial + vectorAux*i))
+            {
+                this.settearPuntoInicialRandom();
+                return;
+            }
+        }
+
+        //si llegamos hasta acá volvemos al punto inicial?
+    }
+    public void settearPuntoInicialRandom()
+    {
+        this.silabas[0].setPunto(gameManager.getRandomPunto());
+    }
     public void setSilabas(List<SilabaController> ls)
     {
         this.silabas = ls;
@@ -244,6 +265,10 @@ public class PalabraController : MonoBehaviour
         transform.SetParent(gameManager.getJuegoGameObject().transform);
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        comprobarBounds();
+    }
 
 
     #endregion

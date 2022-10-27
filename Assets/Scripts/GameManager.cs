@@ -11,11 +11,11 @@ public static class Constants
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
 
-    public static float maxY = 4;
-    public static float minY = -4;
+    public static float maxY = 6;
+    public static float minY = 0;
 
-    public static float maxX = 4;
-    public static float minX = -10;
+    public static float maxX = 15;
+    public static float minX = 0;
 
     public static float factorAgrandarGrid = 1.4f;
 
@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
+    private List<Vector3> puntos;
+
     #region ciclo de vida
 
     // Start is called before the first frame update
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
     {
         _juego = getJuegoGameObject();
         palabrasDeserializer = new PalabrasDeserializer("silabas");
+        puntos = PoissonDiscSampling.generatePoints();
 
         startGameConPool();
     }
@@ -85,6 +88,7 @@ public class GameManager : MonoBehaviour
         EventManager.silabasUnidas += comprobarPalabraFormada;
         EventManager.palabraFormada += handlePalabraFormada;
         EventManager.modoRomperActivado += activarModoRomper;
+        EventManager.modoRomperActivado += desactivarConectoresPor1Seg;
         EventManager.modoRomperDesActivado += desActivarModoRomper;
         EventManager.ganaste += handleGanaste;
 
@@ -95,6 +99,7 @@ public class GameManager : MonoBehaviour
         EventManager.silabasUnidas -= comprobarPalabraFormada;
         EventManager.palabraFormada -= handlePalabraFormada;
         EventManager.modoRomperActivado -= activarModoRomper;
+        EventManager.modoRomperActivado -= desactivarConectoresPor1Seg;
         EventManager.modoRomperDesActivado -= desActivarModoRomper;
         EventManager.ganaste -= handleGanaste;
     }
@@ -115,13 +120,12 @@ public class GameManager : MonoBehaviour
 
     public void handleGanaste()
     {
-        Debug.Log("ganaste");
         eliminarTodasLasPalabrasEnPantallalFinDelJuego();
     }
 
     public void startGameConPool()
     {
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(4, 3);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(1, 3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();
@@ -172,8 +176,18 @@ public class GameManager : MonoBehaviour
     {
         foreach (string silaba in poolDeSilabas)
         {
-            PalabraController palabraAuxController = this.nuevaPalabra(silaba, Ubicador.nuevoPunto());
+            PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
         }
+    }
+
+    public Vector3 getRandomPunto()
+    {
+        int randomIndex = Random.Range(0, puntos.Count);
+        Vector3 punto = puntos[randomIndex];
+
+        puntos.Remove(punto);
+
+        return punto;
     }
 
     void anunciarPalabrasTarget()
@@ -242,6 +256,16 @@ public class GameManager : MonoBehaviour
         foreach (Transform hijo in _juego.transform)
         {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
             PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
+            palabraAux.activarConectoresDespuesDe(1f);
+        }
+    }
+
+    public void desactivarConectoresPor1Seg()
+    {
+        foreach (Transform hijo in _juego.transform)
+        {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
+            PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
+            palabraAux.desactivarConectores();
             palabraAux.activarConectoresDespuesDe(1f);
         }
     }

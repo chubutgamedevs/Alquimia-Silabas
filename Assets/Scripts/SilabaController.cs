@@ -36,14 +36,12 @@ public class SilabaController : MonoBehaviour
     {
         EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
         EventManager.modoRomperActivado += handleModoRomperActivado;
-        EventManager.comprobarBounds += comprobarBounds;
     }
 
     void OnDisable()
     {
         EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
         EventManager.modoRomperActivado -= handleModoRomperActivado;
-        EventManager.comprobarBounds += comprobarBounds;
     }
 
     public void disableDrag()
@@ -80,8 +78,6 @@ public class SilabaController : MonoBehaviour
     {
         Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
     }
-
-
 
 
 
@@ -204,13 +200,6 @@ public class SilabaController : MonoBehaviour
         this.restablecerConectores();
     }
 
-    void comprobarBounds()
-    {
-        if (!Ubicador.estaDentroDelJuego(this.transform.position)) 
-        {
-            palabraController.irAlPunto(new Vector3(0,0,0));
-        }
-    }
 
     public List<SilabaController> getSilabasPalabra()
     {
