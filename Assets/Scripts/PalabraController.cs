@@ -7,7 +7,7 @@ using System.Collections;
 
 public class PalabraController : MonoBehaviour
 {
-    List<SilabaController> silabas;
+    public List<SilabaController> silabas;
 
     GameManager gameManager;
 
@@ -191,6 +191,27 @@ public class PalabraController : MonoBehaviour
     public void iniciarDestruccionFinDelJuego()
     {
         StartCoroutine(destruirseFinDelJuego());
+    }
+
+    public void eliminarSilabasLuegoDeFormacion(List<SilabaController> silabasAEliminar)
+    {
+        //multiplicamos por 1000 porque vamos a trabajar con milisegundos
+        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.7f;
+        int i = 100;
+        int incremento = 100;
+
+        float tiempoDeEliminacion = tiempoAnimacion + i;
+        foreach(SilabaController sil in silabasAEliminar)
+        {
+            //Dividimos por 1000 por milisegundos
+            sil.eliminarLuegoDeFormacionPalabraEnSegundos(tiempoDeEliminacion/1000);
+
+            i += incremento;
+            tiempoDeEliminacion = tiempoAnimacion + i;
+        }
+
+        Invoke("romperEnSilabasYColocarEnPantalla", tiempoDeEliminacion);
+
     }
 
     IEnumerator destruirseFinDelJuego()

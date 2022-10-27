@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Random = System.Random;
-using RandomU = UnityEngine.Random;
+using Random = UnityEngine.Random;
+using DG.Tweening;
 
 
 public class SilabaController : MonoBehaviour
@@ -75,7 +74,7 @@ public class SilabaController : MonoBehaviour
 
     internal void dejarQuietaDespuesDeRandom(float segundos)
     {
-        Invoke("dejarQuieta", RandomU.Range(segundos, segundos*2));
+        Invoke("dejarQuieta", Random.Range(segundos, segundos*2));
     }
 
 
@@ -228,6 +227,23 @@ public class SilabaController : MonoBehaviour
         drag.disableDrag();
     }
 
+    public void eliminarLuegoDeFormacionPalabraEnSegundos(float segundos)
+    {
+        Invoke("eliminarLuegoDeFormacion", segundos);
+    }
+
+    public void eliminarLuegoDeFormacion()
+    {
+        StartCoroutine(IEeliminarluegoDeFormacion());
+    }
+
+    IEnumerator IEeliminarluegoDeFormacion()
+    {
+        transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccionSilaba);
+        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion);
+        Destroy(this.gameObject);
+    }
+
     public void separarSilabaDeOtrasSilabas()
     {
 
@@ -307,18 +323,5 @@ public class SilabaController : MonoBehaviour
     }
     #endregion
 
-    #region testing
-
-    //for testing purposes only
-    private static Random random = new Random();
-    public static string RandomString(int length)
-    {
-
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-    }
-
-    #endregion testing
 }
 

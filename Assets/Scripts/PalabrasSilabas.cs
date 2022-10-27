@@ -100,4 +100,9 @@ public class PalabraSilabas
         this.palabra = palabra;
         this.silabas = silabas;
     }
+
+    public bool contieneSilaba(string silaba)
+    {
+        return silabas.Contains(silaba.ToLower());
+    }
 }

@@ -10,11 +10,12 @@ public static class Constants
     public static float tiempoDeAnimacionPalabraCorrecta = 4f;
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
+    public static float tiempoAnimacionDestruccionSilaba = 1f;
 
     public static float maxY = 6;
     public static float minY = 0;
 
-    public static float maxX = 15;
+    public static float maxX = 13;
     public static float minX = 0;
 
     public static float factorAgrandarGrid = 1.4f;
@@ -125,9 +126,9 @@ public class GameManager : MonoBehaviour
 
     public void startGameConPool()
     {
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(2, 3);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(2, 2);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
-        anunciarPalabrasTarget();
+        anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
         Invoke("desordenarPalabras", 0.01f);
     }
@@ -190,10 +191,10 @@ public class GameManager : MonoBehaviour
         return punto;
     }
 
-    void anunciarPalabrasTarget()
+    void anunciarPalabrasTarget(List<PalabraSilabas>  target)
     {
         //larga vida a las tuplas
-        EventManager.onPalabrasSeleccionadasParaJuego(palabrasTarget);
+        EventManager.onPalabrasSeleccionadasParaJuego(target);
     }
 
 
