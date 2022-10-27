@@ -55,12 +55,7 @@ public class SilabasManager : MonoBehaviour
     {   //la primer silaba siempre es la que se est� moviendo (checkear eventos)
         PalabraController pController1 = silaba.getPalabraController();
         PalabraController pController2 = otraSilaba.getPalabraController();
-
-        pController1.dejarQuieta();
-        pController2.dejarQuieta();
-
-        //otraSilaba.transform.position = new Vector3(0,silaba.transform.position.y,0);
-
+    
         silaba.disableDrag();
 
         float deltaX = pController1.transform.position.x - pController2.transform.position.x;

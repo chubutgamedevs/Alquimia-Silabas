@@ -57,7 +57,6 @@ public class SilabaController : MonoBehaviour
     private void OnMouseDown()
     {
         EventManager.onSilabaEsClickeada(this);
-        this.palabraController.dejarQuieta();
     }
 
     void OnMouseDrag()
@@ -227,7 +226,6 @@ public class SilabaController : MonoBehaviour
     {
         this.palabraController.moviendose = false;
         drag.disableDrag();
-        this.palabraController.dejarQuieta();
     }
 
     public void separarSilabaDeOtrasSilabas()

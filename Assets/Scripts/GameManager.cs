@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
 
     public void startGameConPool()
     {
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(3, 3);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(2, 3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget();
         colocarEnPantallaSilabas();

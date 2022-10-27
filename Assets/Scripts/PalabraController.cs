@@ -12,8 +12,6 @@ public class PalabraController : MonoBehaviour
     GameManager gameManager;
 
     public Boolean moviendose = false;
-    public Rigidbody rb;
-    private RigidbodyConstraints rbInitialConstraints;
 
     #region 
 
@@ -29,11 +27,6 @@ public class PalabraController : MonoBehaviour
         EventManager.comprobarBounds -= comprobarBounds;
     }
 
-
-    void OnMouseDown()
-    {
-        this.dejarQuieta();
-    }
 
 
     #endregion
@@ -57,26 +50,11 @@ public class PalabraController : MonoBehaviour
     }
 
 
-    internal void habilitarMovimientoRb()
-    {
-        this.rb.constraints = this.rbInitialConstraints;
-    }
-    internal void dejarQuieta()
-    {
-        this.rb.velocity = Vector3.zero;
-        this.rb.constraints = RigidbodyConstraints.FreezeAll;
-    }
+
     #endregion
     #region ciclo de vida
     void Awake()
     {
-
-        if (!rb)
-        {
-            rb = gameObject.GetComponent<Rigidbody>();
-        }
-        rbInitialConstraints = rb.constraints;
-
         gameManager = GameManager.GetInstance();
 
         cargarSilabaInicial();
@@ -217,8 +195,6 @@ public class PalabraController : MonoBehaviour
 
     IEnumerator destruirseFinDelJuego()
     {
-        dejarQuieta();
-
         if (!(this.transform == null))
         {
         transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic)    ;
