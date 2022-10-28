@@ -10,7 +10,7 @@ public class PalabrasDeserializer
     //lista de palabras
     List<string> wordList;
 
-    public PalabrasDeserializer(string nombre = "silabas")
+    public PalabrasDeserializer(string nombre = "json/silabas") //por defecto obtiene todas las palabras
     {
         cargarPalabrasYSilabas(nombre);
     }
@@ -25,59 +25,82 @@ public class PalabrasDeserializer
     }
     #endregion
 
-    public List<(string, List<string>)> generarPalabrasTargetRandom(int v)
-    {
-        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
 
-        for (int i = 0; i < v; i++)
-        {
-            palabrasAux.Add(nuevaPalabraRandom());
-        }
-
-        return palabrasAux;
-    }
-
-    public List<PalabraSilabas> generarPalabrasTargetRandomConSilabas(int cantPalabras, int cantSilabas)
+    public List<PalabraSilabas> generarPalabrasTargetRandom(int cantPalabras)
     {
         List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
 
         for (int i = 0; i < cantPalabras; i++)
         {
-            palabrasAux.Add(nuevaPalabraRandomConSilabas(cantSilabas));
+            PalabraSilabas obtenida = nuevaPalabraRandom();
+            if(obtenida != null)
+            {
+                palabrasAux.Add(obtenida);
+            }
+            else
+            {
+                EventManager.onGanaste();
+                break;
+            }
         }
 
         return palabrasAux;
     }
 
-    public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
-    {
 
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count == 1)
+    public PalabraSilabas nuevaPalabraRandom()
+    {
+        if(wordList.Count == 0)
         {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+            return null;
         }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+
+        PalabraSilabas seleccionada = new PalabraSilabas(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+
+        //vamos achicando la cantidad de silabas
+        palabrasYSilabas.Remove(wordList[randomIndex]);
+        wordList.RemoveAt(randomIndex);
+
+        return seleccionada;
     }
 
-    public PalabraSilabas nuevaPalabraRandomConSilabas(int cantSilabas)
+    public List<PalabraSilabas> generarPalabrasTargetEnOrden(int cantPalabras)
     {
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count != cantSilabas)
+        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
+
+        for (int i = 0; i < cantPalabras; i++)
         {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+            PalabraSilabas obtenida = nuevaPalabraEnOrden();
+            if (obtenida != null)
+            {
+                palabrasAux.Add(obtenida);
+            }
+            else
+            {
+                EventManager.onGanaste();
+                break;
+            }
         }
-        return new PalabraSilabas(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+
+        return palabrasAux;
     }
 
-    public (string, List<string>) nuevaPalabraRandomMaxSilabas(int maxSilabas)
+
+    public PalabraSilabas nuevaPalabraEnOrden()
     {
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count < maxSilabas)
+        if (wordList.Count == 0)
         {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
+            return null;
         }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+
+        PalabraSilabas seleccionada = new PalabraSilabas(wordList[0], palabrasYSilabas[wordList[0]]);
+
+        //vamos achicando la cantidad de silabas
+        palabrasYSilabas.Remove(wordList[0]);
+        wordList.RemoveAt(0);
+
+        return seleccionada;
     }
 
 

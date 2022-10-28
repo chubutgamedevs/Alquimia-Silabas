@@ -239,8 +239,11 @@ public class SilabaController : MonoBehaviour
 
     IEnumerator IEeliminarluegoDeFormacion()
     {
-        transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccionSilaba);
-        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion);
+        if(this.transform != null)
+        {
+            transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccionSilaba);
+        }
+        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion*1.1f);
         Destroy(this.gameObject);
     }
 
@@ -299,8 +302,21 @@ public class SilabaController : MonoBehaviour
 
     public void desactivarConectores()
     {
-        conectoresManager.desActivarConectores();
+        if (conectoresManager)
+        {
+            conectoresManager.desActivarConectores();
+        }
     }
+
+    public void desactivarConectoresIndefinidamente()
+    {
+        if (conectoresManager)
+        {
+            conectoresManager.desActivarConectores();
+            conectoresManager.gameObject.SetActive(false);
+        }
+    }
+
 
 
     #endregion

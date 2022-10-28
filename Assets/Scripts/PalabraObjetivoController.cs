@@ -1,6 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PalabraObjetivoController : MonoBehaviour
 {
@@ -29,10 +29,6 @@ public class PalabraObjetivoController : MonoBehaviour
         settearPosicionInicial();
     }
 
-    private void Start()
-    {
-
-    }
 
     #endregion
 
@@ -135,10 +131,17 @@ public class PalabraObjetivoController : MonoBehaviour
 
     public void ubicarPalabra(int numPalabra)
     {
+        Vector2 startingPosition = new Vector2();
         Vector2 position = new Vector2();
+
         position.y += numPalabra * anchoPalabra;
 
-        rectTransform.anchoredPosition = position;
+        startingPosition = position;
+        startingPosition.y += 100;
+
+
+        rectTransform.anchoredPosition = startingPosition;
+        rectTransform.DOAnchorPos(position, Constants.tiempoAnimacionEntradaPalabraObjetivo).SetEase(Ease.OutExpo) ;
     }
 }
 

@@ -51,6 +51,9 @@ public class MartilloTween : MonoBehaviour
     {
         while (true)
         {
+            if (!(this.transform == null))
+            {
+
             transform.DOLocalRotate(new Vector3(0f, 0f, anguloRotacion), tiempoRotacion, RotateMode.Fast)
                 .SetEase(Ease.InExpo);
 
@@ -59,6 +62,7 @@ public class MartilloTween : MonoBehaviour
             transform.DOLocalRotate(new Vector3(0f, 0f, -anguloRotacion), tiempoRotacion, RotateMode.Fast);
 
             yield return new WaitForSeconds(tiempoRotacion);
+            }
 
         }
 

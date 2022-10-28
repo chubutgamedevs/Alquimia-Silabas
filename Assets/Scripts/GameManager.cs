@@ -6,19 +6,23 @@ using Random = UnityEngine.Random;
 
 public static class Constants
 {
+    public static string tagPalabraObjetivo = "PalabraObjetivo";
+
     public static float tiempoHastaDejarQuieta = 2;
     public static float tiempoDeAnimacionPalabraCorrecta = 4f;
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
-    public static float tiempoAnimacionDestruccionSilaba = 1f;
+    public static float tiempoAnimacionDestruccionSilaba = 0.5f;
+    public static float tiempoAnimacionSalidaPalabraObjetivo = 1f;
+    public static float tiempoAnimacionEntradaPalabraObjetivo = 4f;
+    public static float tiempoHastaRenovacionDePalabras = 3f;
+
 
     public static float maxY = 6;
     public static float minY = 0;
 
-    public static float maxX = 13;
+    public static float maxX = 12;
     public static float minX = 0;
-
-    public static float factorAgrandarGrid = 1.4f;
 
     public static float anchoSilaba = 1;
 }
@@ -40,14 +44,15 @@ public class GameManager : MonoBehaviour
 
     private List<Vector3> puntos;
 
+    private string nivel = "json/niveles/nivel1";
+
     #region ciclo de vida
 
     // Start is called before the first frame update
     void Start()
     {
         _juego = getJuegoGameObject();
-        palabrasDeserializer = new PalabrasDeserializer("silabas");
-        puntos = PoissonDiscSampling.generatePoints();
+        palabrasDeserializer = new PalabrasDeserializer(nivel);
 
         startGameConPool();
     }
@@ -92,7 +97,7 @@ public class GameManager : MonoBehaviour
         EventManager.modoRomperActivado += desactivarConectoresPor1Seg;
         EventManager.modoRomperDesActivado += desActivarModoRomper;
         EventManager.ganaste += handleGanaste;
-
+        EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
     }
 
     void OnDisable()
@@ -108,12 +113,8 @@ public class GameManager : MonoBehaviour
 
     void handlePalabraFormada(PalabraController palabraController, string palabra)
     {
-        StartCoroutine(handlePalabraFormadaRutina(palabraController, palabra));
-    }
-    IEnumerator handlePalabraFormadaRutina(PalabraController palabraController, string palabra)
-    {
+        palabraController.desactivarConectoresIndefinidamente();
         palabraController.playAnimacionPalabraCorrecta();
-        yield return new WaitForSeconds(Constants.tiempoDeAnimacionPalabraCorrecta);
     }
     #endregion
 
@@ -126,11 +127,27 @@ public class GameManager : MonoBehaviour
 
     public void startGameConPool()
     {
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandomConSilabas(2, 2);
+        puntos = PoissonDiscSampling.generatePoints();
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandom(3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
         Invoke("desordenarPalabras", 0.01f);
+    }
+
+    public void nuevaTandaDePalabras()
+    {
+        Invoke("limpiarPalabras", Constants.tiempoHastaRenovacionDePalabras - 0.3f);
+        Invoke("startGameConPool",Constants.tiempoHastaRenovacionDePalabras);
+    }
+
+    public void limpiarPalabras()
+    {
+        foreach(GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
+        {
+            Destroy(palabra);
+        }
+
     }
 
     #region modo romper
@@ -159,11 +176,11 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
-    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabras)
+    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabrasRecibidas)
     {
         List<string> pool = new List<string>();
 
-        foreach (PalabraSilabas palabra in palabras)
+        foreach (PalabraSilabas palabra in palabrasRecibidas)
         {
             pool.AddRange(palabra.silabas);
         }
@@ -323,6 +340,8 @@ public static class Instantiator
 
     public static PalabraController nuevaPalabra(this GameManager gm,SilabaController silaba)
     {
+
+
         List<SilabaController> aux = new List<SilabaController>();
         aux.Add(silaba);
 

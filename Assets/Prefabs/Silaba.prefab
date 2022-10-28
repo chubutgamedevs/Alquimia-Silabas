@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e25ba3b0b9abb27be93dba063241a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  silaba: {fileID: 0}
+  silabaController: {fileID: 8553341146070515039}
 --- !u!136 &5004975907575318575
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e25ba3b0b9abb27be93dba063241a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  silaba: {fileID: 0}
+  silabaController: {fileID: 8553341146070515039}
 --- !u!136 &4746532346091003037
 CapsuleCollider:
   m_ObjectHideFlags: 0

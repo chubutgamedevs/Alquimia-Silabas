@@ -111,16 +111,6 @@ public class SilabasManager : MonoBehaviour
         }
     }
 
-    void unirPalabra(List<SilabaController> silabasPalabra)
-    {
-        GameObject palabraObj = gameManager.nuevaPalabraVacia();
-        PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
-
-        palabraController.setSilabas(silabasPalabra);
-
-
-    }
-
     void manejarClickASilaba(SilabaController silaba)
     {
         if (gameManager.modoRomper)

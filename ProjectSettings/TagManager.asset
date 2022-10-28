@@ -9,6 +9,7 @@ TagManager:
   - Palabra
   - juego
   - PalabraDestruida
+  - PalabraObjetivo
   layers:
   - Default
   - TransparentFX

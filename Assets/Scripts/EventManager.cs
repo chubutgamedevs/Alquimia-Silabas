@@ -24,7 +24,9 @@ public class EventManager : MonoBehaviour
     public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
     public static event System.Action<List<PalabraSilabas>> palabrasSeleccionadasParaJuego = delegate { };
     public static event System.Action ordenarPalabras = delegate { };
+    public static event System.Action nosQuedamosSinPalabras = delegate { };
     
+
     #endregion
 
     #region eventos de palabra (singular)
@@ -117,6 +119,11 @@ public class EventManager : MonoBehaviour
     public static void onGanaste()
     {
         ganaste();
+    }
+
+    public static void onNosQuedamosSinPalabras()
+    {
+        nosQuedamosSinPalabras();
     }
     #endregion
 }

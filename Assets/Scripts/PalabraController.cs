@@ -13,7 +13,7 @@ public class PalabraController : MonoBehaviour
 
     public Boolean moviendose = false;
 
-    #region 
+    #region eventos
 
     void OnEnable()
     {
@@ -35,8 +35,11 @@ public class PalabraController : MonoBehaviour
 
     public void irAlPuntoInicial()
     {
-        irAlPunto(silabas[0].puntoInicial);
+        if(silabas.Count > 0)
+        {
+            irAlPunto(silabas[0].puntoInicial);
 
+        }
     }
     public void irAlPunto(Vector3 punto)
     {
@@ -46,7 +49,10 @@ public class PalabraController : MonoBehaviour
         {
             return;
         }
+        else
+        {
         transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
+        }
     }
 
 
@@ -102,6 +108,12 @@ public class PalabraController : MonoBehaviour
     }
     public void setSilabas(List<SilabaController> ls)
     {
+        if(ls[0] == null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         this.silabas = ls;
 
         foreach(SilabaController sil in ls)
@@ -196,7 +208,7 @@ public class PalabraController : MonoBehaviour
     public void eliminarSilabasLuegoDeFormacion(List<SilabaController> silabasAEliminar)
     {
         //multiplicamos por 1000 porque vamos a trabajar con milisegundos
-        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.7f;
+        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.2f;
         int i = 100;
         int incremento = 100;
 
@@ -216,7 +228,7 @@ public class PalabraController : MonoBehaviour
 
     IEnumerator destruirseFinDelJuego()
     {
-        if (!(this.transform == null))
+        if ((this.transform != null))
         {
         transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic)    ;
         }
@@ -253,7 +265,22 @@ public class PalabraController : MonoBehaviour
             return;
         }
         this.silabas[0].desactivarConectores();
+
+        if(silabas.Count == 1)
+        {
+            return;
+        }
         this.silabas[silabas.Count - 1].desactivarConectores();
+    }
+
+    internal void desactivarConectoresIndefinidamente()
+    {
+        if (silabas.Count == 0)
+        {
+            return;
+        }
+        this.silabas[0].desactivarConectoresIndefinidamente();
+        this.silabas[silabas.Count - 1].desactivarConectoresIndefinidamente();
     }
 
 

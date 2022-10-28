@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class PalabrasObjetivoManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         EventManager.palabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
         EventManager.palabraFormada += esclarecerPalabra;
+
     }
 
     void OnDisable()
@@ -26,9 +29,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     private void Start()
     {
-        //palabrasObjetivo = obtenerPalabrasObjetivoHijas();
-        //destruirPalabrasObjetivoHijas();
-        //testSettearPalabraObjetivo(); //testing
+        palabrasObjetivo = new List<PalabraObjetivoController>();
     }
 
     #endregion
@@ -48,16 +49,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     public void settearPalabrasObjetivo(List<PalabraSilabas> palabras)
     {
-        destruirPalabrasObjetivoHijas();
-
-        int indicePalabra = 0;
-
-        foreach (PalabraSilabas palabra in palabras)
-        {
-            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
-
-            indicePalabra++;
-        }
+        StartCoroutine(IEcolocarNuevasPalabrasObjetivo(palabras));
     }
     #endregion
 
@@ -70,20 +62,17 @@ public class PalabrasObjetivoManager : MonoBehaviour
             pal.esclarecerSilabas();
         }
     }
-
     public void esclarecerPalabra(PalabraController palabra, string palabraAComparar)
     {
-        foreach (PalabraObjetivoController pal in palabrasObjetivo)
+        PalabraObjetivoController pal = palabrasObjetivo.Find(x => x.palabra.ToLower() == palabraAComparar.ToLower());
+
+        if (pal)
         {
-            if (pal.palabra.ToLower() == palabraAComparar.ToLower())
+            pal.esclarecerSilabas();
+            palabrasObjetivo.Remove(pal);
+            if(palabrasObjetivo.Count == 0)
             {
-                pal.esclarecerSilabas();
-                palabrasObjetivo.Remove(pal);
-                if(palabrasObjetivo.Count == 0)
-                {
-                    EventManager.onGanaste();
-                }
-                return;
+                EventManager.onNosQuedamosSinPalabras();
             }
         }
     }
@@ -96,17 +85,38 @@ public class PalabrasObjetivoManager : MonoBehaviour
     }
 
 
-
-    void destruirPalabrasObjetivoHijas()
+    IEnumerator IEcolocarNuevasPalabrasObjetivo(List<PalabraSilabas> palabrasNuevas)
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
+        GameObject[] palabrasObjetivoActuales = GameObject.FindGameObjectsWithTag(Constants.tagPalabraObjetivo);
+
+        if(palabrasObjetivoActuales.Length > 0) { 
+
+            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+            {
+                Vector3 posNueva = palabraOculta.transform.position;
+                posNueva += new Vector3(10, 0, 0);
+
+                palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo).SetEase(Ease.InExpo);
+            }
+
+            yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);
+
+            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+            {
+                Destroy(palabraOculta);
+            }
+
+            transform.DetachChildren();
         }
 
-        transform.DetachChildren();
+        int indicePalabra = 0;
 
-        palabrasObjetivo = new List<PalabraObjetivoController>();
+        foreach (PalabraSilabas palabra in palabrasNuevas)
+        {
+            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
+
+            indicePalabra++;
+        }
     }
 
 
