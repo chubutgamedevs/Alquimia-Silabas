@@ -94,9 +94,9 @@ public class PalabrasObjetivoManager : MonoBehaviour
             foreach (GameObject palabraOculta in palabrasObjetivoActuales)
             {
                 Vector3 posNueva = palabraOculta.transform.position;
-                posNueva += new Vector3(10, 0, 0);
+                posNueva += new Vector3(500, 0, 0);
 
-                palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo).SetEase(Ease.InExpo);
+                palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
             }
 
             yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);

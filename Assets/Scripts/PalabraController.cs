@@ -254,6 +254,12 @@ public class PalabraController : MonoBehaviour
         }
         //activamos el izquierdo de la silaba 0
         this.silabas[0].restablecerConectores();
+
+        if (silabas.Count == 1)
+        {
+            return;
+        }
+
         //activamos el derecho de la ultima silaba
         this.silabas[silabas.Count-1].restablecerConectores();
     }

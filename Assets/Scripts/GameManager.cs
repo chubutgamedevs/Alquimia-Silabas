@@ -13,7 +13,7 @@ public static class Constants
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
     public static float tiempoAnimacionDestruccionSilaba = 0.5f;
-    public static float tiempoAnimacionSalidaPalabraObjetivo = 1f;
+    public static float tiempoAnimacionSalidaPalabraObjetivo = 2f;
     public static float tiempoAnimacionEntradaPalabraObjetivo = 4f;
     public static float tiempoHastaRenovacionDePalabras = 3f;
 
@@ -94,7 +94,6 @@ public class GameManager : MonoBehaviour
         EventManager.silabasUnidas += comprobarPalabraFormada;
         EventManager.palabraFormada += handlePalabraFormada;
         EventManager.modoRomperActivado += activarModoRomper;
-        EventManager.modoRomperActivado += desactivarConectoresPor1Seg;
         EventManager.modoRomperDesActivado += desActivarModoRomper;
         EventManager.ganaste += handleGanaste;
         EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
@@ -128,7 +127,7 @@ public class GameManager : MonoBehaviour
     public void startGameConPool()
     {
         puntos = PoissonDiscSampling.generatePoints();
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandom(3);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandom(2);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
