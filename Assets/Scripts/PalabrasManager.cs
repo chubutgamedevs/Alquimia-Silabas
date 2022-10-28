@@ -38,6 +38,9 @@ public class PalabrasManager : MonoBehaviour
 
     void handlePalabraCorrectaFormada(PalabraController palabraController, string palabra)
     {
+        PalabraSilabas found  = poolDeSilabas.Find(x => x.palabra == palabraController.getPalabraString());
+        poolDeSilabas.Remove(found);
+
         List<SilabaController> silabasAEliminar = new List<SilabaController>();
 
         foreach(SilabaController sil in palabraController.silabas)
@@ -48,9 +51,13 @@ public class PalabrasManager : MonoBehaviour
                 silabaEstaEnOtraPalabra = pal.contieneSilaba(sil.silaba);
                 if (silabaEstaEnOtraPalabra)
                 {
-                    silabasAEliminar.Add(sil);
                     break;
                 }
+            }
+
+            if (!silabaEstaEnOtraPalabra)
+            {
+                silabasAEliminar.Add(sil);
             }
         }
 

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,7 +13,7 @@ public static class Constants
     public static float tiempoAnimacionDestruccionSilaba = 0.5f;
     public static float tiempoAnimacionSalidaPalabraObjetivo = 2f;
     public static float tiempoAnimacionEntradaPalabraObjetivo = 4f;
-    public static float tiempoHastaRenovacionDePalabras = 3f;
+    public static float tiempoHastaRenovacionDePalabras = 5f;
 
 
     public static float maxY = 6;
@@ -112,7 +110,7 @@ public class GameManager : MonoBehaviour
 
     void handlePalabraFormada(PalabraController palabraController, string palabra)
     {
-        palabraController.desactivarConectoresIndefinidamente();
+        palabraController.desactivarConectores();
         palabraController.playAnimacionPalabraCorrecta();
     }
     #endregion
@@ -127,7 +125,7 @@ public class GameManager : MonoBehaviour
     public void startGameConPool()
     {
         puntos = PoissonDiscSampling.generatePoints();
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetRandom(2);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(2);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
@@ -339,8 +337,6 @@ public static class Instantiator
 
     public static PalabraController nuevaPalabra(this GameManager gm,SilabaController silaba)
     {
-
-
         List<SilabaController> aux = new List<SilabaController>();
         aux.Add(silaba);
 

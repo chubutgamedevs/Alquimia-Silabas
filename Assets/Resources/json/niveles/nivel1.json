@@ -1,5 +1,19 @@
 {
     "palabras": [
+         {
+            "silabas": [
+                "je",
+                "sus"
+            ],
+            "palabra": "jesus"
+        },
+        {
+            "silabas": [
+                "sus",
+                "to"
+            ],
+            "palabra": "susto"
+        },
         {
             "silabas": [
                 "u",
@@ -13232,13 +13246,6 @@
         },
         {
             "silabas": [
-                "je",
-                "sus"
-            ],
-            "palabra": "jesus"
-        },
-        {
-            "silabas": [
                 "grie",
                 "gos"
             ],
@@ -15147,13 +15154,6 @@
                 "tes"
             ],
             "palabra": "artes"
-        },
-        {
-            "silabas": [
-                "sus",
-                "to"
-            ],
-            "palabra": "susto"
         },
         {
             "silabas": [

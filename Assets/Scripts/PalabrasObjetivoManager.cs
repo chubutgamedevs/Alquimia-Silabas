@@ -96,7 +96,11 @@ public class PalabrasObjetivoManager : MonoBehaviour
                 Vector3 posNueva = palabraOculta.transform.position;
                 posNueva += new Vector3(500, 0, 0);
 
-                palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
+                if(palabraOculta.transform != null)
+                {
+
+                    palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
+                }
             }
 
             yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);

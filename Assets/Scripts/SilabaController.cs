@@ -287,6 +287,11 @@ public class SilabaController : MonoBehaviour
 
     public void restablecerConectores()
     {
+        if (!conectoresManager)
+        {
+            return;
+        }
+
         if (!silabaIzquierda)
         {
             conectoresManager.activarConectorIzquierdo();
@@ -306,6 +311,13 @@ public class SilabaController : MonoBehaviour
         {
             conectoresManager.desActivarConectores();
         }
+    }
+
+    public void desactivarConectoresPor(float tiempo)
+    {
+        conectoresManager.gameObject.SetActive(true);
+        desactivarConectores();
+        restablecerConectoresDespuesDe(tiempo);
     }
 
     public void desactivarConectoresIndefinidamente()

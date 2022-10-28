@@ -82,6 +82,7 @@ public class PalabraController : MonoBehaviour
     {
         gameManager = GameManager.GetInstance();
         encontrarPadre();
+        acomodarSilabasEnElEspacio();
     }
     #endregion
 
@@ -141,7 +142,7 @@ public class PalabraController : MonoBehaviour
             palabraAux += silaba.silaba;
         }
 
-        return palabraAux;
+        return palabraAux.ToLower();
     }
 
 
@@ -178,7 +179,7 @@ public class PalabraController : MonoBehaviour
 
         foreach (SilabaController sil in silabas)
         {
-            sil.desactivarConectores();
+            sil.desactivarConectoresPor(Constants.tiempoHastaIrAlPunto);
             sil.separarFuerteDeOtrasSilabas();
         }
 
@@ -187,8 +188,7 @@ public class PalabraController : MonoBehaviour
             //desconectamos las silabas y destruimos la palabra luego
             PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
             nuevaPalabra.irAlPuntoInicial();
-            silabas[i].restablecerConectores();
-        }
+         }
 
         Destroy(this.gameObject);
     }
@@ -217,12 +217,14 @@ public class PalabraController : MonoBehaviour
         {
             //Dividimos por 1000 por milisegundos
             sil.eliminarLuegoDeFormacionPalabraEnSegundos(tiempoDeEliminacion/1000);
+            this.silabas.Remove(sil);
 
             i += incremento;
             tiempoDeEliminacion = tiempoAnimacion + i;
         }
 
-        Invoke("romperEnSilabasYColocarEnPantalla", tiempoDeEliminacion);
+
+        Invoke("romperEnSilabasYColocarEnPantalla", tiempoDeEliminacion/1000);
 
     }
 

@@ -118,14 +118,17 @@ public class PalabraSilabas
     public string palabra;
     public List<string> silabas = new List<string>();
 
-    public PalabraSilabas(string palabra, List<string> silabas)
+    public PalabraSilabas(string palabra, List<string> silabasRecibidas)
     {
         this.palabra = palabra;
-        this.silabas = silabas;
+        silabasRecibidas.ForEach(x => x.ToLower().Trim()) ;
+        silabas = silabasRecibidas;
     }
 
     public bool contieneSilaba(string silaba)
     {
-        return silabas.Contains(silaba.ToLower());
+        string silAux = silaba.ToLower().Trim();
+        bool contiene = silabas.Contains(silAux);
+        return contiene;
     }
 }
