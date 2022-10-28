@@ -19,12 +19,14 @@ public class PalabraController : MonoBehaviour
     {
         EventManager.modoRomperDesActivado += acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds += comprobarBounds;
+        EventManager.ganaste += iniciarDestruccionFinDelJuego;
     }
 
     void OnDisable()
     {
         EventManager.modoRomperDesActivado -= acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds -= comprobarBounds;
+        EventManager.ganaste -= iniciarDestruccionFinDelJuego;
     }
 
 
@@ -38,9 +40,17 @@ public class PalabraController : MonoBehaviour
         if(silabas.Count > 0)
         {
             irAlPunto(silabas[0].puntoInicial);
-
         }
     }
+
+    public void disableDrag()
+    {
+        foreach(SilabaController sil in silabas)
+        {
+            sil.disableDragPorSegundos(Constants.tiempoDeAnimacionPalabraCorrecta);
+        }
+    }
+
     public void irAlPunto(Vector3 punto)
     {
         desactivarConectores();
@@ -54,6 +64,26 @@ public class PalabraController : MonoBehaviour
         transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
         }
     }
+
+    public void irAlPuntoInicialLento()
+    {
+        irAlPuntoLento(silabas[0].puntoInicial);
+    }
+
+    public void irAlPuntoLento(Vector3 punto)
+    {
+        desactivarConectores();
+        activarConectoresDespuesDe(Constants.tiempoHastaIrAlPunto);
+        if (this.transform == null)
+        {
+            return;
+        }
+        else
+        {
+            transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.Linear);
+        }
+    }
+
 
 
 
@@ -172,9 +202,27 @@ public class PalabraController : MonoBehaviour
         }
     }
 
+    public void romperEnSilabasYColocarEnPantallaLuegoDeFormacion()
+    {
+        if (silabas.Count == 0) { return; }
+
+        foreach (SilabaController sil in silabas)
+        {
+            sil.separarFuerteDeOtrasSilabas();
+        }
+
+        for (int i = 0; i < silabas.Count; i++)
+        {
+            //desconectamos las silabas y destruimos la palabra luego
+            PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
+            nuevaPalabra.irAlPuntoInicialLento();
+        }
+
+        Destroy(this.gameObject);
+    }
+
     public void romperEnSilabasYColocarEnPantalla()
     {
-        //si hay poco que hacer lo hacemos y retornamos por performance
         if (silabas.Count == 0) { return; }
 
         foreach (SilabaController sil in silabas)
@@ -208,23 +256,21 @@ public class PalabraController : MonoBehaviour
     public void eliminarSilabasLuegoDeFormacion(List<SilabaController> silabasAEliminar)
     {
         //multiplicamos por 1000 porque vamos a trabajar con milisegundos
-        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.2f;
-        int i = 100;
+        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.5f;
         int incremento = 100;
 
-        float tiempoDeEliminacion = tiempoAnimacion + i;
+        float tiempoDeEliminacion = tiempoAnimacion + incremento;
         foreach(SilabaController sil in silabasAEliminar)
         {
             //Dividimos por 1000 por milisegundos
-            sil.eliminarLuegoDeFormacionPalabraEnSegundos(tiempoDeEliminacion/1000);
+            sil.eliminarLuegoDeFormacionPalabraEnSegundos( + tiempoDeEliminacion/1000);
             this.silabas.Remove(sil);
 
-            i += incremento;
-            tiempoDeEliminacion = tiempoAnimacion + i;
+            tiempoDeEliminacion = tiempoAnimacion + incremento;
         }
 
 
-        Invoke("romperEnSilabasYColocarEnPantalla", tiempoDeEliminacion/1000);
+        Invoke("romperEnSilabasYColocarEnPantallaLuegoDeFormacion", tiempoDeEliminacion/1000);
 
     }
 
@@ -266,7 +312,7 @@ public class PalabraController : MonoBehaviour
         this.silabas[silabas.Count-1].restablecerConectores();
     }
 
-    internal void desactivarConectores()
+    public void desactivarConectores()
     {
         if (silabas.Count == 0)
         {

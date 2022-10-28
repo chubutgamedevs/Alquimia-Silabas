@@ -38,6 +38,10 @@ public class PalabrasManager : MonoBehaviour
 
     void handlePalabraCorrectaFormada(PalabraController palabraController, string palabra)
     {
+        palabraController.desactivarConectores();
+        palabraController.disableDrag();
+        palabraController.playAnimacionPalabraCorrecta();
+
         PalabraSilabas found  = poolDeSilabas.Find(x => x.palabra == palabraController.getPalabraString());
         poolDeSilabas.Remove(found);
 
@@ -62,7 +66,6 @@ public class PalabrasManager : MonoBehaviour
         }
 
         palabraController.eliminarSilabasLuegoDeFormacion(silabasAEliminar);
-
     }
 
     void handlePalabrasSeleccionadasParaJuego(List<PalabraSilabas> target)

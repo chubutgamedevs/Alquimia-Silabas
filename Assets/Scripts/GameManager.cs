@@ -13,7 +13,7 @@ public static class Constants
     public static float tiempoAnimacionDestruccionSilaba = 0.5f;
     public static float tiempoAnimacionSalidaPalabraObjetivo = 2f;
     public static float tiempoAnimacionEntradaPalabraObjetivo = 4f;
-    public static float tiempoHastaRenovacionDePalabras = 5f;
+    public static float tiempoHastaRenovacionDePalabras = 2f;
 
 
     public static float maxY = 6;
@@ -90,37 +90,24 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.palabraFormada += handlePalabraFormada;
         EventManager.modoRomperActivado += activarModoRomper;
         EventManager.modoRomperDesActivado += desActivarModoRomper;
-        EventManager.ganaste += handleGanaste;
         EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
     }
 
     void OnDisable()
     {
         EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.palabraFormada -= handlePalabraFormada;
         EventManager.modoRomperActivado -= activarModoRomper;
-        EventManager.modoRomperActivado -= desactivarConectoresPor1Seg;
         EventManager.modoRomperDesActivado -= desActivarModoRomper;
-        EventManager.ganaste -= handleGanaste;
+        EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
     }
 
 
-    void handlePalabraFormada(PalabraController palabraController, string palabra)
-    {
-        palabraController.desactivarConectores();
-        palabraController.playAnimacionPalabraCorrecta();
-    }
     #endregion
 
     #region metodos
 
-    public void handleGanaste()
-    {
-        eliminarTodasLasPalabrasEnPantallalFinDelJuego();
-    }
 
     public void startGameConPool()
     {
@@ -230,60 +217,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void eliminarTodasLasPalabrasEnPantallalFinDelJuego()
-    {
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo y las matamos a todas
-            GameObject hijoAux = hijo.gameObject;
-            if (hijoAux.CompareTag("Palabra")) 
-            {
-                hijoAux.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego() ;
-            }
-        }
-    }
-
-    public void ordenarPalabras()
-    {
-        EventManager.onOrdenarPalabras();
-    }
-
     public void desordenarPalabras()
     {
-        List<PalabraController> palabras = new List<PalabraController>();
+        GameObject[] palabras = GameObject.FindGameObjectsWithTag("Palabra");
 
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo
-            if (hijo.gameObject.CompareTag("Palabra"))
-            {
-                palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
-            }
-        }
-
-        foreach (PalabraController palabra in palabras)
+        foreach (GameObject palabra in palabras)
         {
             //rompemos todas
-            palabra.romperEnSilabasYColocarEnPantalla();
+            palabra.GetComponent<PalabraController>().romperEnSilabasYColocarEnPantalla();
         }
     }
 
-    public void activarConectoresDespuesDe1Seg()
-    {
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
-            PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
-            palabraAux.activarConectoresDespuesDe(1f);
-        }
-    }
-
-    public void desactivarConectoresPor1Seg()
-    {
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
-            PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
-            palabraAux.desactivarConectores();
-            palabraAux.activarConectoresDespuesDe(1f);
-        }
-    }
     public GameObject getJuegoGameObject()
     {
         if(!_juego)

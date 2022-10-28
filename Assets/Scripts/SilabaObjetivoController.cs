@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SilabaObjetivoController : MonoBehaviour
 {
     string silaba = "si";
-    int anchoSilaba = 30;
+    float anchoSilaba = 30;
 
     public Animator miAnimator;
 
@@ -18,7 +18,7 @@ public class SilabaObjetivoController : MonoBehaviour
 
     void Awake()
     {
-
+        anchoSilaba = this.gameObject.GetComponent<RectTransform>().rect.width;
         if (!texto)
         {
             texto = getTextMeshPro();

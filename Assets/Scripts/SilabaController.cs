@@ -48,9 +48,18 @@ public class SilabaController : MonoBehaviour
         this.drag.disableDrag();
     }
 
+    public void disableDragPorSegundos(float segundos)
+    {
+        disableDrag();
+        Invoke("enableDrag", segundos);
+    }
+
     public void enableDrag()
     {
-        this.drag.enableDrag();
+        if (this)
+        {
+            this.drag.enableDrag();
+        }
     }
 
     private void OnMouseDown()
