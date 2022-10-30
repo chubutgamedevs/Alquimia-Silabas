@@ -194,7 +194,7 @@ public class SilabaController : MonoBehaviour
 
     #region metodos
   
-    void handleModoRomperActivado()
+    public void handleModoRomperActivado()
     {
         this.disableDrag();
         this.entrarAnimacionModoRomper();

@@ -6,7 +6,10 @@ public class PalabraObjetivoController : MonoBehaviour
 {
     public string palabra = "";
 
-    int anchoPalabra = -35;
+    float anchoPalabra = -35;
+    float altoPalabra = 30;
+
+    float baseline = 20;
 
     [SerializeField] float minFontSize = 20;
 
@@ -19,12 +22,18 @@ public class PalabraObjetivoController : MonoBehaviour
 
     #region ciclo de vida
 
+    private void Start()
+    {
+    }
     private void Awake()
     {
         if (!rectTransform)
         {
             rectTransform = GetComponent<RectTransform>();
         }
+
+        anchoPalabra = rectTransform.rect.width * rectTransform.localScale.x;
+        altoPalabra = rectTransform.rect.height;
 
         settearPosicionInicial();
     }
@@ -131,17 +140,14 @@ public class PalabraObjetivoController : MonoBehaviour
 
     public void ubicarPalabra(int numPalabra)
     {
-        Vector2 startingPosition = new Vector2();
-        Vector2 position = new Vector2();
+        Vector2 startingPosition = rectTransform.rect.position + new Vector2(0,400);
+        Vector2 endPosition = startingPosition;
 
-        position.y += numPalabra * anchoPalabra;
-
-        startingPosition = position;
-        startingPosition.y += 100;
-
+        endPosition.y = -numPalabra * altoPalabra;
+        endPosition.y -= baseline;
 
         rectTransform.anchoredPosition = startingPosition;
-        rectTransform.DOAnchorPos(position, Constants.tiempoAnimacionEntradaPalabraObjetivo).SetEase(Ease.OutExpo) ;
+        rectTransform.DOAnchorPos(endPosition, Constants.tiempoAnimacionEntradaPalabraObjetivo).SetEase(Ease.OutExpo) ;
     }
 }
 

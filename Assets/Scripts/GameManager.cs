@@ -179,6 +179,10 @@ public class GameManager : MonoBehaviour
         foreach (string silaba in poolDeSilabas)
         {
             PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
+            if (modoRomper)
+            {
+                palabraAuxController.handleModoRomperActivado();
+            }
         }
     }
 

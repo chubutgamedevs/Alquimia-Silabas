@@ -34,7 +34,13 @@ public class PalabraController : MonoBehaviour
     #endregion
 
     #region rb y movimiento
-
+    public void handleModoRomperActivado()
+    {
+        foreach(SilabaController sil in silabas)
+        {
+            sil.handleModoRomperActivado();
+        }
+    }
     public void irAlPuntoInicial()
     {
         if(silabas.Count > 0)
