@@ -53,7 +53,7 @@ public static class PoissonDiscSampling
 
 	public static List<Vector3> generatePoints()
     {
-		float radius = Mathf.Sqrt(2);
+		float radius = 1.6f;
 		Vector2 regionSize = new Vector2(Constants.maxX,Constants.maxY);
 		int rejectionSamples = 20;
 

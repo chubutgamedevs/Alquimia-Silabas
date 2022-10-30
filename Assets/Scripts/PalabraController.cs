@@ -57,6 +57,20 @@ public class PalabraController : MonoBehaviour
         }
     }
 
+    public void irAlPuntoInicialLuegoDeFormarPalabra()
+    {
+        desactivarConectores();
+        activarConectoresDespuesDe(Constants.tiempoDeAnimacionPalabraCorrecta);
+        if (this.transform == null)
+        {
+            return;
+        }
+        else
+        {
+            transform.DOMove(silabas[0].puntoInicial, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
+        }
+    }
+
     public void irAlPunto(Vector3 punto)
     {
         desactivarConectores();
