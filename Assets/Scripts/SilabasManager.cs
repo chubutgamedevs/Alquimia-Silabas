@@ -1,10 +1,8 @@
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SilabasManager : MonoBehaviour
 {
-    private float anchoSilaba = 1;
     public GameObject sampleSilaba;
 
     public GameManager gameManager;
@@ -15,12 +13,14 @@ public class SilabasManager : MonoBehaviour
     {
         EventManager.silabaEsClickeada += manejarClickASilaba;
         EventManager.silabasColisionan += UnirSilabas;
+        EventManager.activarConectoresDespuesDe += activarConectoresDespuesDe;
     }
 
     void OnDisable()
     {
         EventManager.silabaEsClickeada -= manejarClickASilaba;
         EventManager.silabasColisionan -= UnirSilabas;
+        EventManager.activarConectoresDespuesDe -= activarConectoresDespuesDe;
     }
 
     #endregion
@@ -38,10 +38,7 @@ public class SilabasManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (sampleSilaba)
-        {
-            anchoSilaba = sampleSilaba.GetComponent<BoxCollider>().size.x;
-        }
+
     }
 
     // Update is called once per frame
@@ -55,11 +52,13 @@ public class SilabasManager : MonoBehaviour
 
     #region metodos
     void UnirSilabas(SilabaController silaba, SilabaController otraSilaba)
-    {   //la primer silaba siempre es la que se está moviendo (checkear eventos)
-        silaba.getPalabraController().dejarQuieta();
-        otraSilaba.getPalabraController().dejarQuieta();
+    {   //la primer silaba siempre es la que se estï¿½ moviendo (checkear eventos)
+        PalabraController pController1 = silaba.getPalabraController();
+        PalabraController pController2 = otraSilaba.getPalabraController();
+    
+        silaba.disableDrag();
 
-        float deltaX = silaba.transform.position.x - otraSilaba.transform.position.x;
+        float deltaX = pController1.transform.position.x - pController2.transform.position.x;
 
         float signoDistanciaSilabas = Mathf.Sign(deltaX);
 
@@ -68,6 +67,7 @@ public class SilabasManager : MonoBehaviour
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
         otraSilaba.dejarQuietaYQuitarControlDeMouse();
+
 
         SilabaController izquierda = silaba;
         SilabaController derecha = otraSilaba;
@@ -78,30 +78,37 @@ public class SilabasManager : MonoBehaviour
             derecha = silaba;
         }
 
-        //unimos palabra
-        PalabraController palabra = izquierda.getPalabraController();
-        palabra.aniadirPalabraAlFinal(derecha.getSilabasPalabra());
-       
+        List<SilabaController> todasLasSilabas = izquierda.getSilabasPalabra();
+        todasLasSilabas.AddRange(derecha.getSilabasPalabra());
+
+        if (otraSilabaEstaALaIzquierda)
+        {
+            pController1.setSilabas(todasLasSilabas);
+        }
+        else
+        {
+            pController1.setSilabas(todasLasSilabas);
+        }
+
+        Destroy(pController2.gameObject);
+
         izquierda.silabaDerecha = derecha;
         derecha.silabaIzquierda = izquierda;
-
-        izquierda.getPalabraController().acomodarSilabasEnElEspacio();
 
         izquierda.enableDrag();
         derecha.enableDrag();
 
-        EventManager.onSilabasUnidas(izquierda,derecha);
-        
+        pController1.acomodarSilabasEnElEspacio();
+
+        EventManager.onSilabasUnidas(izquierda, derecha);
     }
 
-    void unirPalabra(List<SilabaController> silabasPalabra)
+    void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)
     {
-        GameObject palabraObj = gameManager.nuevaPalabraVacia();
-        PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
-
-        palabraController.setSilabas(silabasPalabra);
-
-
+        foreach(SilabaController silAux in silabasAux)
+        {
+            silAux.restablecerConectoresDespuesDe(t);
+        }
     }
 
     void manejarClickASilaba(SilabaController silaba)
@@ -109,7 +116,7 @@ public class SilabasManager : MonoBehaviour
         if (gameManager.modoRomper)
         {
             silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            gameManager.activarConectoresDespuesDe1Seg();
+            EventManager.onModoRomperDesactivado();
         }
     }
 

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+
 
 public class PalabrasObjetivoManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         EventManager.palabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
         EventManager.palabraFormada += esclarecerPalabra;
+
     }
 
     void OnDisable()
@@ -26,9 +29,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     private void Start()
     {
-        //palabrasObjetivo = obtenerPalabrasObjetivoHijas();
-        //destruirPalabrasObjetivoHijas();
-        //testSettearPalabraObjetivo(); //testing
+        palabrasObjetivo = new List<PalabraObjetivoController>();
     }
 
     #endregion
@@ -46,18 +47,9 @@ public class PalabrasObjetivoManager : MonoBehaviour
         return palabrasObjetivoAux;
     }
 
-    public void settearPalabrasObjetivo(List<(string, List<string>)> palabras)
+    public void settearPalabrasObjetivo(List<PalabraSilabas> palabras)
     {
-        destruirPalabrasObjetivoHijas();
-
-        int indicePalabra = 0;
-
-        foreach ((string, List<string>) palabra in palabras)
-        {
-            colocarNuevaPalabraObjetivo(palabra.Item1, palabra.Item2,indicePalabra);
-
-            indicePalabra++;
-        }
+        StartCoroutine(IEcolocarNuevasPalabrasObjetivo(palabras));
     }
     #endregion
 
@@ -65,19 +57,22 @@ public class PalabrasObjetivoManager : MonoBehaviour
     #region metodos
     public void esclarecerPalabras()
     {
-        foreach(PalabraObjetivoController pal in palabrasObjetivo)
+        foreach (PalabraObjetivoController pal in palabrasObjetivo)
         {
             pal.esclarecerSilabas();
         }
     }
-
     public void esclarecerPalabra(PalabraController palabra, string palabraAComparar)
     {
-        foreach (PalabraObjetivoController pal in palabrasObjetivo)
+        PalabraObjetivoController pal = palabrasObjetivo.Find(x => x.palabra.ToLower() == palabraAComparar.ToLower());
+
+        if (pal)
         {
-            if(pal.palabra.ToLower() == palabraAComparar.ToLower())
+            pal.esclarecerSilabas();
+            palabrasObjetivo.Remove(pal);
+            if(palabrasObjetivo.Count == 0)
             {
-                pal.esclarecerSilabas();
+                EventManager.onNosQuedamosSinPalabras();
             }
         }
     }
@@ -90,17 +85,42 @@ public class PalabrasObjetivoManager : MonoBehaviour
     }
 
 
-
-    void destruirPalabrasObjetivoHijas()
+    IEnumerator IEcolocarNuevasPalabrasObjetivo(List<PalabraSilabas> palabrasNuevas)
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
+        GameObject[] palabrasObjetivoActuales = GameObject.FindGameObjectsWithTag(Constants.tagPalabraObjetivo);
+
+        if(palabrasObjetivoActuales.Length > 0) { 
+
+            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+            {
+                Vector3 posNueva = palabraOculta.transform.position;
+                posNueva += new Vector3(500, 0, 0);
+
+                if(palabraOculta.transform != null)
+                {
+
+                    palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
+                }
+            }
+
+            yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);
+
+            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+            {
+                Destroy(palabraOculta);
+            }
+
+            transform.DetachChildren();
         }
 
-        transform.DetachChildren();
+        int indicePalabra = 0;
 
-        palabrasObjetivo = new List<PalabraObjetivoController>();
+        foreach (PalabraSilabas palabra in palabrasNuevas)
+        {
+            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
+
+            indicePalabra++;
+        }
     }
 
 
@@ -127,34 +147,4 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     #endregion
 
-
-
-
-    #region testing
-
-    public void testSettearPalabraObjetivo()
-    {
-        string palabra = "mañana";
-        List<string> silabas = new List<string>();
-        silabas.Add("ma");
-        silabas.Add("ña");
-        silabas.Add("na");
-
-        string palabra1 = "silabas";
-        List<string> silabas1 = new List<string>();
-        silabas1.Add("si");
-        silabas1.Add("la");
-        silabas1.Add("bas");
-
-        List<(string, List<string>)> palabrasObj = new List<(string, List<string>)>();
-
-        palabrasObj.Add((palabra, silabas));
-        palabrasObj.Add((palabra1, silabas1));
-
-        settearPalabrasObjetivo(palabrasObj);
-
-        Invoke("esclarecerPalabraTest", 0.7f);
-    }
-
-    #endregion
 }

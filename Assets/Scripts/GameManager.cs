@@ -1,27 +1,48 @@
-using Newtonsoft.Json;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+public static class Constants
+{
+    public static string tagPalabraObjetivo = "PalabraObjetivo";
+
+    public static float tiempoHastaDejarQuieta = 2;
+    public static float tiempoDeAnimacionPalabraCorrecta = 4f;
+    public static float tiempoHastaIrAlPunto = 0.5f;
+    public static float tiempoAnimacionDestruccion = 1f;
+    public static float tiempoAnimacionDestruccionSilaba = 0.5f;
+    public static float tiempoAnimacionSalidaPalabraObjetivo = 2f;
+    public static float tiempoAnimacionEntradaPalabraObjetivo = 4f;
+    public static float tiempoHastaRenovacionDePalabras = 2f;
+
+
+    public static float maxY = 6;
+    public static float minY = 0;
+
+    public static float maxX = 12;
+    public static float minX = 0;
+
+    public static float anchoSilaba = 1;
+}
 
 public class GameManager : MonoBehaviour
 {
+
     public bool modoRomper = false;
-    private bool _modoRomper = false;
+
+    public List<PalabraSilabas> palabrasTarget;
+    public List<string> poolDeSilabas;
+
+    private GameObject _juego;
+
+    private PalabrasDeserializer palabrasDeserializer;
 
     public GameObject palabraPrefab;
     public GameObject silabaPrefab;
 
-    public List<(string,List<string>)> palabrasTarget; //tupla go brrr (tupla es el tipo de dato (tipo a, tipo b, ...)
-    public string palabraActual = "";
+    private List<Vector3> puntos;
 
-    private GameObject _juego;
-
-
-    //sacados de palabras.json
-    public Dictionary<string, List<string>> palabrasYSilabas;
-    //lista de palabras
-    List<string> wordList;
+    private string nivel = "json/niveles/nivel1";
 
     #region ciclo de vida
 
@@ -29,8 +50,9 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         _juego = getJuegoGameObject();
-        palabrasTarget = generarPalabrasTargetRandom(4);
-        startGame();
+        palabrasDeserializer = new PalabrasDeserializer(nivel);
+
+        startGameConPool();
     }
 
     // Update is called once per frame
@@ -51,8 +73,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        cargarPalabrasYSilabas();
-
         if (instance == null)
         {
             instance = this;
@@ -70,195 +90,145 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.modoRomperActivado += ActivarModoRomper;
-        EventManager.modoRomperDesActivado += DesActivarModoRomper;
-
+        EventManager.modoRomperActivado += activarModoRomper;
+        EventManager.modoRomperDesActivado += desActivarModoRomper;
+        EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
     }
 
     void OnDisable()
     {
         EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.modoRomperActivado -= ActivarModoRomper;
-        EventManager.modoRomperDesActivado -= DesActivarModoRomper;
+        EventManager.modoRomperActivado -= activarModoRomper;
+        EventManager.modoRomperDesActivado -= desActivarModoRomper;
+        EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
     }
+
+
     #endregion
 
     #region metodos
 
-    public void startGame()
+
+    public void startGameConPool()
     {
-        palabrasTarget = generarPalabrasTargetRandom(4);
-        anunciarPalabrasTarget();
-        colocarEnPantallaPalabra(palabrasTarget[0]);
-        desordenarPalabras();
+        puntos = PoissonDiscSampling.generatePoints();
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(2);
+        poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
+        anunciarPalabrasTarget(palabrasTarget);
+        colocarEnPantallaSilabas();
+        Invoke("desordenarPalabras", 0.01f);
     }
 
-    void anunciarPalabrasTarget()
+    public void nuevaTandaDePalabras()
     {
-        //larga vida a las tuplas
-        EventManager.onPalabrasSeleccionadasParaJuego(palabrasTarget);
+        Invoke("limpiarPalabras", Constants.tiempoHastaRenovacionDePalabras - 0.3f);
+        Invoke("startGameConPool",Constants.tiempoHastaRenovacionDePalabras);
     }
 
-    public void ActivarModoRomper()
+    public void limpiarPalabras()
+    {
+        foreach(GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
+        {
+            Destroy(palabra);
+        }
+
+    }
+
+    #region modo romper
+    public void toggleModoRomper()
+    {
+        modoRomper = !modoRomper;
+
+        if (modoRomper)
+        {
+            EventManager.onModoRomperActivado();
+        }
+        else
+        {
+            EventManager.onModoRomperDesactivado();
+        }
+    }
+
+    public void activarModoRomper()
     {
         modoRomper = true;
     }
 
-    public void DesActivarModoRomper()
+    public void desActivarModoRomper()
     {
         modoRomper = false;
     }
 
-    public void ToggleModoRomper()
-    {
-        if (_modoRomper)
-        {
-            EventManager.onModoRomperDesactivado();
-        }
-        else
-        {
-            EventManager.onModoRomperActivado();
-        }
-
-        _modoRomper = !_modoRomper;
-
-    }
-
-    #region json handling
-    private void cargarPalabrasYSilabas()
-    {
-        TextAsset json = Resources.Load<TextAsset>("silabas");
-
-        palabrasYSilabas = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json.text);
-        wordList = new List<string>(palabrasYSilabas.Keys);
-    }
     #endregion
+    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabrasRecibidas)
+    {
+        List<string> pool = new List<string>();
+
+        foreach (PalabraSilabas palabra in palabrasRecibidas)
+        {
+            pool.AddRange(palabra.silabas);
+        }
+
+        var silabasSinRepeticion = new HashSet<string>(pool);
+
+        return new List<string>(silabasSinRepeticion);
+    }
+
+    void colocarEnPantallaSilabas()
+    {
+        foreach (string silaba in poolDeSilabas)
+        {
+            PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
+            if (modoRomper)
+            {
+                palabraAuxController.handleModoRomperActivado();
+            }
+        }
+    }
+
+    public Vector3 getRandomPunto()
+    {
+        int randomIndex = Random.Range(0, puntos.Count);
+        Vector3 punto = puntos[randomIndex];
+
+        puntos.Remove(punto);
+
+        return punto;
+    }
+
+    void anunciarPalabrasTarget(List<PalabraSilabas>  target)
+    {
+        //larga vida a las tuplas
+        EventManager.onPalabrasSeleccionadasParaJuego(target);
+    }
+
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
-        string palabraAux = silaba.getPalabraString().ToUpper();
         PalabraController palabraFormada = silaba.getPalabraController();
+        string palabraAux = palabraFormada.getPalabraString().ToUpper();
 
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
 
-        Debug.Log("Palabra target: ");
-        Debug.Log(this.palabraActual);
-
-        if(palabraActual.ToUpper() == palabraAux)
+        foreach (PalabraSilabas palabra in this.palabrasTarget)
         {
-            Debug.Log("Palabra formada correctamente");
-            Invoke("continuarConSiguientePalabra", 0.5f);
-
-            EventManager.onPalabraFormada(palabraFormada, palabraAux);
-        }
-
-    }
-
-    private void continuarConSiguientePalabra()
-    {
-        eliminarTodasLasPalabrasEnPantalla();
-        if(palabrasTarget.Count > 0)
-        {
-            palabrasTarget.RemoveAt(0);
-            colocarEnPantallaPalabra(palabrasTarget[0]);
-            desordenarPalabras();
-        }
-    }
-
-    internal GameObject nuevaPalabraVacia()
-    {
-        GameObject palabraObj = Instantiate(palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-        return palabraObj;
-    }
-
-    private List<(string, List<string>)> generarPalabrasTargetRandom(int v)
-    {
-        List<(string, List<string>)> palabrasAux = new List<(string, List<string>)>();
-
-        for (int i = 0; i < v; i++)
-        {
-            palabrasAux.Add(nuevaPalabraRandom());
-        }
-
-        return palabrasAux;
-    }
-
-    private void colocarEnPantallaPalabra((string,List<string>) palabraTupla)
-    {
-        nuevaPalabraActual(palabraTupla);
-    }
-
-    public (string, List<string>) nuevaPalabraRandom() //retorna tupla, tupla go brr
-    {
-            
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        while (palabrasYSilabas[wordList[randomIndex]].Count == 1)
-        {
-            randomIndex = UnityEngine.Random.Range(0, wordList.Count);
-        }
-        return (wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);        
-    }
-
-    internal PalabraController nuevaPalabraActual((string palabra, List<string> silabas) palabra)
-    {
-        palabraActual = palabra.palabra;
-
-        GameObject palabraAux = nuevaPalabraVacia();
-        PalabraController palabraAuxController = palabraAux.GetComponent<PalabraController>();
-
-        palabraAuxController.encontrarPadre();
-
-        foreach (string silaba in palabra.silabas) {
-            SilabaController silabaAux = nuevaSilaba(silaba);
-            silabaAux.setPalabra(palabraAux);
-            palabraAuxController.nuevaSilabaAlFinal(silabaAux);
-        }
-
-        return palabraAuxController;
-    }
-
-    public void eliminarTodasLasPalabrasEnPantalla()
-    {
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo y las matamos a todas
-            if (hijo.gameObject.CompareTag("Palabra")) 
+            if (palabra.palabra.ToUpper() == palabraAux)
             {
-                hijo.gameObject.tag = "PalabraDestruida";
-                GameObject.Destroy(hijo.gameObject);
+                EventManager.onPalabraFormada(palabraFormada, palabraAux);
+                return;
             }
         }
     }
 
     public void desordenarPalabras()
     {
-        List<PalabraController> palabras = new List<PalabraController>();
+        GameObject[] palabras = GameObject.FindGameObjectsWithTag("Palabra");
 
-        foreach(Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo
-            if (hijo.gameObject.CompareTag("Palabra"))
-            {
-                palabras.Add(hijo.gameObject.GetComponent<PalabraController>());
-            }
-        }
-
-        foreach(PalabraController palabra in palabras)
-        {   
+        foreach (GameObject palabra in palabras)
+        {
             //rompemos todas
-            palabra.romperEnSilabasYColocarEnPantalla();
-        }
-
-        this.activarConectoresDespuesDe1Seg();
-
-    }
-
-    public void activarConectoresDespuesDe1Seg()
-    {
-        foreach (Transform hijo in _juego.transform)
-        {   //conseguimos las palabras hijo de vuelta, porque ahora son palabras de una sola silaba
-            PalabraController palabraAux = hijo.gameObject.GetComponent<PalabraController>();
-            palabraAux.activarConectoresDespuesDe(1f);
+            palabra.GetComponent<PalabraController>().romperEnSilabasYColocarEnPantalla();
         }
     }
 
@@ -270,15 +240,56 @@ public class GameManager : MonoBehaviour
         }
         return _juego;
     }
-    internal SilabaController nuevaSilaba(string silaba)
-    {
-        GameObject silabaObj = Instantiate(silabaPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        SilabaController silabaCont = silabaObj.GetComponent<SilabaController>();
 
+    #endregion
+}
+
+public static class Instantiator
+{
+    internal static SilabaController nuevaSilaba(this GameManager gm, string silaba, Vector3 punto)
+    {
+        GameObject silabaObj = GameManager.Instantiate(gm.silabaPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        SilabaController silabaCont = silabaObj.GetComponent<SilabaController>();
+        silabaCont.setPunto(punto);
         silabaCont.setSilaba(silaba);
 
         return silabaCont;
     }
 
-    #endregion
+    internal static GameObject nuevaPalabraVacia(this GameManager gm)
+    {
+        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        return palabraObj;
+    }
+
+    internal static PalabraController nuevaPalabra(this GameManager gm,string silaba, Vector3 punto)
+    {
+        GameObject palabraObj = gm.nuevaPalabraVacia();
+        PalabraController controller = palabraObj.GetComponent<PalabraController>();
+
+        controller.setSilaba(silaba, punto);
+
+        return controller;
+    }
+
+    public static PalabraController nuevaPalabra(this GameManager gm,List<SilabaController> silabas)
+    {
+        GameObject palabraObj = gm.nuevaPalabraVacia();
+        PalabraController palabraController = palabraObj.GetComponent<PalabraController>();
+
+        palabraController.setSilabas(silabas);
+
+        return palabraController;
+    }
+
+    public static PalabraController nuevaPalabra(this GameManager gm,SilabaController silaba)
+    {
+        List<SilabaController> aux = new List<SilabaController>();
+        aux.Add(silaba);
+
+        return gm.nuevaPalabra(aux);
+    }
+
+
 }

@@ -1,12 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PalabraObjetivoController : MonoBehaviour
 {
     public string palabra = "";
 
-    int anchoPalabra = -35;
+    float anchoPalabra = -35;
+    float altoPalabra = 30;
+
+    float baseline = 20;
 
     [SerializeField] float minFontSize = 20;
 
@@ -19,6 +22,9 @@ public class PalabraObjetivoController : MonoBehaviour
 
     #region ciclo de vida
 
+    private void Start()
+    {
+    }
     private void Awake()
     {
         if (!rectTransform)
@@ -26,13 +32,12 @@ public class PalabraObjetivoController : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
         }
 
+        anchoPalabra = rectTransform.rect.width * rectTransform.localScale.x;
+        altoPalabra = rectTransform.rect.height;
+
         settearPosicionInicial();
     }
 
-    private void Start()
-    {
-       
-    }
 
     #endregion
 
@@ -105,6 +110,8 @@ public class PalabraObjetivoController : MonoBehaviour
         silabasControllers = new List<SilabaObjetivoController>();
     }
 
+
+    #region animaciones
     public void esclarecerSilabas()
     {
         foreach (SilabaObjetivoController sil in silabasControllers)
@@ -122,6 +129,8 @@ public class PalabraObjetivoController : MonoBehaviour
     }
 
 
+    #endregion
+
     internal GameObject nuevaSilabaObjetivoVacia()
     {
         GameObject SilabaObj = Instantiate(SilabaObjetivoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -131,13 +140,15 @@ public class PalabraObjetivoController : MonoBehaviour
 
     public void ubicarPalabra(int numPalabra)
     {
-        Vector2 position = new Vector2();
-        position.y += numPalabra * anchoPalabra;
+        Vector2 startingPosition = rectTransform.rect.position + new Vector2(0,400);
+        Vector2 endPosition = startingPosition;
 
-        rectTransform.anchoredPosition = position;
+        endPosition.y = -numPalabra * altoPalabra;
+        endPosition.y -= baseline;
+
+        rectTransform.anchoredPosition = startingPosition;
+        rectTransform.DOAnchorPos(endPosition, Constants.tiempoAnimacionEntradaPalabraObjetivo).SetEase(Ease.OutExpo) ;
     }
 }
 
 #endregion
-
-

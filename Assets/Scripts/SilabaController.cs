@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Random = System.Random;
+using Random = UnityEngine.Random;
+using DG.Tweening;
+
 
 public class SilabaController : MonoBehaviour
 {
@@ -15,8 +16,7 @@ public class SilabaController : MonoBehaviour
     private GameObject palabraParent;
     private PalabraController palabraController;
 
-    public Rigidbody rb;
-    private RigidbodyConstraints rbInitialConstraints;
+
     
     public String silaba = "CIS";
 
@@ -26,18 +26,21 @@ public class SilabaController : MonoBehaviour
 
     private BoxCollider boxCollider;
 
+    public Animator animadorSilaba;
+
+    internal Vector3 puntoInicial = new Vector3(0,0,0);
+
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += enableDrag;
-        EventManager.modoRomperActivado += disableDrag;
-
+        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.modoRomperActivado += handleModoRomperActivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= enableDrag;
-        EventManager.modoRomperActivado -= disableDrag;
+        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.modoRomperActivado -= handleModoRomperActivado;
     }
 
     public void disableDrag()
@@ -45,16 +48,25 @@ public class SilabaController : MonoBehaviour
         this.drag.disableDrag();
     }
 
+    public void disableDragPorSegundos(float segundos)
+    {
+        disableDrag();
+        Invoke("enableDrag", segundos);
+    }
+
     public void enableDrag()
     {
-        this.drag.enableDrag();
+        if (this)
+        {
+            this.drag.enableDrag();
+        }
     }
 
     private void OnMouseDown()
     {
         EventManager.onSilabaEsClickeada(this);
-        this.dejarQuieta();
     }
+
     void OnMouseDrag()
     {
         if (drag.dragEnabled)
@@ -63,21 +75,23 @@ public class SilabaController : MonoBehaviour
         }
     }
 
-    internal void dejarQuieta()
+
+    internal void dejarQuietaDespuesDe(float segundos)
     {
-        this.rb.velocity = Vector3.zero;
-        this.rb.constraints = RigidbodyConstraints.FreezeAll;
+        Invoke("dejarQuieta", segundos);
     }
 
-    internal void habilitarMovimientoRb()
+    internal void dejarQuietaDespuesDeRandom(float segundos)
     {
-        this.rb.constraints = this.rbInitialConstraints;
+        Invoke("dejarQuieta", Random.Range(segundos, segundos*2));
     }
+
 
 
     void OnMouseUp()
     {
-        this.palabraController.moviendose = false;
+        this.palabraController.irAlPuntoInicial();
+        EventManager.onComprobarBounds();
     }
 
     #endregion eventos
@@ -86,12 +100,6 @@ public class SilabaController : MonoBehaviour
     private void Awake()
     {
         drag = gameObject.GetComponent<Drag>();
-
-        if (!rb)
-        {
-            rb = gameObject.GetComponent<Rigidbody>();
-        }
-        rbInitialConstraints = rb.constraints;
 
         if (!texto)
         {
@@ -102,10 +110,6 @@ public class SilabaController : MonoBehaviour
         boxCollider = GetComponent<BoxCollider>();
     }
 
-    internal float getYReal()
-    {
-        return this.transform.position.y + palabraParent.transform.position.y;
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -113,7 +117,6 @@ public class SilabaController : MonoBehaviour
         silabaIzquierda = null;
         silabaDerecha = null;
 
-        //silaba = RandomString(2); /*testing*/
         texto.text = silaba;
 
         setPalabra(this.transform.parent.gameObject);
@@ -128,6 +131,10 @@ public class SilabaController : MonoBehaviour
     #endregion ciclo de vida
 
     #region getters & setters
+    public void setPunto(Vector3 punto)
+    {
+        this.puntoInicial = punto;
+    }
     ConectoresManager getConectoresManager(){
         return gameObject.transform.GetChild(2).gameObject.GetComponent<ConectoresManager>();
     }
@@ -183,9 +190,24 @@ public class SilabaController : MonoBehaviour
         return this.palabraController;
     }
 
-    #endregion 
+    #endregion
 
     #region metodos
+  
+    public void handleModoRomperActivado()
+    {
+        this.disableDrag();
+        this.entrarAnimacionModoRomper();
+        this.desactivarConectores();
+    }
+    void handleModoRomperDesactivado()
+    {
+        this.enableDrag();
+        this.salirDeTodasLasAnimaciones();
+        this.restablecerConectores();
+    }
+
+
     public List<SilabaController> getSilabasPalabra()
     {
         SilabaController recorredorSilabas = null;
@@ -212,13 +234,33 @@ public class SilabaController : MonoBehaviour
     {
         this.palabraController.moviendose = false;
         drag.disableDrag();
-        this.dejarQuieta();
+    }
+
+    public void eliminarLuegoDeFormacionPalabraEnSegundos(float segundos)
+    {
+        Invoke("eliminarLuegoDeFormacion", segundos);
+    }
+
+    public void eliminarLuegoDeFormacion()
+    {
+        StartCoroutine(IEeliminarluegoDeFormacion());
+    }
+
+    IEnumerator IEeliminarluegoDeFormacion()
+    {
+        if(this.transform != null)
+        {
+            transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccionSilaba);
+        }
+        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion*1.1f);
+        Destroy(this.gameObject);
     }
 
     public void separarSilabaDeOtrasSilabas()
     {
 
-        if(silabaIzquierda | silabaDerecha) {
+        if (silabaIzquierda | silabaDerecha)
+        {
             if (silabaIzquierda)
             {
                 silabaIzquierda.silabaDerecha = null;
@@ -232,13 +274,7 @@ public class SilabaController : MonoBehaviour
             }
 
             this.silabaIzquierda = null;
-            this.silabaDerecha  = null;
-
-            this.dejarQuietaYQuitarControlDeMouse();
-            Vector3 newPos = transform.position;
-            newPos.y += getAlto() * Mathf.Sign(random.Next(-1, 1));
-
-            transform.position = newPos;
+            this.silabaDerecha = null;
 
             conectoresManager.activarConectores();
 
@@ -250,18 +286,21 @@ public class SilabaController : MonoBehaviour
     {
         this.silabaIzquierda = null;
         this.silabaDerecha = null;
-        this.separarSilabaDeOtrasSilabas();
     }
 
-    public void empujarEnDireccionAleatoria()
+
+    public void restablecerConectoresDespuesDe(float t)
     {
-        //hardcoding bad
-        habilitarMovimientoRb();
-        this.rb.AddForce(UnityEngine.Random.onUnitSphere * 15, ForceMode.Impulse);
+        Invoke("restablecerConectores", t);
     }
 
     public void restablecerConectores()
     {
+        if (!conectoresManager)
+        {
+            return;
+        }
+
         if (!silabaIzquierda)
         {
             conectoresManager.activarConectorIzquierdo();
@@ -272,27 +311,54 @@ public class SilabaController : MonoBehaviour
         }
 
         drag.enableDrag();
+        
     }
 
     public void desactivarConectores()
     {
-        conectoresManager.desActivarConectores();
+        if (conectoresManager)
+        {
+            conectoresManager.desActivarConectores();
+        }
     }
+
+    public void desactivarConectoresPor(float tiempo)
+    {
+        conectoresManager.gameObject.SetActive(true);
+        desactivarConectores();
+        restablecerConectoresDespuesDe(tiempo);
+    }
+
+    public void desactivarConectoresIndefinidamente()
+    {
+        if (conectoresManager)
+        {
+            conectoresManager.desActivarConectores();
+            conectoresManager.gameObject.SetActive(false);
+        }
+    }
+
 
 
     #endregion
 
-    #region testing
 
-    //for testing purposes only
-    private static Random random = new Random();
-    public static string RandomString(int length)
+    #region animaciones
+    public void playAnimacionSilabaCorrecta()
     {
-
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
+        animadorSilaba.Play("silabaGreenearOK");
     }
 
-    #endregion testing
+    public void entrarAnimacionModoRomper()
+    {
+        animadorSilaba.Play("silabaEnModoRomper");
+    }
+
+    public void salirDeTodasLasAnimaciones()
+    {
+        animadorSilaba.Play("rest");
+    }
+    #endregion
+
 }
+

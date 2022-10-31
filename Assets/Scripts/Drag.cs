@@ -3,7 +3,6 @@ using UnityEngine;
 public class Drag : MonoBehaviour
 {
 
-    private Vector3 dragOffset;
     private Vector3 parentDragOffset;
 
     public Camera cam;
@@ -23,7 +22,6 @@ public class Drag : MonoBehaviour
 
     void OnMouseDown()
     {
-        dragOffset = transform.position - GetMousePos();
         parentDragOffset = transform.parent.position - GetMousePos();
     }
 
@@ -35,10 +33,6 @@ public class Drag : MonoBehaviour
             if(transform.parent.CompareTag("Palabra"))
             {
                 transform.parent.position = GetMousePos() + parentDragOffset;
-            }
-            else
-            {
-                transform.position = GetMousePos() + dragOffset;
             }
         }
     }

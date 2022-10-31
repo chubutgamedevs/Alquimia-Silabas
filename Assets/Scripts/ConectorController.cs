@@ -5,23 +5,14 @@ using UnityEngine;
 public class ConectorController : MonoBehaviour
 {
     
-    private SilabaController silabaController;
-    public GameObject silaba;
-
-    float anchoSilaba;
-
-    private void Awake()
-    {
-        if (!silaba)
-        {
-            silaba = transform.parent.transform.parent.gameObject;
-        }
-        silabaController = silaba.GetComponent<SilabaController>();        
-    }
+    public SilabaController silabaController;
 
     public void desActivarConector()
     {
-        gameObject.SetActive(false);
+        if (gameObject)
+        {
+            gameObject.SetActive(false);
+        }
     }
     public void activarConector()
     {
