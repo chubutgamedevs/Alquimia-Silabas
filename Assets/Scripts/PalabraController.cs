@@ -100,7 +100,7 @@ public class PalabraController : MonoBehaviour
         }
         else
         {
-            transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.Linear);
+            transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutExpo);
         }
     }
 
@@ -139,12 +139,13 @@ public class PalabraController : MonoBehaviour
     #region setters y getters
     void comprobarBounds()
     {
-        Vector3 vectorAux = new Vector3(Constants.anchoSilaba, 0, 0);
+        float ancho = Constants.anchoSilaba;
+        Vector3 vectorAux = new Vector3(ancho, 0, 0);
 
         for (int i = 0; i<silabas.Count;i++)
         {
             //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
-            if (!Ubicador.estaDentroDelJuego(silabas[0].puntoInicial + vectorAux*i))
+            if (!Ubicador.estaDentroDelJuego(silabas[0].puntoInicial + vectorAux*i + new Vector3(ancho/2,0,0)))
             {
                 this.settearPuntoInicialRandom();
                 return;
@@ -276,14 +277,14 @@ public class PalabraController : MonoBehaviour
     public void eliminarSilabasLuegoDeFormacion(List<SilabaController> silabasAEliminar)
     {
         //multiplicamos por 1000 porque vamos a trabajar con milisegundos
-        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.5f;
+        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 /2;
         int incremento = 100;
 
         float tiempoDeEliminacion = tiempoAnimacion + incremento;
         foreach(SilabaController sil in silabasAEliminar)
         {
             //Dividimos por 1000 por milisegundos
-            sil.eliminarLuegoDeFormacionPalabraEnSegundos( + tiempoDeEliminacion/1000);
+            sil.eliminarLuegoDeFormacion();
             this.silabas.Remove(sil);
 
             tiempoDeEliminacion = tiempoAnimacion + incremento;

@@ -16,10 +16,10 @@ public static class Constants
     public static float tiempoHastaRenovacionDePalabras = 2f;
 
 
-    public static float maxY = 6;
+    public static float maxY = 8;
     public static float minY = 0;
 
-    public static float maxX = 12;
+    public static float maxX = 11;
     public static float minX = 0;
 
     public static float anchoSilaba = 1;

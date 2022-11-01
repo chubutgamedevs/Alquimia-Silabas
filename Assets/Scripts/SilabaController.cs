@@ -24,7 +24,7 @@ public class SilabaController : MonoBehaviour
 
     private Drag drag;
 
-    private BoxCollider boxCollider;
+    private BoxCollider2D boxCollider;
 
     public Animator animadorSilaba;
 
@@ -107,7 +107,7 @@ public class SilabaController : MonoBehaviour
         }
 
         conectoresManager = getConectoresManager();
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
 
@@ -147,11 +147,6 @@ public class SilabaController : MonoBehaviour
     internal void setSilaba(string silaba)
     {
         this.silaba = silaba.ToUpper();
-    }
-
-    public float getAncho()
-    {
-        return boxCollider.bounds.size.x;
     }
 
     public float getAlto()
@@ -236,10 +231,6 @@ public class SilabaController : MonoBehaviour
         drag.disableDrag();
     }
 
-    public void eliminarLuegoDeFormacionPalabraEnSegundos(float segundos)
-    {
-        Invoke("eliminarLuegoDeFormacion", segundos);
-    }
 
     public void eliminarLuegoDeFormacion()
     {
