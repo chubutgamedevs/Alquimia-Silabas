@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="conectores.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.33071229"
+     inkscape:cx="467.17344"
+     inkscape:cy="604.75526"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path341"
+       style="fill:#ff0000;stroke-width:0.0337531"
+       d="M 50.00005,0 A 50,50 0 0 0 0,50.00005 50,50 0 0 0 50.00005,100.0001 50,50 0 0 0 93.27131,75.00008 H 50.00005 V 25.00003 H 93.30128 A 50,50 0 0 0 50.00005,0 Z" />
+    <path
+       id="path341-3-9"
+       style="fill:#0000ff;stroke-width:0.0337531;opacity:0.99"
+       d="M 121.19868,129.60661 A 50,50 0 0 0 77.897441,154.60664 H 21.19858 v 50.00005 h 56.698861 a 50,50 0 0 0 43.301239,25.00002 50,50 0 0 0 50.00005,-50.00005 50,50 0 0 0 -50.00005,-50.00005 z" />
+  </g>
+</svg>

@@ -7,7 +7,7 @@ public static class Constants
     public static string tagPalabraObjetivo = "PalabraObjetivo";
 
     public static float tiempoHastaDejarQuieta = 2;
-    public static float tiempoDeAnimacionPalabraCorrecta = 4f;
+    public static float tiempoDeAnimacionPalabraCorrecta = 2f;
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
     public static float tiempoAnimacionDestruccionSilaba = 0.5f;
@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         _juego = getJuegoGameObject();
         palabrasDeserializer = new PalabrasDeserializer(nivel);
 
