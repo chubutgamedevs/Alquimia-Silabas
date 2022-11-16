@@ -55,7 +55,9 @@ public class SilabasManager : MonoBehaviour
     {   //la primer silaba siempre es la que se est� moviendo (checkear eventos)
         PalabraController pController1 = silaba.getPalabraController();
         PalabraController pController2 = otraSilaba.getPalabraController();
-    
+
+        int countSilabas1 = pController1.silabas.Count;
+
         silaba.disableDrag();
 
         float deltaX = pController1.transform.position.x - pController2.transform.position.x;
@@ -67,7 +69,6 @@ public class SilabasManager : MonoBehaviour
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
         otraSilaba.dejarQuietaYQuitarControlDeMouse();
-
 
         SilabaController izquierda = silaba;
         SilabaController derecha = otraSilaba;
@@ -98,7 +99,8 @@ public class SilabasManager : MonoBehaviour
         izquierda.enableDrag();
         derecha.enableDrag();
 
-        pController1.acomodarSilabasEnElEspacio();
+
+        pController1.acomodarSilabasEnElEspacio(countSilabas1);
 
         EventManager.onSilabasUnidas(izquierda, derecha);
     }
