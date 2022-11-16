@@ -9,7 +9,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
 
-    private float scale = 4;
 
     #region eventos
     void OnEnable()

@@ -90,7 +90,6 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp()
     {
-        this.palabraController.irAlPuntoInicial();
         EventManager.onComprobarBounds();
     }
 

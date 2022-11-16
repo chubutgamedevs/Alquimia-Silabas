@@ -142,14 +142,19 @@ public class PalabraController : MonoBehaviour
         float ancho = Constants.anchoSilaba;
         Vector3 vectorAux = new Vector3(ancho, 0, 0);
 
-        for (int i = 0; i<silabas.Count;i++)
+        int maxIndice = silabas.Count - 1;
+
+        if(maxIndice < 0)
         {
-            //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
-            if (!Ubicador.estaDentroDelJuego(silabas[0].puntoInicial + vectorAux*i + new Vector3(ancho/2,0,0)))
-            {
-                this.settearPuntoInicialRandom();
-                return;
-            }
+            return;
+        }
+
+        //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
+        if (!Ubicador.estaDentroDelJuego(silabas[0].transform.position - vectorAux + new Vector3(ancho/2,0,0)) || 
+            !Ubicador.estaDentroDelJuego(silabas[maxIndice].transform.position + vectorAux * (maxIndice + 1) + new Vector3(ancho / 2, 0, 0)))
+        {
+            this.irAlPuntoInicialLento();
+            return;
         }
 
         //si llegamos hasta acá volvemos al punto inicial?
