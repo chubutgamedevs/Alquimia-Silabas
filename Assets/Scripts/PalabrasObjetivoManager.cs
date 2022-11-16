@@ -31,7 +31,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
     private void Start()
     {
         palabrasObjetivo = new List<PalabraObjetivoController>();
-        //transform.DOScale(new Vector3(scale, scale, 1), 1f);
     }
 
     #endregion
@@ -106,7 +105,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
                 }
             }
 
-            transform.DOScale(new Vector3(1, 1, 1), Constants.tiempoAnimacionSalidaPalabraObjetivo);
             yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);
 
             foreach (GameObject palabraOculta in palabrasObjetivoActuales)
@@ -125,7 +123,6 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
             indicePalabra++;
         }
-        transform.DOScale(new Vector3(scale, scale, 1), 0.001f);
     }
 
 
