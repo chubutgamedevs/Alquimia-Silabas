@@ -56,11 +56,13 @@ public class SilabasManager : MonoBehaviour
         PalabraController pController1 = silaba.getPalabraController();
         PalabraController pController2 = otraSilaba.getPalabraController();
 
+        bool silabaEstaSola = pController1.silabas.Count == 0;
+
         int countSilabas1 = pController1.silabas.Count;
 
         silaba.disableDrag();
 
-        float deltaX = pController1.transform.position.x - pController2.transform.position.x;
+        float deltaX = pController1.transform.localPosition.x - pController2.transform.localPosition.x;
 
         float signoDistanciaSilabas = Mathf.Sign(deltaX);
 
@@ -99,8 +101,29 @@ public class SilabasManager : MonoBehaviour
         izquierda.enableDrag();
         derecha.enableDrag();
 
+        if (otraSilabaEstaALaIzquierda)
+        {
+            if (silabaEstaSola)
+            {
 
-        pController1.acomodarSilabasEnElEspacio(countSilabas1);
+            }
+            else
+            {
+                pController1.acomodarSilabasEnElEspacioAIzquierda(countSilabas1);
+            }
+        }
+        else
+        {
+            if (silabaEstaSola)
+            {
+
+            }
+            else
+            {
+                pController1.acomodarSilabasEnElEspacioADerecha(countSilabas1);
+            }
+            
+        }
 
         EventManager.onSilabasUnidas(izquierda, derecha);
     }

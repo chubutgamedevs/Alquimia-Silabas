@@ -10,6 +10,7 @@ TagManager:
   - juego
   - PalabraDestruida
   - PalabraObjetivo
+  - hembra
   layers:
   - Default
   - TransparentFX

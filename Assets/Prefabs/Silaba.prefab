@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5004975907575318575}
   m_Layer: 5
   m_Name: Conector(-)
-  m_TagString: conector
+  m_TagString: macho
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 4746532346091003037}
   m_Layer: 5
   m_Name: Conector(+)
-  m_TagString: conector
+  m_TagString: hembra
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

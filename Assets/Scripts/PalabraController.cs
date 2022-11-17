@@ -228,20 +228,26 @@ public class PalabraController : MonoBehaviour
 
     }
 
-    internal void acomodarSilabasEnElEspacio(int cantSilabasAnterior)
+    internal void acomodarSilabasEnElEspacioADerecha(int cantSilabasAnterior)
     {
         Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
-       
+
         //acomodamos las silabas de izquierda a derecha
         for (int i = cantSilabasAnterior; i < silabas.Count; i++)
         {
-            silabas[i].transform.localPosition= silabas[i-1].transform.localPosition + posBase;
+            silabas[i].transform.localPosition = silabas[i - 1].transform.localPosition + posBase;
         }
 
+    }
+
+    internal void acomodarSilabasEnElEspacioAIzquierda(int cantSilabasAnterior)
+    {
+        Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
+
         //acomodamos las silabas de derecha a izquierda
-        for (int i = cantSilabasAnterior-1; i >= 0; i--)
+        for (int i = silabas.Count-1; i > 0; i--)
         {
-            silabas[i].transform.localPosition = silabas[i + 1].transform.localPosition - posBase;
+            silabas[i-1].transform.localPosition = silabas[i].transform.localPosition - posBase;
         }
 
     }
