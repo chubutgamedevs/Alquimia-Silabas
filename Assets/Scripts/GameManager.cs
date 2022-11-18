@@ -19,8 +19,8 @@ public static class Constants
     public static float maxY = 8;
     public static float minY = 0;
 
-    public static float maxX = 11;
-    public static float minX = 0;
+    public static float maxX = 13;
+    public static float minX = 3;
 
     public static float anchoSilaba = 1;
 }

@@ -6,7 +6,7 @@ using DG.Tweening;
 using System.Collections;
 
 
-public class PalabraController : MonoBehaviour, IDropHandler
+public class PalabraController : MonoBehaviour
 {
     public List<SilabaController> silabas;
 
@@ -15,21 +15,15 @@ public class PalabraController : MonoBehaviour, IDropHandler
     public Boolean moviendose = false;
 
     #region eventos
-    void IDropHandler.OnDrop(PointerEventData eventData)
-    {
-        Debug.Log("HOLA");
-    }
 
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds += comprobarBounds;
         EventManager.ganaste += iniciarDestruccionFinDelJuego;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds -= comprobarBounds;
         EventManager.ganaste -= iniciarDestruccionFinDelJuego;
     }
@@ -145,19 +139,23 @@ public class PalabraController : MonoBehaviour, IDropHandler
     void comprobarBounds()
     {
         float ancho = Constants.anchoSilaba;
+        int maxIndice = silabas.Count - 1;
         Vector3 vectorAux = new Vector3(ancho, 0, 0);
 
-        int maxIndice = silabas.Count - 1;
 
-        if(maxIndice < 0)
+        if (maxIndice < 0)
         {
             return;
         }
 
+        Vector3 posPrimeraSilaba = new Vector3(silabas[0].transform.position.x * ancho + Mathf.Sign(silabas[0].transform.position.x) * ancho / 2, 1, 0);
+        Vector3 posUltimaSilaba= new Vector3(silabas[maxIndice].transform.position.x * ancho + Mathf.Sign(silabas[maxIndice].transform.position.x) * ancho / 2, 1, 0);
+
         //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
-        if (!Ubicador.estaDentroDelJuego(silabas[0].transform.position - vectorAux + new Vector3(ancho/2,0,0)) || 
-            !Ubicador.estaDentroDelJuego(silabas[maxIndice].transform.position + vectorAux * (maxIndice + 1) + new Vector3(ancho / 2, 0, 0)))
+        if (!Ubicador.estaDentroDelJuego(posPrimeraSilaba) && 
+            !Ubicador.estaDentroDelJuego(posUltimaSilaba))
         {
+            this.settearPuntoInicialRandom();
             this.irAlPuntoInicialLento();
             return;
         }
