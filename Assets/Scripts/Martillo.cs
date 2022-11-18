@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class MartilloTween : MonoBehaviour
+public class Martillo : MonoBehaviour
 {
     private float anguloRotacion = 40f;
-    private float tiempoRotacion = 0.3f;
-    private float tiempoVolver = .2f;
+    private float tiempoRotacion = 0.17f;
+    private float tiempoVolver = .1f;
+
 
     private Vector2 initialPos;
 
-    private BoxCollider2D colisionadorBC;
+    public GameObject explosionPrefab;
 
+    private BoxCollider2D colisionadorBC;
     #region eventos
     #endregion
 
@@ -48,6 +48,8 @@ public class MartilloTween : MonoBehaviour
                 .OnComplete(
                     () =>
                     {
+                        Instantiate(explosionPrefab, colisionadorBC.transform.position, new Quaternion(0, 0, 0, 0), transform.parent) ;
+
                         colisionadorBC.isTrigger = true;
                         Invoke("quitarColisionador", tiempoRotacion / 2);
 

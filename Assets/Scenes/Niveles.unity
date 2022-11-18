@@ -934,7 +934,7 @@ GameObject:
   - component: {fileID: 1486962662}
   - component: {fileID: 1486962663}
   m_Layer: 0
-  m_Name: Imagen
+  m_Name: MartilloSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1131,6 +1131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74793f8418db99447bc2c5ad464f61bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 8466502833152763167, guid: 61453b5536f3bac41baca0c4af26b005, type: 3}
 --- !u!60 &1530023264
 PolygonCollider2D:
   m_ObjectHideFlags: 0
