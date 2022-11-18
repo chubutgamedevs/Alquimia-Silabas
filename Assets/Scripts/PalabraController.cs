@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using DG.Tweening;
 using System.Collections;
 
 
-public class PalabraController : MonoBehaviour
+public class PalabraController : MonoBehaviour, IDropHandler
 {
     public List<SilabaController> silabas;
 
@@ -14,6 +15,10 @@ public class PalabraController : MonoBehaviour
     public Boolean moviendose = false;
 
     #region eventos
+    void IDropHandler.OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("HOLA");
+    }
 
     void OnEnable()
     {

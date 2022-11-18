@@ -5,69 +5,62 @@ using DG.Tweening;
 
 public class MartilloTween : MonoBehaviour
 {
-    private IEnumerator coroutine;
-    private float anguloRotacion = 20f;
-    private float tiempoRotacion = 0.6f;
+    private float anguloRotacion = 40f;
+    private float tiempoRotacion = 0.3f;
+    private float tiempoVolver = .2f;
+
+    private Vector2 initialPos;
+
+    private BoxCollider2D colisionadorBC;
 
     #region eventos
-    void OnEnable()
-    {
-        EventManager.modoRomperActivado += handleModoRomperActivado;
-        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
-    }
-
-    void OnDisable()
-    {
-        EventManager.modoRomperActivado -= handleModoRomperActivado;
-        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
-    }
     #endregion
+
+    #region ciclo de vida
     private void Awake()
     {
-        coroutine = animarMartillo();
+        colisionadorBC = GameObject.FindGameObjectWithTag("colisionador").GetComponent<BoxCollider2D>();
+        initialPos = transform.position;
     }
+    #endregion
 
     #region metodos
-    private void handleModoRomperActivado()
+
+    private void OnMouseDown()
     {
-        StartCoroutine(coroutine);
+        EventManager.onModoRomperActivado();    
     }
 
-    private void handleModoRomperDesactivado()
+    private void OnMouseUp()
     {
-        StopCoroutine(coroutine);
-
-        if(this.transform == null)
-        {
-            return;
-        }
-        Vector3 vectorRotacion = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z);
-
-        transform.DOLocalRotate(-vectorRotacion, tiempoRotacion, RotateMode.Fast)
-                .SetEase(Ease.Linear);
+        martillar();
+        EventManager.onModoRomperDesactivado();
     }
 
-    IEnumerator animarMartillo()
+    void martillar()
     {
-        while (true)
-        {
+        float tiempoVolverActual = tiempoVolver * Vector2.Distance(initialPos, transform.position) * 0.5f;
+
             if (!(this.transform == null))
             {
-
             transform.DOLocalRotate(new Vector3(0f, 0f, anguloRotacion), tiempoRotacion, RotateMode.Fast)
-                .SetEase(Ease.InExpo);
+                .SetEase(Ease.InExpo)
+                .OnComplete(
+                    () =>
+                    {
+                        colisionadorBC.isTrigger = true;
+                        Invoke("quitarColisionador", tiempoRotacion / 2);
 
-            yield return new WaitForSeconds(tiempoRotacion);
-
-            transform.DOLocalRotate(new Vector3(0f, 0f, -anguloRotacion), tiempoRotacion, RotateMode.Fast);
-
-            yield return new WaitForSeconds(tiempoRotacion);
+                        transform.DOLocalRotate(new Vector3(0f, 0f, -anguloRotacion), tiempoRotacion, RotateMode.Fast);
+                        transform.DOMove(initialPos, tiempoVolverActual).SetEase(Ease.InBack);
+                    });
+                
             }
-
-        }
-
     }
 
-
+    void quitarColisionador()
+    {
+        colisionadorBC.isTrigger = false;
+    }
     #endregion
 }

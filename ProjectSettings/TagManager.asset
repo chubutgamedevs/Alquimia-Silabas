@@ -11,6 +11,8 @@ TagManager:
   - PalabraDestruida
   - PalabraObjetivo
   - hembra
+  - martillo
+  - colisionador
   layers:
   - Default
   - TransparentFX

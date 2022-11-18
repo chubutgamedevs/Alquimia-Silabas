@@ -16,8 +16,13 @@ public class SilabaController : MonoBehaviour
     private GameObject palabraParent;
     private PalabraController palabraController;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("colisionador")) {
+            palabraController.romperEnSilabasYColocarEnPantalla();
+        }
+    }
 
-    
     public String silaba = "CIS";
 
     public TMPro.TextMeshPro texto;
@@ -348,6 +353,7 @@ public class SilabaController : MonoBehaviour
     {
         animadorSilaba.Play("rest");
     }
+
     #endregion
 
 }
