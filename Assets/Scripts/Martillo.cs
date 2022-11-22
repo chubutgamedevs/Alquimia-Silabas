@@ -10,7 +10,6 @@ public class Martillo : MonoBehaviour
 
     private Vector2 initialPos;
 
-    public GameObject explosionPrefab;
 
     private BoxCollider2D colisionadorBC;
     #region eventos
@@ -48,7 +47,7 @@ public class Martillo : MonoBehaviour
                 .OnComplete(
                     () =>
                     {
-                        Instantiate(explosionPrefab, colisionadorBC.transform.position, new Quaternion(0, 0, 0, 0), transform.parent) ;
+                        EventManager.onMartilloGolpea(colisionadorBC.transform.position);
 
                         colisionadorBC.isTrigger = true;
                         Invoke("quitarColisionador", tiempoRotacion / 2);

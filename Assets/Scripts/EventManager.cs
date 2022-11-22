@@ -35,6 +35,11 @@ public class EventManager : MonoBehaviour
     #endregion
 
 
+    #region eventos de martillo
+    public static event System.Action<Vector3> martilloGolpea = delegate { };
+    
+    #endregion
+
     #region eventos de juego general
     public static event System.Action modoRomperActivado = delegate { };
     public static event System.Action modoRomperDesActivado = delegate { };
@@ -124,6 +129,11 @@ public class EventManager : MonoBehaviour
     public static void onNosQuedamosSinPalabras()
     {
         nosQuedamosSinPalabras();
+    }
+
+    public static void onMartilloGolpea(Vector3 pos)
+    {
+        martilloGolpea(pos);
     }
     #endregion
 }
