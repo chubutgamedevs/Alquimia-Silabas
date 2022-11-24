@@ -101,29 +101,7 @@ public class SilabasManager : MonoBehaviour
         izquierda.enableDrag();
         derecha.enableDrag();
 
-        if (otraSilabaEstaALaIzquierda)
-        {
-            if (silabaEstaSola)
-            {
-
-            }
-            else
-            {
-                pController1.acomodarSilabasEnElEspacioAIzquierda(countSilabas1);
-            }
-        }
-        else
-        {
-            if (silabaEstaSola)
-            {
-
-            }
-            else
-            {
-                pController1.acomodarSilabasEnElEspacioADerecha(countSilabas1);
-            }
-            
-        }
+        pController1.acomodarSilabasEnElEspacio();
 
         EventManager.onSilabasUnidas(izquierda, derecha);
     }

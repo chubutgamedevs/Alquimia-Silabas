@@ -148,23 +148,32 @@ public class PalabraController : MonoBehaviour
             return;
         }
 
-        Vector3 posPrimeraSilaba = new Vector3(silabas[0].transform.position.x * ancho + Mathf.Sign(silabas[0].transform.position.x) * ancho / 2, 1, 0);
-        Vector3 posUltimaSilaba= new Vector3(silabas[maxIndice].transform.position.x * ancho + Mathf.Sign(silabas[maxIndice].transform.position.x) * ancho / 2, 1, 0);
+        Vector3 posPrimeraSilaba = silabas[0].transform.position;
+        Vector3 posUltimaSilaba = silabas[maxIndice].transform.position;
 
         //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
         if (!Ubicador.estaDentroDelJuego(posPrimeraSilaba) && 
             !Ubicador.estaDentroDelJuego(posUltimaSilaba))
         {
-            this.settearPuntoInicialRandom();
+            this.settearPunto(getNuevaUbicacion());
             this.irAlPuntoInicialLento();
-            return;
         }
 
-        //si llegamos hasta acá volvemos al punto inicial?
     }
+
+    Vector3 getNuevaUbicacion()
+    {
+        return gameManager.getRandomPunto();
+    }
+
     public void settearPuntoInicialRandom()
     {
-        this.silabas[0].setPunto(gameManager.getRandomPunto());
+        this.settearPunto(gameManager.getRandomPunto());
+    }
+
+    public void settearPunto(Vector3 punto)
+    {
+        silabas[0].setPunto(punto);
     }
     public void setSilabas(List<SilabaController> ls)
     {
@@ -226,31 +235,7 @@ public class PalabraController : MonoBehaviour
         //acomodamos las silabas de izquierda a derecha
         for (int i = 0; i < silabas.Count; i++)
         {
-            silabas[i].transform.localPosition =  posBase*i;
-        }
-
-    }
-
-    internal void acomodarSilabasEnElEspacioADerecha(int cantSilabasAnterior)
-    {
-        Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
-
-        //acomodamos las silabas de izquierda a derecha
-        for (int i = cantSilabasAnterior; i < silabas.Count; i++)
-        {
-            silabas[i].transform.localPosition = silabas[i - 1].transform.localPosition + posBase;
-        }
-
-    }
-
-    internal void acomodarSilabasEnElEspacioAIzquierda(int cantSilabasAnterior)
-    {
-        Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
-
-        //acomodamos las silabas de derecha a izquierda
-        for (int i = silabas.Count-1; i > 0; i--)
-        {
-            silabas[i-1].transform.localPosition = silabas[i].transform.localPosition - posBase;
+            silabas[i].transform.DOLocalMove(posBase * i - silabas.Count/2 * posBase,0.2f).SetEase(Ease.OutCirc);
         }
 
     }

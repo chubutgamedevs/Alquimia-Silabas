@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using DG.Tweening;
 public class Drag : MonoBehaviour
 {
 
@@ -32,7 +32,10 @@ public class Drag : MonoBehaviour
         {
             if(transform.parent.CompareTag("Palabra"))
             {
-                transform.parent.position = GetMousePos() + parentDragOffset;
+                if (transform.parent)
+                {
+                    transform.parent.DOMove(GetMousePos() + parentDragOffset, 0.1f);
+                }
             }
         }
     }

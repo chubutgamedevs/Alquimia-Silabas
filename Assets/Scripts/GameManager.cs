@@ -19,8 +19,8 @@ public static class Constants
     public static float maxY = 8;
     public static float minY = 0;
 
-    public static float maxX = 13;
-    public static float minX = 3;
+    public static float maxX = 10;
+    public static float minX = 2;
 
     public static float anchoSilaba = 1;
 }
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     public void startGameConPool()
     {
         puntos = PoissonDiscSampling.generatePoints();
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(2);
+        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(3);
         poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
         anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
@@ -189,10 +189,14 @@ public class GameManager : MonoBehaviour
 
     public Vector3 getRandomPunto()
     {
+        if(puntos.Count == 0)
+        {
+            puntos = PoissonDiscSampling.generatePoints();
+        }
+
         int randomIndex = Random.Range(0, puntos.Count);
         Vector3 punto = puntos[randomIndex];
-
-        puntos.Remove(punto);
+        puntos.RemoveAt(randomIndex);
 
         return punto;
     }

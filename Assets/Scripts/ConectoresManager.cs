@@ -10,15 +10,6 @@ public class ConectoresManager : MonoBehaviour
 
     private void Awake()
     {
-        if (!conectorHembra)
-        {
-            conectorHembra = gameObject.transform.GetChild(0).GetComponent<ConectorController>();
-        }
-
-        if (!conectorMacho)
-        {
-            conectorMacho = gameObject.transform.GetChild(1).GetComponent<ConectorController>();
-        }
 
     }
 

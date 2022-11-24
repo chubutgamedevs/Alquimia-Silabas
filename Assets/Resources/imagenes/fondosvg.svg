@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   sodipodi:docname="fondosvg.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.46769781"
+     inkscape:cx="310.02925"
+     inkscape:cy="446.86974"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g2081" />
+  <defs
+     id="defs2">
+    <filter
+       inkscape:label="Flatten Transparency"
+       inkscape:menu="Fill and Transparency"
+       inkscape:menu-tooltip="Adds a white opaque background"
+       style="color-interpolation-filters:sRGB;"
+       id="filter2091"
+       x="0"
+       y="0"
+       width="1"
+       height="1">
+      <feComposite
+         in2="SourceGraphic"
+         operator="arithmetic"
+         k4="1"
+         result="result1"
+         id="feComposite2083" />
+      <feMerge
+         id="feMerge2089">
+        <feMergeNode
+           in="result1"
+           id="feMergeNode2085" />
+        <feMergeNode
+           in="SourceGraphic"
+           id="feMergeNode2087" />
+      </feMerge>
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2081"
+       style="filter:url(#filter2091)">
+      <rect
+         style="opacity:0.99;fill:#d65353;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers"
+         id="rect3111"
+         width="188.94858"
+         height="144.82286"
+         x="7.3542871"
+         y="15" />
+      <rect
+         style="opacity:0.99;fill:#b52b2b;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers;filter:url(#filter2091)"
+         id="rect3111-9"
+         width="188.94858"
+         height="144.82286"
+         x="55.439999"
+         y="5.0914268"
+         transform="matrix(0.29640721,0,0,1,123.60385,9.9085732)" />
+    </g>
+  </g>
+</svg>

@@ -7,6 +7,7 @@ public class SoundManager : MonoBehaviour
 
 	public AudioClip bonk;
 	public AudioClip silabasJoining;
+	public AudioClip palabraDescubierta;
 
 	// Audio players components.
 	public AudioSource EffectsSource;
@@ -21,12 +22,14 @@ public class SoundManager : MonoBehaviour
 	{
 		EventManager.martilloGolpea += reproducirBonk;
 		EventManager.silabasUnidas += reproducirJoin;
+		EventManager.palabraFormada += reproducirPalabraDescubierta;
 	}
 
 	void OnDisable()
 	{
 		EventManager.martilloGolpea -= reproducirBonk;
 		EventManager.silabasUnidas -= reproducirJoin;
+		EventManager.palabraFormada -= reproducirPalabraDescubierta;
 	}
 
     #endregion
@@ -56,8 +59,7 @@ public class SoundManager : MonoBehaviour
 	// Play a single clip through the sound effects source.
 	public void Play(AudioClip clip)
 	{
-		EffectsSource.clip = clip;
-		EffectsSource.Play();
+		EffectsSource.PlayOneShot(clip);
 	}
 	// Play a single clip through the music source.
 	public void PlayMusic(AudioClip clip)
@@ -84,5 +86,10 @@ public class SoundManager : MonoBehaviour
     {
 		Play(silabasJoining);
     }
+
+	void reproducirPalabraDescubierta(PalabraController _unused, string _unused2)
+	{
+		Play(palabraDescubierta);
+	}
 
 }
