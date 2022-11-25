@@ -123,7 +123,7 @@ public class SilabaController : MonoBehaviour
 
         texto.text = silaba;
 
-        setPalabra(this.transform.parent.gameObject);
+        setPalabra(this.transform.parent.gameObject, this.transform.parent.gameObject.GetComponent<PalabraController>());
     }
 
     // Update is called once per frame
@@ -158,18 +158,11 @@ public class SilabaController : MonoBehaviour
         return boxCollider.bounds.size.y;
     }
 
-    public void setPalabra(GameObject palabraAux)
-    {
-        this.palabraParent = palabraAux;
-        this.transform.SetParent(this.palabraParent.transform);
-
-        this.palabraController = this.palabraParent.GetComponent<PalabraController>();
-    }
 
     public void setPalabra(GameObject palabraAux, PalabraController controller)
     {
         this.palabraParent = palabraAux;
-        this.transform.SetParent(this.palabraParent.transform);
+        this.transform.SetParent(controller.transform);
 
         this.palabraController = controller;
     }

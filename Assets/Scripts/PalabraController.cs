@@ -130,7 +130,6 @@ public class PalabraController : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.GetInstance();
-        encontrarPadre();
         acomodarSilabasEnElEspacio();
     }
     #endregion
@@ -376,10 +375,6 @@ public class PalabraController : MonoBehaviour
     }
 
 
-    private void encontrarPadre()
-    {
-        transform.SetParent(gameManager.getJuegoGameObject().transform);
-    }
 
     public void OnTriggerEnter(Collider other)
     {

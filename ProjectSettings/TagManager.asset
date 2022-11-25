@@ -14,6 +14,7 @@ TagManager:
   - martillo
   - colisionador
   - explosion
+  - silaba
   layers:
   - Default
   - TransparentFX

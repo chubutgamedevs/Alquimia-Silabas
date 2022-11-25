@@ -23,6 +23,8 @@ public static class Constants
     public static float minX = 2;
 
     public static float anchoSilaba = 1;
+
+    public static float radioUbicador = 3f;
 }
 
 public class GameManager : MonoBehaviour
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     private List<Vector3> puntos;
 
-    private string nivel = "json/niveles/nivel1";
+    private string nivel = "json/niveles/nivel0";
 
     #region ciclo de vida
 
@@ -113,8 +115,8 @@ public class GameManager : MonoBehaviour
     public void startGameConPool()
     {
         puntos = PoissonDiscSampling.generatePoints();
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(3);
-        poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
+        palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
+        poolDeSilabas = palabrasDeserializer.getPoolActual();
         anunciarPalabrasTarget(palabrasTarget);
         colocarEnPantallaSilabas();
         Invoke("desordenarPalabras", 0.01f);
@@ -203,7 +205,6 @@ public class GameManager : MonoBehaviour
 
     void anunciarPalabrasTarget(List<PalabraSilabas>  target)
     {
-        //larga vida a las tuplas
         EventManager.onPalabrasSeleccionadasParaJuego(target);
     }
 
@@ -263,7 +264,7 @@ public static class Instantiator
 
     internal static GameObject nuevaPalabraVacia(this GameManager gm)
     {
-        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity,gm.getJuegoGameObject().transform);
 
         return palabraObj;
     }
