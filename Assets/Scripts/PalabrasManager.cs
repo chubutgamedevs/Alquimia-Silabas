@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class PalabrasManager : MonoBehaviour
 {
-
-    List<PalabraSilabas> poolDeSilabas;
-
     #region eventos
     void OnEnable()
     {
         EventManager.palabraFormada += handlePalabraCorrectaFormada;
-        EventManager.palabrasSeleccionadasParaJuego += handlePalabrasSeleccionadasParaJuego;
     }
 
     void OnDisable()
     {
         EventManager.palabraFormada -= handlePalabraCorrectaFormada;
-        EventManager.palabrasSeleccionadasParaJuego -= handlePalabrasSeleccionadasParaJuego;
     }
 
     #endregion
@@ -36,40 +31,9 @@ public class PalabrasManager : MonoBehaviour
     }
     #endregion
 
-    void handlePalabraCorrectaFormada(PalabraController palabraController, string palabra)
+    public void handlePalabraCorrectaFormada(PalabraController palabraController, string palabra)
     {
-        palabraController.desactivarConectores();
-        palabraController.disableDrag();
-        palabraController.playAnimacionPalabraCorrecta();
-
-        PalabraSilabas found  = poolDeSilabas.Find(x => x.palabra == palabraController.getPalabraString());
-        poolDeSilabas.Remove(found);
-
-        List<SilabaController> silabasAEliminar = new List<SilabaController>();
-
-        foreach(SilabaController sil in palabraController.silabas)
-        {
-            bool silabaEstaEnOtraPalabra = false;
-            foreach(PalabraSilabas pal in poolDeSilabas)
-            {
-                silabaEstaEnOtraPalabra = pal.contieneSilaba(sil.silaba);
-                if (silabaEstaEnOtraPalabra)
-                {
-                    break;
-                }
-            }
-
-            if (!silabaEstaEnOtraPalabra)
-            {
-                silabasAEliminar.Add(sil);
-            }
-        }
-
-        palabraController.eliminarSilabasLuegoDeFormacion(silabasAEliminar);
+        palabraController.handleFormacion();
     }
 
-    void handlePalabrasSeleccionadasParaJuego(List<PalabraSilabas> target)
-    {
-        this.poolDeSilabas = target;
-    }
 }

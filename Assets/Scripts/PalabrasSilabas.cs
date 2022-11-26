@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PalabrasDeserializer
@@ -29,7 +30,7 @@ public class PalabrasDeserializer
         for (int i = 0; i < cantPalabras; i++)
         {
             PalabraSilabas obtenida = nuevaPalabraRandom();
-            if(obtenida != null)
+            if (obtenida != null)
             {
                 palabrasAux.Add(obtenida);
             }
@@ -46,16 +47,22 @@ public class PalabrasDeserializer
     public List<PalabraSilabas> getNuevasPalabrasTarget()
     {
         batchActual = batchesLevel.nuevoBatch();
+
         return getPalabrasTarget();
     }
     public List<PalabraSilabas> getPalabrasTarget()
     {
-        return batchActual.palabras;
+        return batchActual.palabras.ToList();
     }
 
     public List<string> getPoolActual()
     {
         return batchActual.silabas;
+    }
+
+    public List<string> getPoolParcialActual(int cantPalabras)
+    {
+        return batchActual.getSilabasDePalabras(cantPalabras);
     }
 
 
@@ -132,6 +139,7 @@ public class Batches
         batches.RemoveAt(0);
         return aRetornar;
     }
+
 }
 
 [Serializable]
@@ -139,6 +147,33 @@ public class Batch
 {
     public List<string> silabas;
     public List<PalabraSilabas> palabras;
+
+    public List<string> getSilabasDePalabras(int cantPalabras)
+    {
+        List<string> silabasADevolver = new List<string>();
+
+        if (palabras.Count < cantPalabras)
+        {
+            cantPalabras = palabras.Count;
+        }
+
+        List<PalabraSilabas> palabrasAEliminar = new List<PalabraSilabas>();
+
+        for(int i = 0; i < cantPalabras; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, cantPalabras);
+
+            palabrasAEliminar.Add(palabras[randomIndex]);
+            silabasADevolver.AddRange(palabras[randomIndex].silabas);
+        }
+
+        foreach(PalabraSilabas pal in palabrasAEliminar)
+        {
+            palabras.Remove(pal);
+        }
+
+        return silabasADevolver;
+    }
 }
 
 

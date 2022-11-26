@@ -33,8 +33,7 @@ public class GameManager : MonoBehaviour
     public bool modoRomper = false;
 
     public List<PalabraSilabas> palabrasTarget;
-    public List<string> poolDeSilabas;
-
+    
     private GameObject _juego;
 
     private PalabrasDeserializer palabrasDeserializer;
@@ -93,16 +92,12 @@ public class GameManager : MonoBehaviour
     void OnEnable()
     {
         EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.modoRomperActivado += activarModoRomper;
-        EventManager.modoRomperDesActivado += desActivarModoRomper;
         EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
     }
 
     void OnDisable()
     {
         EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.modoRomperActivado -= activarModoRomper;
-        EventManager.modoRomperDesActivado -= desActivarModoRomper;
         EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
     }
 
@@ -114,12 +109,13 @@ public class GameManager : MonoBehaviour
 
     public void startGameConPool()
     {
-        puntos = PoissonDiscSampling.generatePoints();
         palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
-        poolDeSilabas = palabrasDeserializer.getPoolActual();
+
         anunciarPalabrasTarget(palabrasTarget);
-        colocarEnPantallaSilabas();
-        Invoke("desordenarPalabras", 0.01f);
+
+        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 2));
+
+        Invoke("desordenarPalabras",time: 0.01f);
     }
 
     public void nuevaTandaDePalabras()
@@ -132,60 +128,18 @@ public class GameManager : MonoBehaviour
     {
         foreach(GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
         {
-            Destroy(palabra);
+            palabra.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego();
         }
 
     }
 
-    #region modo romper
-    public void toggleModoRomper()
+    void colocarEnPantallaSilabas(List<string> silabas)
     {
-        modoRomper = !modoRomper;
+        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
 
-        if (modoRomper)
-        {
-            EventManager.onModoRomperActivado();
-        }
-        else
-        {
-            EventManager.onModoRomperDesactivado();
-        }
-    }
-
-    public void activarModoRomper()
-    {
-        modoRomper = true;
-    }
-
-    public void desActivarModoRomper()
-    {
-        modoRomper = false;
-    }
-
-    #endregion
-    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabrasRecibidas)
-    {
-        List<string> pool = new List<string>();
-
-        foreach (PalabraSilabas palabra in palabrasRecibidas)
-        {
-            pool.AddRange(palabra.silabas);
-        }
-
-        var silabasSinRepeticion = new HashSet<string>(pool);
-
-        return new List<string>(silabasSinRepeticion);
-    }
-
-    void colocarEnPantallaSilabas()
-    {
-        foreach (string silaba in poolDeSilabas)
+        foreach (string silaba in silabas)
         {
             PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
-            if (modoRomper)
-            {
-                palabraAuxController.handleModoRomperActivado();
-            }
         }
     }
 
@@ -208,6 +162,11 @@ public class GameManager : MonoBehaviour
         EventManager.onPalabrasSeleccionadasParaJuego(target);
     }
 
+    void handlePalabraFormada(PalabraController palabraFormada, string palabraAux)
+    {
+        EventManager.onPalabraFormada(palabraFormada, palabraAux);
+        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 1));
+    }
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
@@ -221,7 +180,8 @@ public class GameManager : MonoBehaviour
         {
             if (palabra.palabra.ToUpper() == palabraAux)
             {
-                EventManager.onPalabraFormada(palabraFormada, palabraAux);
+                palabrasTarget.Remove(palabra);
+                handlePalabraFormada(palabraFormada,palabraAux);
                 return;
             }
         }
