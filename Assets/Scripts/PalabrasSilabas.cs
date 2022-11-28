@@ -159,15 +159,26 @@ public class Batch
 
         List<PalabraSilabas> palabrasAEliminar = new List<PalabraSilabas>();
 
+
         for(int i = 0; i < cantPalabras; i++)
         {
-            int randomIndex = UnityEngine.Random.Range(0, cantPalabras);
+            int randomIndex = UnityEngine.Random.Range(0, palabras.Count);
+            while (palabrasAEliminar.Contains(palabras[randomIndex]))
+            {
+                randomIndex = UnityEngine.Random.Range(0, palabras.Count);
+            }
+
 
             palabrasAEliminar.Add(palabras[randomIndex]);
             silabasADevolver.AddRange(palabras[randomIndex].silabas);
+
+            if(silabasADevolver.Count >= 3)
+            {
+                break;
+            }
         }
 
-        foreach(PalabraSilabas pal in palabrasAEliminar)
+        foreach (PalabraSilabas pal in palabrasAEliminar)
         {
             palabras.Remove(pal);
         }

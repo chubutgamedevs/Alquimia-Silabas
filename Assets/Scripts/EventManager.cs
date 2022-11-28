@@ -47,6 +47,10 @@ public class EventManager : MonoBehaviour
 
     #endregion
 
+    #region eventos de puntos
+    public static event System.Action<Vector3> puntoDevuelto = delegate { };
+    #endregion
+
 
     #region notificacion de eventos
     public static void onSilabasUnidas(SilabaController s1, SilabaController s2)
@@ -134,6 +138,11 @@ public class EventManager : MonoBehaviour
     public static void onMartilloGolpea(Vector3 pos)
     {
         martilloGolpea(pos);
+    }
+
+    public static void onPuntoDevuelto(Vector3 punto)
+    {
+        puntoDevuelto(punto);
     }
     #endregion
 }

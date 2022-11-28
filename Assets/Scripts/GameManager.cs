@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
+using DG.Tweening;
 public static class Constants
 {
     public static string tagPalabraObjetivo = "PalabraObjetivo";
@@ -16,11 +16,11 @@ public static class Constants
     public static float tiempoHastaRenovacionDePalabras = 2f;
 
 
-    public static float maxY = 8;
-    public static float minY = 0;
+    public static float maxY = 9f;
+    public static float minY = -1;
 
-    public static float maxX = 10;
-    public static float minX = 2;
+    public static float maxX = 9;
+    public static float minX = -1;
 
     public static float anchoSilaba = 1;
 
@@ -43,7 +43,9 @@ public class GameManager : MonoBehaviour
 
     private List<Vector3> puntos;
 
-    private string nivel = "json/niveles/nivel0";
+    private string nivel = "json/niveles/nivel";
+
+    private int numeroNivel = 0;
 
     #region ciclo de vida
 
@@ -52,16 +54,11 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         _juego = getJuegoGameObject();
-        palabrasDeserializer = new PalabrasDeserializer(nivel);
+        palabrasDeserializer = new PalabrasDeserializer(nivel + numeroNivel);
 
         startGameConPool();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     #endregion
 
@@ -93,12 +90,14 @@ public class GameManager : MonoBehaviour
     {
         EventManager.silabasUnidas += comprobarPalabraFormada;
         EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
+        EventManager.puntoDevuelto += reincorporarPunto;
     }
 
     void OnDisable()
     {
         EventManager.silabasUnidas -= comprobarPalabraFormada;
         EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
+        EventManager.puntoDevuelto -= reincorporarPunto;
     }
 
 
@@ -110,23 +109,23 @@ public class GameManager : MonoBehaviour
     public void startGameConPool()
     {
         palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
+        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
+
 
         anunciarPalabrasTarget(palabrasTarget);
 
         colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 2));
-
-        Invoke("desordenarPalabras",time: 0.01f);
     }
 
     public void nuevaTandaDePalabras()
     {
-        Invoke("limpiarPalabras", Constants.tiempoHastaRenovacionDePalabras - 0.3f);
+        limpiarPalabras();
         Invoke("startGameConPool",Constants.tiempoHastaRenovacionDePalabras);
     }
 
     public void limpiarPalabras()
     {
-        foreach(GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
+        foreach (GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
         {
             palabra.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego();
         }
@@ -135,8 +134,6 @@ public class GameManager : MonoBehaviour
 
     void colocarEnPantallaSilabas(List<string> silabas)
     {
-        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
-
         foreach (string silaba in silabas)
         {
             PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
@@ -155,6 +152,11 @@ public class GameManager : MonoBehaviour
         puntos.RemoveAt(randomIndex);
 
         return punto;
+    }
+
+    public void reincorporarPunto(Vector3 punto)
+    {
+        puntos.Add(punto);
     }
 
     void anunciarPalabrasTarget(List<PalabraSilabas>  target)
@@ -186,18 +188,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    public void desordenarPalabras()
-    {
-        GameObject[] palabras = GameObject.FindGameObjectsWithTag("Palabra");
-
-        foreach (GameObject palabra in palabras)
-        {
-            //rompemos todas
-            palabra.GetComponent<PalabraController>().romperEnSilabasYColocarEnPantalla();
-        }
-    }
-
     public GameObject getJuegoGameObject()
     {
         if(!_juego)

@@ -758,7 +758,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modoRomper: 0
   palabrasTarget: []
-  poolDeSilabas: []
   palabraPrefab: {fileID: 7977601284497516053, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
   silabaPrefab: {fileID: 7832757445997255160, guid: d97617529bd812f558b1757d9dc2efa6, type: 3}
 --- !u!4 &1026310747
@@ -1208,7 +1207,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530023257}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.5, y: 0, z: 0}
+  m_LocalPosition: {x: 11.43, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1242,7 +1241,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -4, y: 4}
+  m_Offset: {x: -4.0637016, y: 3.7301898}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1253,7 +1252,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 8}
+  m_Size: {x: 11.485184, y: 10.899049}
   m_EdgeRadius: 0
 --- !u!1001 &1554776970
 PrefabInstance:

@@ -111,30 +111,17 @@ public class PalabraController : MonoBehaviour
     {
         gameManager = GameManager.GetInstance();
         acomodarSilabasEnElEspacio();
+        irAlPuntoInicialLento();
     }
     #endregion
 
     #region setters y getters
     void comprobarBounds()
     {
-        float ancho = Constants.anchoSilaba;
-        int maxIndice = silabas.Count - 1;
-        Vector3 vectorAux = new Vector3(ancho, 0, 0);
-
-
-        if (maxIndice < 0)
-        {
-            return;
-        }
-
-        Vector3 posPrimeraSilaba = silabas[0].transform.position;
-        Vector3 posUltimaSilaba = silabas[maxIndice].transform.position;
 
         //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
-        if (!Ubicador.estaDentroDelJuego(posPrimeraSilaba) && 
-            !Ubicador.estaDentroDelJuego(posUltimaSilaba))
+        if (!Ubicador.estaDentroDelJuego(this.transform.position))
         {
-            this.settearPunto(getNuevaUbicacion());
             this.irAlPuntoInicialLento();
         }
 
@@ -233,7 +220,6 @@ public class PalabraController : MonoBehaviour
         {
             //desconectamos las silabas y destruimos la palabra luego
             PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
-            nuevaPalabra.irAlPuntoInicial();
          }
 
         Destroy(this.gameObject);
@@ -247,8 +233,17 @@ public class PalabraController : MonoBehaviour
         {
             sil.playAnimacionSilabaCorrecta();
         }
+
+        liberarPuntos();
         iniciarDestruccionFinDelJuego();
     }
+    void liberarPuntos()
+    {
+        foreach(SilabaController sil in silabas) {
+            EventManager.onPuntoDevuelto(sil.puntoInicial);
+        }
+    }
+
 
     #endregion
 
