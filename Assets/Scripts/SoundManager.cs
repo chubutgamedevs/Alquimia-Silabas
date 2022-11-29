@@ -17,6 +17,8 @@ public class SoundManager : MonoBehaviour
 	public float LowPitchRange = .95f;
 	public float HighPitchRange = 1.05f;
 
+	private bool sonidoActivado = true;
+
     #region eventos
 	
 	void OnEnable()
@@ -101,6 +103,37 @@ public class SoundManager : MonoBehaviour
 	void reproducirPalabraDescubierta(PalabraController _unused, string _unused2)
 	{
 		Play(palabraDescubierta);
+	}
+
+
+	public void toggleSonido()
+    {
+		sonidoActivado = !sonidoActivado;
+
+        if (sonidoActivado)
+        {
+			activarSonido();
+        }
+        else
+        {
+			desactivarSonido();
+        }
+		
+    }
+	void desactivarSonido()
+    {
+		setVolumen(0f);
+	}
+
+	void activarSonido()
+	{
+		setVolumen(1f);
+	}
+
+	void setVolumen(float v)
+    {
+		this.EffectsSource.volume = v;
+		this.MusicSource.volume = v;
 	}
 
 }
