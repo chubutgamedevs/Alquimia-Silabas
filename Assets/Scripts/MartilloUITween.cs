@@ -12,14 +12,14 @@ public class MartilloUITween : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperActivado += handleModoRomperActivado;
-        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado += handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado += handleModoRomperDesactivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperActivado -= handleModoRomperActivado;
-        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado -= handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado -= handleModoRomperDesactivado;
     }
     #endregion
     private void Awake()

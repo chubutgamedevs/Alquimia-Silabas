@@ -27,13 +27,13 @@ public class Martillo : MonoBehaviour
 
     private void OnMouseDown()
     {
-        EventManager.onModoRomperActivado();    
+        EventManager.ModoRomperActivado();    
     }
 
     private void OnMouseUp()
     {
         martillar();
-        EventManager.onModoRomperDesactivado();
+        EventManager.ModoRomperDesactivado();
     }
 
     void martillar()
@@ -47,7 +47,7 @@ public class Martillo : MonoBehaviour
                 .OnComplete(
                     () =>
                     {
-                        EventManager.onMartilloGolpea(colisionadorBC.transform.position);
+                        EventManager.MartilloGolpea(colisionadorBC.transform.position);
 
                         colisionadorBC.isTrigger = true;
                         Invoke("quitarColisionador", tiempoRotacion / 2);

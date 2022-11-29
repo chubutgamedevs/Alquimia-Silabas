@@ -168,11 +168,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457006, guid: f6f5203ed5ea2204d95508a9c981db2f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.1
+      value: 10.63
       objectReference: {fileID: 0}
     - target: {fileID: 457006, guid: f6f5203ed5ea2204d95508a9c981db2f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 457006, guid: f6f5203ed5ea2204d95508a9c981db2f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1207,7 +1207,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530023257}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.43, y: 0, z: 0}
+  m_LocalPosition: {x: 12.5, y: -0.5, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1366,7 +1366,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579990990}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: 4, z: 1}
+  m_LocalPosition: {x: 6, y: 4, z: 1}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1391,12 +1391,6 @@ MonoBehaviour:
   ga: {fileID: 1784399510}
   nas: {fileID: 1975743093}
   te: {fileID: 1259842239}
-  gaInitialPosition: {x: -10, y: 0, z: 0}
-  nasInitialPosition: {x: 10, y: 0, z: 0}
-  teInitialPosition: {x: 20, y: 0, z: 0}
-  gaFinalPosition: {x: -1, y: 0.25, z: 0}
-  nasFinalPosition: {x: 0, y: 0, z: 0}
-  teFinalPosition: {x: 1, y: -0.25, z: 0}
 --- !u!1 &1645080251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1526,6 +1520,12 @@ MonoBehaviour:
   bonk: {fileID: 8300000, guid: 7651ef5c3fd34574b80f3ec9f35d7775, type: 3}
   silabasJoining: {fileID: 8300000, guid: 1ffea4f080eacaf48aceb5b9b27f6e9f, type: 3}
   palabraDescubierta: {fileID: 8300000, guid: f03c1cac74fdd494cb26f6b2dc87db79, type: 3}
+  explosions:
+  - {fileID: 8300000, guid: 6e6459db33870594db26cf3bbb26c2e7, type: 3}
+  - {fileID: 8300000, guid: f8ba8e85fe8e4c2448194342c88f8e1a, type: 3}
+  - {fileID: 8300000, guid: a8e0c35d2dcb79a4481f23ba63b195cc, type: 3}
+  - {fileID: 8300000, guid: 4675e371890305b4d82390e1e637053f, type: 3}
+  - {fileID: 8300000, guid: b17e60520b987e5408df3a781c33526b, type: 3}
   EffectsSource: {fileID: 1645080252}
   MusicSource: {fileID: 0}
   LowPitchRange: 0.95

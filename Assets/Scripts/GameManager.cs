@@ -19,7 +19,7 @@ public static class Constants
     public static float maxY = 9f;
     public static float minY = -1;
 
-    public static float maxX = 9;
+    public static float maxX = 12f;
     public static float minX = -1;
 
     public static float anchoSilaba = 1;
@@ -88,16 +88,16 @@ public class GameManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
-        EventManager.puntoDevuelto += reincorporarPunto;
+        EventManager.onSilabasUnidas += comprobarPalabraFormada;
+        EventManager.onNosQuedamosSinPalabras += nuevaTandaDePalabras;
+        EventManager.onPuntoDevuelto += reincorporarPunto;
     }
 
     void OnDisable()
     {
-        EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
-        EventManager.puntoDevuelto -= reincorporarPunto;
+        EventManager.onSilabasUnidas -= comprobarPalabraFormada;
+        EventManager.onNosQuedamosSinPalabras -= nuevaTandaDePalabras;
+        EventManager.onPuntoDevuelto -= reincorporarPunto;
     }
 
 
@@ -110,7 +110,6 @@ public class GameManager : MonoBehaviour
     {
         palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
         puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
-
 
         anunciarPalabrasTarget(palabrasTarget);
 
@@ -161,12 +160,12 @@ public class GameManager : MonoBehaviour
 
     void anunciarPalabrasTarget(List<PalabraSilabas>  target)
     {
-        EventManager.onPalabrasSeleccionadasParaJuego(target);
+        EventManager.PalabrasSeleccionadasParaJuego(target);
     }
 
     void handlePalabraFormada(PalabraController palabraFormada, string palabraAux)
     {
-        EventManager.onPalabraFormada(palabraFormada, palabraAux);
+        EventManager.PalabraFormada(palabraFormada, palabraAux);
         colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 1));
     }
 

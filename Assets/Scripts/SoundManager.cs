@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
 	public AudioClip bonk;
 	public AudioClip silabasJoining;
 	public AudioClip palabraDescubierta;
+	public AudioClip[] explosions;
 
 	// Audio players components.
 	public AudioSource EffectsSource;
@@ -20,16 +21,20 @@ public class SoundManager : MonoBehaviour
 	
 	void OnEnable()
 	{
-		EventManager.martilloGolpea += reproducirBonk;
-		EventManager.silabasUnidas += reproducirJoin;
-		EventManager.palabraFormada += reproducirPalabraDescubierta;
+		EventManager.onMartilloGolpea += reproducirBonk;
+		EventManager.onMartilloGolpea += reproducirExplosion;
+		EventManager.onExplosionFinJuego += reproducirExplosion;
+		EventManager.onSilabasUnidas += reproducirJoin;
+		EventManager.onPalabraFormada += reproducirPalabraDescubierta;
 	}
 
 	void OnDisable()
 	{
-		EventManager.martilloGolpea -= reproducirBonk;
-		EventManager.silabasUnidas -= reproducirJoin;
-		EventManager.palabraFormada -= reproducirPalabraDescubierta;
+		EventManager.onMartilloGolpea -= reproducirBonk;
+		EventManager.onMartilloGolpea -= reproducirExplosion;
+		EventManager.onExplosionFinJuego -= reproducirExplosion;
+		EventManager.onSilabasUnidas -= reproducirJoin;
+		EventManager.onPalabraFormada -= reproducirPalabraDescubierta;
 	}
 
     #endregion
@@ -76,6 +81,12 @@ public class SoundManager : MonoBehaviour
     void reproducirBonk()
     {
 		Play(bonk);
+    }
+
+	void reproducirExplosion(Vector3 _)
+    {
+		int randomIndex = Random.Range(0, explosions.Length);
+		Play(explosions[randomIndex]);
     }
 
 	void reproducirJoin(SilabaController _unused, SilabaController _unused2)

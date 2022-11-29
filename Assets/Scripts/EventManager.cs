@@ -4,145 +4,152 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     #region eventos de silabas (plural)
-    public static event System.Action<SilabaController, SilabaController> silabasUnidas = delegate { };
-    public static event System.Action<SilabaController, SilabaController> silabasSeparadas = delegate { };
-    public static event System.Action<SilabaController, SilabaController> silabasColisionan = delegate { };
-    public static event System.Action<List<SilabaController>, float> activarConectoresDespuesDe = delegate { };
+    public static event System.Action<SilabaController, SilabaController> onSilabasUnidas = delegate { };
+    public static event System.Action<SilabaController, SilabaController> onSilabasSeparadas = delegate { };
+    public static event System.Action<SilabaController, SilabaController> onSilabasColisionan = delegate { };
+    public static event System.Action<List<SilabaController>, float> onActivarConectoresDespuesDe = delegate { };
     
 
     #endregion
 
     #region eventos de silaba (singular)
-    public static event System.Action<SilabaController> silabaEsClickeada = delegate { };
-    public static event System.Action<SilabaController> silabaEsBajada = delegate { };
-    public static event System.Action<SilabaController> silabaSeparadaDeSilaba = delegate { };
+    public static event System.Action<SilabaController> onSilabaEsClickeada = delegate { };
+    public static event System.Action<SilabaController> onSilabaEsBajada = delegate { };
+    public static event System.Action<SilabaController> onSilabaSeparadaDeSilaba = delegate { };
     public static event System.Action comprobarBounds = delegate { };
 
     #endregion
 
     #region eventos de palabras (plural)
-    public static event System.Action<PalabraController, PalabraController> palabrasUnidas = delegate { };
-    public static event System.Action<List<PalabraSilabas>> palabrasSeleccionadasParaJuego = delegate { };
-    public static event System.Action ordenarPalabras = delegate { };
-    public static event System.Action nosQuedamosSinPalabras = delegate { };
+    public static event System.Action<PalabraController, PalabraController> onPalabrasUnidas = delegate { };
+    public static event System.Action<List<PalabraSilabas>> onPalabrasSeleccionadasParaJuego = delegate { };
+    public static event System.Action onOrdenarPalabras = delegate { };
+    public static event System.Action onNosQuedamosSinPalabras = delegate { };
     
 
     #endregion
 
     #region eventos de palabra (singular)
-    public static event System.Action<string, List<string>> palabraSeleccionadaParaJuego = delegate { };
-    public static event System.Action<PalabraController, string> palabraFormada = delegate { };
+    public static event System.Action<string, List<string>> onPalabraSeleccionadaParaJuego = delegate { };
+    public static event System.Action<PalabraController, string> onPalabraFormada = delegate { };
     #endregion
 
 
-    #region eventos de martillo
-    public static event System.Action<Vector3> martilloGolpea = delegate { };
-    
+    #region eventos de explosiones
+    public static event System.Action<Vector3> onMartilloGolpea = delegate { };
+    public static event System.Action<Vector3> onExplosionFinJuego = delegate { };
     #endregion
 
     #region eventos de juego general
-    public static event System.Action modoRomperActivado = delegate { };
-    public static event System.Action modoRomperDesActivado = delegate { };
-    public static event System.Action ganaste = delegate { };
+    public static event System.Action onModoRomperActivado = delegate { };
+    public static event System.Action onModoRomperDesActivado = delegate { };
+    public static event System.Action onGanaste = delegate { };
 
     #endregion
 
     #region eventos de puntos
-    public static event System.Action<Vector3> puntoDevuelto = delegate { };
+    public static event System.Action<Vector3> onPuntoDevuelto = delegate { };
     #endregion
 
 
+
     #region notificacion de eventos
-    public static void onSilabasUnidas(SilabaController s1, SilabaController s2)
+    public static void SilabasUnidas(SilabaController s1, SilabaController s2)
     {
-        silabasUnidas(s1, s2);
+        onSilabasUnidas(s1, s2);
     }
 
-    public static void onSilabasSeparadas(SilabaController s1, SilabaController s2)
+    public static void SilabasSeparadas(SilabaController s1, SilabaController s2)
     {
-        silabasSeparadas(s1, s2);
+        onSilabasSeparadas(s1, s2);
     }
 
-    public static void onSilabasColisionan(SilabaController s1, SilabaController s2)
+    public static void SilabasColisionan(SilabaController s1, SilabaController s2)
     {
         //el primer argumento es la silaba que se est� moviend
-        silabasColisionan(s1, s2);
+        onSilabasColisionan(s1, s2);
     }
 
-    public static void onSilabaEsClickeada(SilabaController silaba)
+    public static void SilabaEsClickeada(SilabaController silaba)
     {
-        silabaEsClickeada(silaba);
+        onSilabaEsClickeada(silaba);
     }
 
-    public static void onSilabaEsBajada(SilabaController silaba)
+    public static void SilabaEsBajada(SilabaController silaba)
     {
-            silabaEsBajada(silaba);
+            onSilabaEsBajada(silaba);
     }
 
-    public static void onModoRomperActivado()
+    public static void ModoRomperActivado()
     {
         Debug.Log("onModoRomperActivado");
-        modoRomperActivado();
+        onModoRomperActivado();
     }
-    public static void onModoRomperDesactivado()
+    public static void ModoRomperDesactivado()
     {
         Debug.Log("onModoRomperDesactivado");
-        modoRomperDesActivado();
+        onModoRomperDesActivado();
     }
 
-    public static void onSilabaSeparadaDeSilaba(SilabaController silabaSeparada)
+    public static void SilabaSeparadaDeSilaba(SilabaController silabaSeparada)
     {
-        silabaSeparadaDeSilaba(silabaSeparada);
+        onSilabaSeparadaDeSilaba(silabaSeparada);
     }
 
-    public static void onPalabraFormada(PalabraController palabra, string palabraString)
+    public static void PalabraFormada(PalabraController palabra, string palabraString)
     {
-        palabraFormada(palabra, palabraString);
+        onPalabraFormada(palabra, palabraString);
     }
 
-    public static void onPalabraSeleccionadaParaJuego(string palabra, List<string> silabas)
+    public static void PalabraSeleccionadaParaJuego(string palabra, List<string> silabas)
     {
-        palabraSeleccionadaParaJuego(palabra, silabas);
+        onPalabraSeleccionadaParaJuego(palabra, silabas);
     }
 
-    public static void onPalabrasSeleccionadasParaJuego(List<PalabraSilabas> palabras)
+    public static void PalabrasSeleccionadasParaJuego(List<PalabraSilabas> palabras)
     {
-        palabrasSeleccionadasParaJuego(palabras);
+        onPalabrasSeleccionadasParaJuego(palabras);
     }
 
-    public static void onActivarConectoresDespuesDe(List<SilabaController> silabas, float tiempo)
+    public static void ActivarConectoresDespuesDe(List<SilabaController> silabas, float tiempo)
     {
-        activarConectoresDespuesDe(silabas, tiempo);
+        onActivarConectoresDespuesDe(silabas, tiempo);
     }
 
-    public static  void onOrdenarPalabras()
+    public static  void OrdenarPalabras()
     {
-        ordenarPalabras();
+        onOrdenarPalabras();
     }
 
-    public static void onComprobarBounds()
+    public static void ComprobarBounds()
     {
         comprobarBounds();
     }
 
-    public static void onGanaste()
+    public static void Ganaste()
     {
-        ganaste();
+        onGanaste();
     }
 
-    public static void onNosQuedamosSinPalabras()
+    public static void NosQuedamosSinPalabras()
     {
-        nosQuedamosSinPalabras();
+        onNosQuedamosSinPalabras();
     }
 
-    public static void onMartilloGolpea(Vector3 pos)
+    public static void MartilloGolpea(Vector3 pos)
     {
-        martilloGolpea(pos);
+        onMartilloGolpea(pos);
     }
 
-    public static void onPuntoDevuelto(Vector3 punto)
+    public static void ExplotarFinJuego(Vector3 pos)
     {
-        puntoDevuelto(punto);
+        onExplosionFinJuego(pos);
+    }
+    
+
+    public static void PuntoDevuelto(Vector3 punto)
+    {
+        onPuntoDevuelto(punto);
     }
     #endregion
 }

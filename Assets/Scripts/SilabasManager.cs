@@ -11,16 +11,16 @@ public class SilabasManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.silabaEsClickeada += manejarClickASilaba;
-        EventManager.silabasColisionan += UnirSilabas;
-        EventManager.activarConectoresDespuesDe += activarConectoresDespuesDe;
+        EventManager.onSilabaEsClickeada += manejarClickASilaba;
+        EventManager.onSilabasColisionan += UnirSilabas;
+        EventManager.onActivarConectoresDespuesDe += activarConectoresDespuesDe;
     }
 
     void OnDisable()
     {
-        EventManager.silabaEsClickeada -= manejarClickASilaba;
-        EventManager.silabasColisionan -= UnirSilabas;
-        EventManager.activarConectoresDespuesDe -= activarConectoresDespuesDe;
+        EventManager.onSilabaEsClickeada -= manejarClickASilaba;
+        EventManager.onSilabasColisionan -= UnirSilabas;
+        EventManager.onActivarConectoresDespuesDe -= activarConectoresDespuesDe;
     }
 
     #endregion
@@ -103,7 +103,7 @@ public class SilabasManager : MonoBehaviour
 
         pController1.acomodarSilabasEnElEspacio();
 
-        EventManager.onSilabasUnidas(izquierda, derecha);
+        EventManager.SilabasUnidas(izquierda, derecha);
     }
 
     void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)
@@ -119,7 +119,7 @@ public class SilabasManager : MonoBehaviour
         if (gameManager.modoRomper)
         {
             silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            EventManager.onModoRomperDesactivado();
+            EventManager.ModoRomperDesactivado();
         }
     }
 

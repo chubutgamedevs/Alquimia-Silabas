@@ -8,12 +8,14 @@ public class ExplosionSpawner : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.martilloGolpea += nuevaExplosion;
+        EventManager.onMartilloGolpea += nuevaExplosion;
+        EventManager.onExplosionFinJuego += nuevaExplosion;
     }
 
     void OnDisable()
     {
-        EventManager.martilloGolpea -= nuevaExplosion;
+        EventManager.onMartilloGolpea -= nuevaExplosion;
+        EventManager.onExplosionFinJuego -= nuevaExplosion;
     }
 
     void nuevaExplosion(Vector3 pos)

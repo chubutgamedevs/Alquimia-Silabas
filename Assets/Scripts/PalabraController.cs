@@ -19,13 +19,13 @@ public class PalabraController : MonoBehaviour
     void OnEnable()
     {
         EventManager.comprobarBounds += comprobarBounds;
-        EventManager.ganaste += iniciarDestruccionFinDelJuego;
+        EventManager.onGanaste += iniciarDestruccionFinDelJuego;
     }
 
     void OnDisable()
     {
         EventManager.comprobarBounds -= comprobarBounds;
-        EventManager.ganaste -= iniciarDestruccionFinDelJuego;
+        EventManager.onGanaste -= iniciarDestruccionFinDelJuego;
     }
 
 
@@ -240,7 +240,7 @@ public class PalabraController : MonoBehaviour
     void liberarPuntos()
     {
         foreach(SilabaController sil in silabas) {
-            EventManager.onPuntoDevuelto(sil.puntoInicial);
+            EventManager.PuntoDevuelto(sil.puntoInicial);
         }
     }
 

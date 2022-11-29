@@ -8,12 +8,12 @@ public class VibrationsManager : MonoBehaviour
     void OnEnable()
     {
         
-        EventManager.martilloGolpea+= HandleHammerHit;
+        EventManager.onMartilloGolpea+= HandleHammerHit;
     }
 
     void OnDisable()
     {
-        EventManager.martilloGolpea -= HandleHammerHit;
+        EventManager.onMartilloGolpea -= HandleHammerHit;
     }
 
     void HandleHammerHit(Vector3 _unused)

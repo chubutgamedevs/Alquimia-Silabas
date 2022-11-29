@@ -38,14 +38,14 @@ public class SilabaController : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
-        EventManager.modoRomperActivado += handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado += handleModoRomperActivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
-        EventManager.modoRomperActivado -= handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado -= handleModoRomperActivado;
     }
 
     public void disableDrag()
@@ -69,7 +69,7 @@ public class SilabaController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        EventManager.onSilabaEsClickeada(this);
+        EventManager.SilabaEsClickeada(this);
     }
 
     void OnMouseDrag()
@@ -95,7 +95,7 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp()
     {
-        EventManager.onComprobarBounds();
+        EventManager.ComprobarBounds();
     }
 
     #endregion eventos
@@ -266,7 +266,7 @@ public class SilabaController : MonoBehaviour
 
             conectoresManager.activarConectores();
 
-            EventManager.onSilabaSeparadaDeSilaba(this);
+            EventManager.SilabaSeparadaDeSilaba(this);
         }
     }
 

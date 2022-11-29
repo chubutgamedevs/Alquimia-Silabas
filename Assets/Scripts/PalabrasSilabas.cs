@@ -36,7 +36,7 @@ public class PalabrasDeserializer
             }
             else
             {
-                EventManager.onGanaste();
+                EventManager.Ganaste();
                 break;
             }
         }
@@ -47,6 +47,10 @@ public class PalabrasDeserializer
     public List<PalabraSilabas> getNuevasPalabrasTarget()
     {
         batchActual = batchesLevel.nuevoBatch();
+        if(batchActual.palabras == null)
+        {
+            return batchActual.palabras;
+        }
 
         return getPalabrasTarget();
     }
@@ -101,7 +105,7 @@ public class PalabrasDeserializer
             }
             else
             {
-                EventManager.onGanaste();
+                EventManager.Ganaste();
                 break;
             }
         }
@@ -135,9 +139,17 @@ public class Batches
 
     public Batch nuevoBatch()
     {
-        Batch aRetornar = batches[0];
-        batches.RemoveAt(0);
-        return aRetornar;
+        if(batches.Count == 0)
+        {
+            EventManager.Ganaste();
+            return new Batch();
+        }
+        else
+        {
+            Batch aRetornar = batches[0];
+            batches.RemoveAt(0);
+            return aRetornar;
+        }
     }
 
 }
@@ -151,6 +163,17 @@ public class Batch
     public List<string> getSilabasDePalabras(int cantPalabras)
     {
         List<string> silabasADevolver = new List<string>();
+
+        if(palabras == null)
+        {
+            return silabasADevolver;
+        }
+
+        if(palabras.Count == 0)
+        {
+            return silabasADevolver;
+        }
+
 
         if (palabras.Count < cantPalabras)
         {

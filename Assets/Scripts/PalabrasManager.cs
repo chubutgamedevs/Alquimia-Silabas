@@ -7,12 +7,12 @@ public class PalabrasManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.palabraFormada += handlePalabraCorrectaFormada;
+        EventManager.onPalabraFormada += handlePalabraCorrectaFormada;
     }
 
     void OnDisable()
     {
-        EventManager.palabraFormada -= handlePalabraCorrectaFormada;
+        EventManager.onPalabraFormada -= handlePalabraCorrectaFormada;
     }
 
     #endregion
