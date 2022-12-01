@@ -25,8 +25,8 @@ public class EventManager : MonoBehaviour
     public static event System.Action<List<PalabraSilabas>> onPalabrasSeleccionadasParaJuego = delegate { };
     public static event System.Action onOrdenarPalabras = delegate { };
     public static event System.Action onNosQuedamosSinPalabras = delegate { };
-    
 
+    public static event System.Action onLimpiarPalabrasObjetivo = delegate { };
     #endregion
 
     #region eventos de palabra (singular)
@@ -150,6 +150,11 @@ public class EventManager : MonoBehaviour
     public static void PuntoDevuelto(Vector3 punto)
     {
         onPuntoDevuelto(punto);
+    }
+
+    public static void LimpiarPalabrasObjetivo()
+    {
+        onLimpiarPalabrasObjetivo();
     }
     #endregion
 }

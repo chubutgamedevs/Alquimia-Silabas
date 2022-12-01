@@ -15,6 +15,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         EventManager.onPalabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
         EventManager.onPalabraFormada += esclarecerPalabra;
+        EventManager.onLimpiarPalabrasObjetivo += limpiarTodo;
 
     }
 
@@ -22,6 +23,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     {
         EventManager.onPalabrasSeleccionadasParaJuego -= settearPalabrasObjetivo;
         EventManager.onPalabraFormada -= esclarecerPalabra;
+        EventManager.onLimpiarPalabrasObjetivo -= limpiarTodo;
     }
     #endregion
 
@@ -55,6 +57,18 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
 
     #region metodos
+
+    void limpiarTodo()
+    {
+        this.palabrasObjetivo = new List<PalabraObjetivoController>();
+        GameObject[] palabrasObjetivo = GameObject.FindGameObjectsWithTag("PalabraObjetivo");
+
+        foreach(GameObject pal in palabrasObjetivo)
+        {
+            Destroy(pal);
+        }
+    }
+
     public void esclarecerPalabras()
     {
         foreach (PalabraObjetivoController pal in palabrasObjetivo)

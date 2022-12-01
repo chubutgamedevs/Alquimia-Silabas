@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
+
 public static class Constants
 {
     public static string tagPalabraObjetivo = "PalabraObjetivo";
@@ -25,6 +27,8 @@ public static class Constants
     public static float anchoSilaba = 1;
 
     public static float radioUbicador = 3f;
+
+    public static int maxNivel = 1;
 }
 
 public class GameManager : MonoBehaviour
@@ -53,10 +57,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        _juego = getJuegoGameObject();
-        palabrasDeserializer = new PalabrasDeserializer(nivel + numeroNivel);
-
-        startGameConPool();
     }
 
 
@@ -105,21 +105,64 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
-
-    public void startGameConPool()
+    public void startGameOnTwoSeconds()
     {
-        palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
+        Invoke("startGame", 1.5f);
+    }
+
+    public void startNivelAnterior() 
+    {
+        if(numeroNivel <= 0)
+        {
+            numeroNivel = 0;
+        }
+        else
+        {
+            numeroNivel--;
+        }
+
+        startGameConPool(numeroNivel);
+    }
+
+    public void startNivelSiguiente()
+    {
+        if (numeroNivel >= Constants.maxNivel)
+        {
+            numeroNivel = Constants.maxNivel;
+        }
+        else
+        {
+            numeroNivel++;
+        }
+
+        startGameConPool(numeroNivel);
+    }
+
+    public void startGame()
+    {
+        startGameConPool(0);
+    }
+
+    public void startGameConPool(int nivelActual)
+    {
+        numeroNivel = nivelActual;
+
+        _juego = getJuegoGameObject();
+        palabrasDeserializer = new PalabrasDeserializer(nivel + numeroNivel);
+
         puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
 
-        anunciarPalabrasTarget(palabrasTarget);
-
-        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 2));
+        nuevaTandaDePalabras();
     }
 
     public void nuevaTandaDePalabras()
     {
         limpiarPalabras();
-        Invoke("startGameConPool",Constants.tiempoHastaRenovacionDePalabras);
+
+        anunciarPalabrasTarget(palabrasDeserializer.getPalabrasTarget());
+        palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
+        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 2));
+
     }
 
     public void limpiarPalabras()
@@ -129,6 +172,17 @@ public class GameManager : MonoBehaviour
             palabra.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego();
         }
 
+    }
+
+    public void limpiarPalabrasTarget()
+    {
+        EventManager.LimpiarPalabrasObjetivo();
+    }
+
+    public void limpiarTodo()
+    {
+        limpiarPalabras();
+        limpiarPalabrasTarget();
     }
 
     void colocarEnPantallaSilabas(List<string> silabas)
@@ -166,7 +220,10 @@ public class GameManager : MonoBehaviour
     void handlePalabraFormada(PalabraController palabraFormada, string palabraAux)
     {
         EventManager.PalabraFormada(palabraFormada, palabraAux);
-        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 1));
+
+        List<string> silabasSiguientes = palabrasDeserializer.getPoolParcialActual(cantPalabras: 1);
+
+        colocarEnPantallaSilabas(silabasSiguientes);
     }
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
@@ -196,6 +253,16 @@ public class GameManager : MonoBehaviour
         return _juego;
     }
 
+    #endregion
+
+
+    #region scene management
+    public void goBackToMenu()
+    {
+        limpiarTodo();
+
+        SceneManager.LoadScene(0);
+    }
     #endregion
 }
 
@@ -245,6 +312,8 @@ public static class Instantiator
 
         return gm.nuevaPalabra(aux);
     }
+
+
 
 
 }
