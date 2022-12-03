@@ -84,10 +84,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
         {
             pal.esclarecerSilabas();
             palabrasObjetivo.Remove(pal);
-            if(palabrasObjetivo.Count == 0)
-            {
-                EventManager.NosQuedamosSinPalabras();
-            }
+
         }
     }
     public void oscurecerPalabras()

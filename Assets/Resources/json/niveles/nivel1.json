@@ -1,37 +1,62 @@
 {
   "batches": [
     {
-      "silabas": [
-        "pe",
-        "rro",
-        "ce",
-        "rro"
-      ],
+      "silabas": ["PI", "YA", "MA", "CA", "MA", "CA", "SA", "BO", "TA"],
       "palabras": [
-        {"silabas":["pe","rro"],"palabra":"perro"},
-        {"silabas":["ce","rro"],"palabra":"cerro"}
+        { "silabas": ["PI", "YA", "MA"], "palabra": "PIYAMA" },
+        { "silabas": ["CA", "MA"], "palabra": "CAMA" },
+        { "silabas": ["CA", "SA"], "palabra": "CASA" },
+        { "silabas": ["BO", "TA"], "palabra": "BOTA" }
       ]
     },
     {
       "silabas": [
-        "pe",
-        "rro",
-        "ga",
-        "to",
-        "pa",
-        "to",
-        "ca",
-        "sa",
-        "pa",
-        "sa"
+        "RE",
+        "ME",
+        "RA",
+        "SA",
+        "CO",
+        "O",
+        "JO",
+        "TAS",
+        "PAN",
+        "TA",
+        "LO",
+        "NES"
       ],
       "palabras": [
-        {"silabas":["pe","rro"],"palabra":"perro"},
-        {"silabas":["ce","rro"],"palabra":"cerro"},
-        {"silabas":["ga","to"],"palabra":"gato"},
-        {"silabas":["pa","to"],"palabra":"pato"},
-        {"silabas":["ca","sa"],"palabra":"casa"},
-        {"silabas":["pa","sa"],"palabra":"pasa"}
+        { "silabas": ["RE", "ME", "RA"], "palabra": "REMERA" },
+        { "silabas": ["SA", "CO"], "palabra": "SACO" },
+        { "silabas": ["O", "JO", "TAS"], "palabra": "OJOTAS" },
+        { "silabas": ["PAN", "TA", "LO", "NES"], "palabra": "PANTALONES" }
+      ]
+    },
+    {
+      "silabas": [
+        "MIE",
+        "DO",
+        "ME",
+        "DIAS",
+        "CA",
+        "MI",
+        "SA",
+        "CA",
+        "MI",
+        "SE",
+        "TA"
+      ],
+      "palabras": [
+        { "silabas": ["MIE", "DO"], "palabra": "MIEDO" },
+        { "silabas": ["ME", "DIAS"], "palabra": "MEDIAS" },
+        { "silabas": ["CA", "MI", "SA"], "palabra": "CAMISA" },
+        { "silabas": ["CA", "MI", "SE", "TA"], "palabra": "CAMISETA" }
+      ]
+    },
+    {
+      "silabas": ["LO", "BI", "TO", "LO", "BO"],
+      "palabras": [
+        { "silabas": ["LO", "BI", "TO"], "palabra": "LOBITO" },
+        { "silabas": ["LO", "BO"], "palabra": "LOBO" }
       ]
     }
   ]

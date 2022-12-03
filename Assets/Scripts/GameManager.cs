@@ -35,8 +35,6 @@ public class GameManager : MonoBehaviour
 {
 
     public bool modoRomper = false;
-
-    public List<PalabraSilabas> palabrasTarget;
     
     private GameObject _juego;
 
@@ -48,8 +46,6 @@ public class GameManager : MonoBehaviour
     private List<Vector3> puntos;
 
     private string nivel = "json/niveles/nivel";
-
-    private int numeroNivel = 0;
 
     #region ciclo de vida
 
@@ -63,7 +59,6 @@ public class GameManager : MonoBehaviour
 
     public void cleanUp()
     {
-        limpiarTodo();
         Destroy(this.gameObject);
     }
 
@@ -112,50 +107,10 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
-    public void startGameOnTwoSeconds()
-    {
-        Invoke("startGame", 1.5f);
-    }
-
-    public void startNivelAnterior() 
-    {
-        if(numeroNivel <= 0)
-        {
-            numeroNivel = 0;
-        }
-        else
-        {
-            numeroNivel--;
-        }
-
-        startGameConPool(numeroNivel);
-    }
-
-    public void startNivelSiguiente()
-    {
-        if (numeroNivel >= Constants.maxNivel)
-        {
-            numeroNivel = Constants.maxNivel;
-        }
-        else
-        {
-            numeroNivel++;
-        }
-
-        startGameConPool(numeroNivel);
-    }
-
-    public void startGame()
-    {
-        startGameConPool(0);
-    }
-
     public void startGameConPool(int nivelActual)
     {
-        numeroNivel = nivelActual;
-
         _juego = getJuegoGameObject();
-        palabrasDeserializer = new PalabrasDeserializer(nivel + numeroNivel);
+        palabrasDeserializer = new PalabrasDeserializer(nivel + nivelActual);
 
         puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
 
@@ -166,9 +121,9 @@ public class GameManager : MonoBehaviour
     {
         limpiarPalabras();
 
-        anunciarPalabrasTarget(palabrasDeserializer.getPalabrasTarget());
-        palabrasTarget = palabrasDeserializer.getNuevasPalabrasTarget();
-        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 2));
+        palabrasDeserializer.getNuevasPalabrasTarget();
+        anunciarPalabrasTarget(palabrasDeserializer.getPalabrasTargetOriginales());
+        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 1));
 
     }
 
@@ -230,7 +185,14 @@ public class GameManager : MonoBehaviour
 
         List<string> silabasSiguientes = palabrasDeserializer.getPoolParcialActual(cantPalabras: 1);
 
-        colocarEnPantallaSilabas(silabasSiguientes);
+        if(silabasSiguientes.Count == 0)
+        {
+            nuevaTandaDePalabras();
+        }
+        else
+        {
+            colocarEnPantallaSilabas(silabasSiguientes);
+        }
     }
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
@@ -241,11 +203,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
 
-        foreach (PalabraSilabas palabra in this.palabrasTarget)
+        foreach (PalabraSilabas palabra in palabrasDeserializer.getPalabrasEnPantalla())
         {
             if (palabra.palabra.ToUpper() == palabraAux)
             {
-                palabrasTarget.Remove(palabra);
+                palabrasDeserializer.palabraFormada(palabra);
                 handlePalabraFormada(palabraFormada,palabraAux);
                 return;
             }

@@ -42,9 +42,5 @@ public class BotonToggleClickeado : MonoBehaviour, IPointerDownHandler, IPointer
     {
         this.toggled = !this.toggled;
     }
-    public void IWasClicked()
-    {
-        Debug.Log("Clicked");
-        SceneManager.LoadScene(1);
-    }
+    
 }

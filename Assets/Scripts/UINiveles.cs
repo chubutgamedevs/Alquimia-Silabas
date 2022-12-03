@@ -6,20 +6,15 @@ using UnityEngine.SceneManagement;
 public class UINiveles : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void goBackToMenu()
     {
         SceneManager.LoadSceneAsync(0);
         GameManager.GetInstance().cleanUp();
+    }
+
+    public void nextLevel()
+    {
+        GameManager.GetInstance().cleanUp();
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

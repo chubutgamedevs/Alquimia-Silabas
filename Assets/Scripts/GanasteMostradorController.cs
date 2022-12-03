@@ -58,7 +58,7 @@ public class GanasteMostradorController : MonoBehaviour
     {
         foreach(Vector3 punto in explosiones)
         {
-            float tiempoExplosion = Random.Range(0.1f, 0.9f);
+            float tiempoExplosion = Random.Range(0.1f, 0.3f);
             Invoke("explotar", tiempoExplosion);
         }
     }

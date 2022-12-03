@@ -7,6 +7,9 @@ public class PalabrasDeserializer
 {
     Batches batchesLevel;
     Batch batchActual;
+    List<PalabraSilabas> palabrasOriginales = new List<PalabraSilabas>();
+    List<PalabraSilabas> palabrasEnPantalla= new List<PalabraSilabas>();
+
     public PalabrasDeserializer(string nombre = "json/silabas") //por defecto obtiene todas las palabras
     {
         cargarPalabrasYSilabas(nombre);
@@ -22,41 +25,39 @@ public class PalabrasDeserializer
     }
     #endregion
 
-
-    public List<PalabraSilabas> generarPalabrasTargetRandom(int cantPalabras)
+    public List<PalabraSilabas> getPalabrasEnPantalla()
     {
-        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
+        return this.palabrasEnPantalla;
+    }
 
-        for (int i = 0; i < cantPalabras; i++)
-        {
-            PalabraSilabas obtenida = nuevaPalabraRandom();
-            if (obtenida != null)
-            {
-                palabrasAux.Add(obtenida);
-            }
-            else
-            {
-                EventManager.Ganaste();
-                break;
-            }
-        }
-
-        return palabrasAux;
+    public void palabraFormada(PalabraSilabas pal)
+    {
+        this.palabrasEnPantalla.Remove(pal);
     }
 
     public List<PalabraSilabas> getNuevasPalabrasTarget()
     {
         batchActual = batchesLevel.nuevoBatch();
-        if(batchActual.palabras == null)
+        this.palabrasOriginales = new List<PalabraSilabas>();
+
+        if (batchActual.palabras != null)
         {
-            return batchActual.palabras;
+            palabrasOriginales = batchActual.palabras.ToList();
         }
 
-        return getPalabrasTarget();
+        palabrasEnPantalla = palabrasOriginales.ToList();
+
+        return getPalabrasTargetOriginales();
     }
-    public List<PalabraSilabas> getPalabrasTarget()
+
+    public List<PalabraSilabas> getPalabrasTargetOriginales()
     {
-        return batchActual.palabras.ToList();
+        return this.palabrasOriginales;
+    }
+
+    public List<PalabraSilabas> getPalabrasTargetActuales()
+    {
+        return batchActual.palabras;
     }
 
     public List<string> getPoolActual()
@@ -84,35 +85,8 @@ public class PalabrasDeserializer
         //vamos achicando la cantidad de palabras
         batchActual.palabras.RemoveAt(randomIndex);
 
-        if(batchActual.palabras.Count == 0)
-        {
-            batchActual = batchesLevel.nuevoBatch();
-        }
-
         return seleccionada;
     }
-
-    public List<PalabraSilabas> generarPalabrasTargetEnOrden(int cantPalabras)
-    {
-        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
-
-        for (int i = 0; i < cantPalabras; i++)
-        {
-            PalabraSilabas obtenida = nuevaPalabraEnOrden();
-            if (obtenida != null)
-            {
-                palabrasAux.Add(obtenida);
-            }
-            else
-            {
-                EventManager.Ganaste();
-                break;
-            }
-        }
-
-        return palabrasAux;
-    }
-
 
     public PalabraSilabas nuevaPalabraEnOrden()
     {
