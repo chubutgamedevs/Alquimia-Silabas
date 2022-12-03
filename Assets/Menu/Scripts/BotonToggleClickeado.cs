@@ -14,6 +14,10 @@ public class BotonToggleClickeado : MonoBehaviour, IPointerDownHandler, IPointer
 
     private bool toggled = false;
 
+    private void Start()
+    {
+        _source = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<AudioSource>();
+    }
     public void OnPointerDown(PointerEventData eventData)
     {
         _source.PlayOneShot(_compressClip);

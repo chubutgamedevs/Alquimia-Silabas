@@ -57,8 +57,15 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
+
+        startGameConPool(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void cleanUp()
+    {
+        limpiarTodo();
+        Destroy(this.gameObject);
+    }
 
     #endregion
 

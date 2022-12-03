@@ -25,7 +25,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.46769781"
-     inkscape:cx="310.02925"
+     inkscape:cx="104.7685"
      inkscape:cy="446.86974"
      inkscape:window-width="1366"
      inkscape:window-height="705"
@@ -77,13 +77,16 @@
          x="7.3542871"
          y="15" />
       <rect
-         style="opacity:0.99;fill:#b52b2b;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers;filter:url(#filter2091)"
+         style="opacity:0.99;fill:#000000;fill-opacity:1;stroke:none;stroke-width:20;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:stroke fill markers;filter:url(#filter2091)"
          id="rect3111-9"
          width="188.94858"
          height="144.82286"
          x="55.439999"
          y="5.0914268"
-         transform="matrix(0.29640721,0,0,1,123.60385,9.9085732)" />
+         transform="matrix(0.29640721,0,0,1,123.60385,9.9085732)"
+         inkscape:export-filename="fondo.png"
+         inkscape:export-xdpi="137.65439"
+         inkscape:export-ydpi="137.65439" />
     </g>
   </g>
 </svg>

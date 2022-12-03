@@ -12,6 +12,10 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [SerializeField] private AudioClip _compressClip, _unCompressClip;
     [SerializeField] private AudioSource _source;
 
+    private void Start()
+    {
+        _source = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<AudioSource>();
+    }
     public void OnPointerDown(PointerEventData eventData)
     {
         _img.sprite = _pressed;

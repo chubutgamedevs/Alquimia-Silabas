@@ -15,6 +15,7 @@ TagManager:
   - colisionador
   - explosion
   - silaba
+  - SoundManager
   layers:
   - Default
   - TransparentFX
