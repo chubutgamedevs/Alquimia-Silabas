@@ -1,5 +1,13 @@
 {
   "batches": [
+    
+    {
+      "silabas": ["LO", "BI", "TO", "LO", "BO"],
+      "palabras": [
+        { "silabas": ["LO", "BI", "TO"], "palabra": "LOBITO" },
+        { "silabas": ["LO", "BO"], "palabra": "LOBO" }
+      ]
+    },
     {
       "silabas": ["PI", "YA", "MA", "CA", "MA", "CA", "SA", "BO", "TA"],
       "palabras": [
@@ -50,13 +58,6 @@
         { "silabas": ["ME", "DIAS"], "palabra": "MEDIAS" },
         { "silabas": ["CA", "MI", "SA"], "palabra": "CAMISA" },
         { "silabas": ["CA", "MI", "SE", "TA"], "palabra": "CAMISETA" }
-      ]
-    },
-    {
-      "silabas": ["LO", "BI", "TO", "LO", "BO"],
-      "palabras": [
-        { "silabas": ["LO", "BI", "TO"], "palabra": "LOBITO" },
-        { "silabas": ["LO", "BO"], "palabra": "LOBO" }
       ]
     }
   ]
