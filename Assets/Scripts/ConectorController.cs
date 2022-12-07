@@ -6,39 +6,45 @@ public class ConectorController : MonoBehaviour
 {
     
     public SilabaController silabaController;
+    bool activo = true;
 
     public void desActivarConector()
     {
         if (gameObject)
         {
             gameObject.SetActive(false);
+            activo = false;
         }
     }
     public void activarConector()
     {
         gameObject.SetActive(true);
+        activo = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("conector"))
+        if (!this.activo)
         {
-            ConectorController otroConector = other.gameObject.GetComponent<ConectorController>();
+            return;
+        }
 
-            if(this.gameObject.name != other.gameObject.name)
-            {
-                //de esta manera evitamos que el evento se lance 2 veces
-                if (silabaController.getPalabraController().moviendose){
+        ConectorController otroConector = other.gameObject.GetComponent<ConectorController>();
 
-                    //el primer argumento es la silaba que se está moviendo
-                    EventManager.onSilabasColisionan(silabaController, otroConector.silabaController);
-                
-                    //desactivamos conectores para no conectar en el medio una vez unidas
-                    gameObject.SetActive(false);
-                    other.gameObject.SetActive(false);
-                }
+        if(this.gameObject.tag != other.gameObject.tag)
+        {
+            //de esta manera evitamos que el evento se lance 2 veces
+            if (silabaController.getPalabraController().moviendose){
+
+                //el primer argumento es la silaba que se está moviendo
+                EventManager.SilabasColisionan(silabaController, otroConector.silabaController);
+
+                //desactivamos conectores para no conectar en el medio una vez unidas
+                this.desActivarConector();
+                otroConector.desActivarConector();
             }
         }
+        
     }
 }
 

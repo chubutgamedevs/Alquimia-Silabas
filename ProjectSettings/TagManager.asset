@@ -10,6 +10,12 @@ TagManager:
   - juego
   - PalabraDestruida
   - PalabraObjetivo
+  - hembra
+  - martillo
+  - colisionador
+  - explosion
+  - silaba
+  - SoundManager
   layers:
   - Default
   - TransparentFX

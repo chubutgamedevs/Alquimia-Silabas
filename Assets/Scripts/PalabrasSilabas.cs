@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class PalabrasDeserializer
 {
-    //sacados de palabras.json
-    public Dictionary<string, List<string>> palabrasYSilabas;
-    //lista de palabras
-    List<string> wordList;
+    Batches batchesLevel;
+    Batch batchActual;
+    List<PalabraSilabas> palabrasOriginales = new List<PalabraSilabas>();
+    List<PalabraSilabas> palabrasEnPantalla= new List<PalabraSilabas>();
 
     public PalabrasDeserializer(string nombre = "json/silabas") //por defecto obtiene todas las palabras
     {
@@ -19,86 +19,86 @@ public class PalabrasDeserializer
     private void cargarPalabrasYSilabas(string nombre)
     {
         TextAsset json = Resources.Load<TextAsset>(nombre);
-        Palabras palabras = JsonUtility.FromJson<Palabras>(json.ToString());
-        palabrasYSilabas = palabras.palabras.ToDictionary(x => x.palabra, x => x.silabas);
-        wordList = new List<string>(palabrasYSilabas.Keys);
+        batchesLevel = JsonUtility.FromJson<Batches>(json.ToString());
+
+        batchActual = batchesLevel.batches[0];
     }
     #endregion
 
-
-    public List<PalabraSilabas> generarPalabrasTargetRandom(int cantPalabras)
+    public List<PalabraSilabas> getPalabrasEnPantalla()
     {
-        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
+        return this.palabrasEnPantalla;
+    }
 
-        for (int i = 0; i < cantPalabras; i++)
+    public void palabraFormada(PalabraSilabas pal)
+    {
+        this.palabrasEnPantalla.Remove(pal);
+    }
+
+    public List<PalabraSilabas> getNuevasPalabrasTarget()
+    {
+        batchActual = batchesLevel.nuevoBatch();
+        this.palabrasOriginales = new List<PalabraSilabas>();
+
+        if (batchActual.palabras != null)
         {
-            PalabraSilabas obtenida = nuevaPalabraRandom();
-            if(obtenida != null)
-            {
-                palabrasAux.Add(obtenida);
-            }
-            else
-            {
-                EventManager.onGanaste();
-                break;
-            }
+            palabrasOriginales = batchActual.palabras.ToList();
         }
 
-        return palabrasAux;
+        palabrasEnPantalla = palabrasOriginales.ToList();
+
+        return getPalabrasTargetOriginales();
+    }
+
+    public List<PalabraSilabas> getPalabrasTargetOriginales()
+    {
+        return this.palabrasOriginales;
+    }
+
+    public List<PalabraSilabas> getPalabrasTargetActuales()
+    {
+        return batchActual.palabras;
+    }
+
+    public List<string> getPoolActual()
+    {
+        return batchActual.silabas;
+    }
+
+    public List<string> getPoolParcialActual(int cantPalabras)
+    {
+        return batchActual.getSilabasDePalabras(cantPalabras);
     }
 
 
     public PalabraSilabas nuevaPalabraRandom()
     {
-        if(wordList.Count == 0)
+        if(batchesLevel.batches.Count == 0 || batchActual.palabras.Count == 0)
         {
             return null;
         }
-        int randomIndex = UnityEngine.Random.Range(0, wordList.Count);
 
-        PalabraSilabas seleccionada = new PalabraSilabas(wordList[randomIndex], palabrasYSilabas[wordList[randomIndex]]);
+        int randomIndex = UnityEngine.Random.Range(0, batchActual.palabras.Count);
 
-        //vamos achicando la cantidad de silabas
-        palabrasYSilabas.Remove(wordList[randomIndex]);
-        wordList.RemoveAt(randomIndex);
+        PalabraSilabas seleccionada = new PalabraSilabas(batchActual.palabras[randomIndex].palabra, batchActual.palabras[randomIndex].silabas);
+
+        //vamos achicando la cantidad de palabras
+        batchActual.palabras.RemoveAt(randomIndex);
 
         return seleccionada;
     }
 
-    public List<PalabraSilabas> generarPalabrasTargetEnOrden(int cantPalabras)
-    {
-        List<PalabraSilabas> palabrasAux = new List<PalabraSilabas>();
-
-        for (int i = 0; i < cantPalabras; i++)
-        {
-            PalabraSilabas obtenida = nuevaPalabraEnOrden();
-            if (obtenida != null)
-            {
-                palabrasAux.Add(obtenida);
-            }
-            else
-            {
-                EventManager.onGanaste();
-                break;
-            }
-        }
-
-        return palabrasAux;
-    }
-
-
     public PalabraSilabas nuevaPalabraEnOrden()
     {
-        if (wordList.Count == 0)
+        if (batchesLevel.batches.Count == 0 || batchActual.palabras.Count == 0)
         {
             return null;
         }
 
-        PalabraSilabas seleccionada = new PalabraSilabas(wordList[0], palabrasYSilabas[wordList[0]]);
+        PalabraSilabas seleccionada = new PalabraSilabas(batchActual.palabras[0].palabra, batchActual.palabras[0].silabas);
 
-        //vamos achicando la cantidad de silabas
-        palabrasYSilabas.Remove(wordList[0]);
-        wordList.RemoveAt(0);
+        //vamos achicando la cantidad de palabras
+        batchActual.palabras.RemoveAt(0);
 
         return seleccionada;
     }
@@ -107,10 +107,83 @@ public class PalabrasDeserializer
 }
 
 [Serializable]
-public class Palabras
+public class Batches
 {
-    public List<PalabraSilabas> palabras;
+    public List<Batch> batches;
+
+    public Batch nuevoBatch()
+    {
+        if(batches.Count == 0)
+        {
+            EventManager.Ganaste();
+            return new Batch();
+        }
+        else
+        {
+            Batch aRetornar = batches[0];
+            batches.RemoveAt(0);
+            return aRetornar;
+        }
+    }
+
 }
+
+[Serializable]
+public class Batch
+{
+    public List<string> silabas;
+    public List<PalabraSilabas> palabras;
+
+    public List<string> getSilabasDePalabras(int cantPalabras)
+    {
+        List<string> silabasADevolver = new List<string>();
+
+        if(palabras == null)
+        {
+            return silabasADevolver;
+        }
+
+        if(palabras.Count == 0)
+        {
+            return silabasADevolver;
+        }
+
+
+        if (palabras.Count < cantPalabras)
+        {
+            cantPalabras = palabras.Count;
+        }
+
+        List<PalabraSilabas> palabrasAEliminar = new List<PalabraSilabas>();
+
+
+        for(int i = 0; i < cantPalabras; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, palabras.Count);
+            while (palabrasAEliminar.Contains(palabras[randomIndex]))
+            {
+                randomIndex = UnityEngine.Random.Range(0, palabras.Count);
+            }
+
+
+            palabrasAEliminar.Add(palabras[randomIndex]);
+            silabasADevolver.AddRange(palabras[randomIndex].silabas);
+
+            if(silabasADevolver.Count >= 3)
+            {
+                break;
+            }
+        }
+
+        foreach (PalabraSilabas pal in palabrasAEliminar)
+        {
+            palabras.Remove(pal);
+        }
+
+        return silabasADevolver;
+    }
+}
+
 
 [Serializable]
 public class PalabraSilabas

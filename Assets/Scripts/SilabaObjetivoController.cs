@@ -10,7 +10,7 @@ public class SilabaObjetivoController : MonoBehaviour
 
     public Animator miAnimator;
 
-    TMPro.TextMeshProUGUI texto;
+    public TMPro.TextMeshProUGUI texto;
     public GameObject fondoObj;
     Image fondo;
 
@@ -19,21 +19,7 @@ public class SilabaObjetivoController : MonoBehaviour
     void Awake()
     {
         RectTransform rectTransform = this.gameObject.GetComponent<RectTransform>();
-        anchoSilaba = rectTransform.rect.width * rectTransform.localScale.x ;
-        if (!texto)
-        {
-            texto = getTextMeshPro();
-        }
-
-        if (!fondo)
-        {
-            fondo = fondoObj.GetComponent<Image>();
-        }
-        if (!miAnimator)
-        {
-            miAnimator = transform.GetChild(0).GetComponent<Animator>();
-        }
-        
+        anchoSilaba = rectTransform.rect.width * rectTransform.localScale.x ;        
     }
 
     private void Start()
@@ -46,10 +32,6 @@ public class SilabaObjetivoController : MonoBehaviour
 
     #region getters & setters
 
-    TMPro.TextMeshProUGUI getTextMeshPro()
-    {
-        return gameObject.transform.GetChild(1).gameObject.GetComponent<TMPro.TextMeshProUGUI>();
-    }
 
     internal void settearSilaba(string silaba)
     {

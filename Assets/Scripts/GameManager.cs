@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public static class Constants
 {
     public static string tagPalabraObjetivo = "PalabraObjetivo";
 
     public static float tiempoHastaDejarQuieta = 2;
-    public static float tiempoDeAnimacionPalabraCorrecta = 4f;
+    public static float tiempoDeAnimacionPalabraCorrecta = 2f;
     public static float tiempoHastaIrAlPunto = 0.5f;
     public static float tiempoAnimacionDestruccion = 1f;
     public static float tiempoAnimacionDestruccionSilaba = 0.5f;
@@ -16,23 +18,24 @@ public static class Constants
     public static float tiempoHastaRenovacionDePalabras = 2f;
 
 
-    public static float maxY = 6;
-    public static float minY = 0;
+    public static float maxY = 9f;
+    public static float minY = -1;
 
-    public static float maxX = 12;
-    public static float minX = 0;
+    public static float maxX = 12f;
+    public static float minX = -1;
 
     public static float anchoSilaba = 1;
+
+    public static float radioUbicador = 3f;
+
+    public static int maxNivel = 1;
 }
 
 public class GameManager : MonoBehaviour
 {
 
     public bool modoRomper = false;
-
-    public List<PalabraSilabas> palabrasTarget;
-    public List<string> poolDeSilabas;
-
+    
     private GameObject _juego;
 
     private PalabrasDeserializer palabrasDeserializer;
@@ -42,23 +45,21 @@ public class GameManager : MonoBehaviour
 
     private List<Vector3> puntos;
 
-    private string nivel = "json/niveles/nivel1";
+    private string nivel = "json/niveles/nivel";
 
     #region ciclo de vida
 
     // Start is called before the first frame update
     void Start()
     {
-        _juego = getJuegoGameObject();
-        palabrasDeserializer = new PalabrasDeserializer(nivel);
+        Application.targetFrameRate = 60;
 
-        startGameConPool();
+        startGameConPool(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void cleanUp()
     {
-
+        Destroy(this.gameObject);
     }
 
     #endregion
@@ -89,18 +90,16 @@ public class GameManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.silabasUnidas += comprobarPalabraFormada;
-        EventManager.modoRomperActivado += activarModoRomper;
-        EventManager.modoRomperDesActivado += desActivarModoRomper;
-        EventManager.nosQuedamosSinPalabras += nuevaTandaDePalabras;
+        EventManager.onSilabasUnidas += comprobarPalabraFormada;
+        EventManager.onNosQuedamosSinPalabras += nuevaTandaDePalabras;
+        EventManager.onPuntoDevuelto += reincorporarPunto;
     }
 
     void OnDisable()
     {
-        EventManager.silabasUnidas -= comprobarPalabraFormada;
-        EventManager.modoRomperActivado -= activarModoRomper;
-        EventManager.modoRomperDesActivado -= desActivarModoRomper;
-        EventManager.nosQuedamosSinPalabras -= nuevaTandaDePalabras;
+        EventManager.onSilabasUnidas -= comprobarPalabraFormada;
+        EventManager.onNosQuedamosSinPalabras -= nuevaTandaDePalabras;
+        EventManager.onPuntoDevuelto -= reincorporarPunto;
     }
 
 
@@ -108,100 +107,93 @@ public class GameManager : MonoBehaviour
 
     #region metodos
 
-
-    public void startGameConPool()
+    public void startGameConPool(int nivelActual)
     {
-        puntos = PoissonDiscSampling.generatePoints();
-        palabrasTarget = palabrasDeserializer.generarPalabrasTargetEnOrden(2);
-        poolDeSilabas = generarPoolDeSilabas(palabrasTarget);
-        anunciarPalabrasTarget(palabrasTarget);
-        colocarEnPantallaSilabas();
-        Invoke("desordenarPalabras", 0.01f);
+        _juego = getJuegoGameObject();
+        palabrasDeserializer = new PalabrasDeserializer(nivel + nivelActual);
+
+        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
+
+        nuevaTandaDePalabras();
     }
 
     public void nuevaTandaDePalabras()
     {
-        Invoke("limpiarPalabras", Constants.tiempoHastaRenovacionDePalabras - 0.3f);
-        Invoke("startGameConPool",Constants.tiempoHastaRenovacionDePalabras);
+        limpiarPalabras();
+
+        palabrasDeserializer.getNuevasPalabrasTarget();
+        anunciarPalabrasTarget(palabrasDeserializer.getPalabrasTargetOriginales());
+        colocarEnPantallaSilabas(palabrasDeserializer.getPoolParcialActual(cantPalabras: 1));
+
     }
 
     public void limpiarPalabras()
     {
-        foreach(GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
+        foreach (GameObject palabra in GameObject.FindGameObjectsWithTag("Palabra"))
         {
-            Destroy(palabra);
+            palabra.GetComponent<PalabraController>().iniciarDestruccionFinDelJuego();
         }
 
     }
 
-    #region modo romper
-    public void toggleModoRomper()
+    public void limpiarPalabrasTarget()
     {
-        modoRomper = !modoRomper;
-
-        if (modoRomper)
-        {
-            EventManager.onModoRomperActivado();
-        }
-        else
-        {
-            EventManager.onModoRomperDesactivado();
-        }
+        EventManager.LimpiarPalabrasObjetivo();
     }
 
-    public void activarModoRomper()
+    public void limpiarTodo()
     {
-        modoRomper = true;
+        limpiarPalabras();
+        limpiarPalabrasTarget();
     }
 
-    public void desActivarModoRomper()
+    void colocarEnPantallaSilabas(List<string> silabas)
     {
-        modoRomper = false;
-    }
-
-    #endregion
-    List<string> generarPoolDeSilabas(List<PalabraSilabas> palabrasRecibidas)
-    {
-        List<string> pool = new List<string>();
-
-        foreach (PalabraSilabas palabra in palabrasRecibidas)
-        {
-            pool.AddRange(palabra.silabas);
-        }
-
-        var silabasSinRepeticion = new HashSet<string>(pool);
-
-        return new List<string>(silabasSinRepeticion);
-    }
-
-    void colocarEnPantallaSilabas()
-    {
-        foreach (string silaba in poolDeSilabas)
+        foreach (string silaba in silabas)
         {
             PalabraController palabraAuxController = this.nuevaPalabra(silaba, getRandomPunto());
-            if (modoRomper)
-            {
-                palabraAuxController.handleModoRomperActivado();
-            }
         }
     }
 
     public Vector3 getRandomPunto()
     {
+        if(puntos.Count == 0)
+        {
+            puntos = PoissonDiscSampling.generatePoints();
+        }
+
         int randomIndex = Random.Range(0, puntos.Count);
         Vector3 punto = puntos[randomIndex];
-
-        puntos.Remove(punto);
+        puntos.RemoveAt(randomIndex);
 
         return punto;
     }
 
-    void anunciarPalabrasTarget(List<PalabraSilabas>  target)
+    public void reincorporarPunto(Vector3 punto)
     {
-        //larga vida a las tuplas
-        EventManager.onPalabrasSeleccionadasParaJuego(target);
+        puntos.Add(punto);
     }
 
+    void anunciarPalabrasTarget(List<PalabraSilabas>  target)
+    {
+        EventManager.PalabrasSeleccionadasParaJuego(target);
+    }
+
+    void handlePalabraFormada(PalabraController palabraFormada, string palabraAux)
+    {
+        EventManager.PalabraFormada(palabraFormada, palabraAux);
+
+        List<string> silabasSiguientes = palabrasDeserializer.getPoolParcialActual(cantPalabras: 1);
+
+        if(silabasSiguientes.Count == 0)
+        {
+            nuevaTandaDePalabras();
+        }
+        else
+        {
+            colocarEnPantallaSilabas(silabasSiguientes);
+        }
+    }
 
     public void comprobarPalabraFormada(SilabaController silaba, SilabaController otraSilaba)
     {
@@ -211,27 +203,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("Palabra formada: ");
         Debug.Log(palabraAux);
 
-        foreach (PalabraSilabas palabra in this.palabrasTarget)
+        foreach (PalabraSilabas palabra in palabrasDeserializer.getPalabrasEnPantalla())
         {
             if (palabra.palabra.ToUpper() == palabraAux)
             {
-                EventManager.onPalabraFormada(palabraFormada, palabraAux);
+                palabrasDeserializer.palabraFormada(palabra);
+                handlePalabraFormada(palabraFormada,palabraAux);
                 return;
             }
         }
     }
-
-    public void desordenarPalabras()
-    {
-        GameObject[] palabras = GameObject.FindGameObjectsWithTag("Palabra");
-
-        foreach (GameObject palabra in palabras)
-        {
-            //rompemos todas
-            palabra.GetComponent<PalabraController>().romperEnSilabasYColocarEnPantalla();
-        }
-    }
-
     public GameObject getJuegoGameObject()
     {
         if(!_juego)
@@ -241,6 +222,16 @@ public class GameManager : MonoBehaviour
         return _juego;
     }
 
+    #endregion
+
+
+    #region scene management
+    public void goBackToMenu()
+    {
+        limpiarTodo();
+
+        SceneManager.LoadScene(0);
+    }
     #endregion
 }
 
@@ -258,7 +249,7 @@ public static class Instantiator
 
     internal static GameObject nuevaPalabraVacia(this GameManager gm)
     {
-        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        GameObject palabraObj = GameManager.Instantiate(gm.palabraPrefab, new Vector3(0, 0, 0), Quaternion.identity,gm.getJuegoGameObject().transform);
 
         return palabraObj;
     }
@@ -290,6 +281,8 @@ public static class Instantiator
 
         return gm.nuevaPalabra(aux);
     }
+
+
 
 
 }

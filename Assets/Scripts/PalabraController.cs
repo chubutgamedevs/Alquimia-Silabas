@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using DG.Tweening;
 using System.Collections;
 
@@ -17,16 +18,14 @@ public class PalabraController : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds += comprobarBounds;
-        EventManager.ganaste += iniciarDestruccionFinDelJuego;
+        EventManager.onGanaste += iniciarDestruccionFinDelJuego;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= acomodarSilabasEnElEspacio;
         EventManager.comprobarBounds -= comprobarBounds;
-        EventManager.ganaste -= iniciarDestruccionFinDelJuego;
+        EventManager.onGanaste -= iniciarDestruccionFinDelJuego;
     }
 
 
@@ -34,13 +33,7 @@ public class PalabraController : MonoBehaviour
     #endregion
 
     #region rb y movimiento
-    public void handleModoRomperActivado()
-    {
-        foreach(SilabaController sil in silabas)
-        {
-            sil.handleModoRomperActivado();
-        }
-    }
+
     public void irAlPuntoInicial()
     {
         if(silabas.Count > 0)
@@ -54,20 +47,6 @@ public class PalabraController : MonoBehaviour
         foreach(SilabaController sil in silabas)
         {
             sil.disableDragPorSegundos(Constants.tiempoDeAnimacionPalabraCorrecta);
-        }
-    }
-
-    public void irAlPuntoInicialLuegoDeFormarPalabra()
-    {
-        desactivarConectores();
-        activarConectoresDespuesDe(Constants.tiempoDeAnimacionPalabraCorrecta);
-        if (this.transform == null)
-        {
-            return;
-        }
-        else
-        {
-            transform.DOMove(silabas[0].puntoInicial, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutElastic);
         }
     }
 
@@ -100,7 +79,7 @@ public class PalabraController : MonoBehaviour
         }
         else
         {
-            transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.Linear);
+            transform.DOMove(punto, Constants.tiempoHastaIrAlPunto).SetEase(Ease.OutExpo);
         }
     }
 
@@ -131,31 +110,36 @@ public class PalabraController : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.GetInstance();
-        encontrarPadre();
         acomodarSilabasEnElEspacio();
+        irAlPuntoInicialLento();
     }
     #endregion
 
     #region setters y getters
     void comprobarBounds()
     {
-        Vector3 vectorAux = new Vector3(Constants.anchoSilaba, 0, 0);
 
-        for (int i = 0; i<silabas.Count;i++)
+        //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
+        if (!Ubicador.estaDentroDelJuego(this.transform.position))
         {
-            //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
-            if (!Ubicador.estaDentroDelJuego(silabas[0].puntoInicial + vectorAux*i))
-            {
-                this.settearPuntoInicialRandom();
-                return;
-            }
+            this.irAlPuntoInicialLento();
         }
 
-        //si llegamos hasta acá volvemos al punto inicial?
     }
+
+    Vector3 getNuevaUbicacion()
+    {
+        return gameManager.getRandomPunto();
+    }
+
     public void settearPuntoInicialRandom()
     {
-        this.silabas[0].setPunto(gameManager.getRandomPunto());
+        this.settearPunto(gameManager.getRandomPunto());
+    }
+
+    public void settearPunto(Vector3 punto)
+    {
+        silabas[0].setPunto(punto);
     }
     public void setSilabas(List<SilabaController> ls)
     {
@@ -210,35 +194,16 @@ public class PalabraController : MonoBehaviour
         }
     }
 
-
     internal void acomodarSilabasEnElEspacio()
     {
         Vector3 posBase = new Vector3(Constants.anchoSilaba, 0, 0);
-       
+
         //acomodamos las silabas de izquierda a derecha
         for (int i = 0; i < silabas.Count; i++)
         {
-            silabas[i].transform.localPosition= posBase*i;
-        }
-    }
-
-    public void romperEnSilabasYColocarEnPantallaLuegoDeFormacion()
-    {
-        if (silabas.Count == 0) { return; }
-
-        foreach (SilabaController sil in silabas)
-        {
-            sil.separarFuerteDeOtrasSilabas();
+            silabas[i].transform.DOLocalMove(posBase * i - silabas.Count/2 * posBase,0.2f).SetEase(Ease.OutCirc);
         }
 
-        for (int i = 0; i < silabas.Count; i++)
-        {
-            //desconectamos las silabas y destruimos la palabra luego
-            PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
-            nuevaPalabra.irAlPuntoInicialLento();
-        }
-
-        Destroy(this.gameObject);
     }
 
     public void romperEnSilabasYColocarEnPantalla()
@@ -255,54 +220,41 @@ public class PalabraController : MonoBehaviour
         {
             //desconectamos las silabas y destruimos la palabra luego
             PalabraController nuevaPalabra = gameManager.nuevaPalabra(silabas[i]);
-            nuevaPalabra.irAlPuntoInicial();
          }
 
         Destroy(this.gameObject);
     }
 
-    public void sacudirSilabas()
+
+    public void handleFormacion()
     {
-        romperEnSilabasYColocarEnPantalla();
+        desactivarConectoresIndefinidamente();
+        foreach(SilabaController sil in silabas)
+        {
+            sil.playAnimacionSilabaCorrecta();
+        }
+
+        liberarPuntos();
+        iniciarDestruccionFinDelJuego();
     }
+    void liberarPuntos()
+    {
+        foreach(SilabaController sil in silabas) {
+            EventManager.PuntoDevuelto(sil.puntoInicial);
+        }
+    }
+
 
     #endregion
 
     public void iniciarDestruccionFinDelJuego()
     {
-        StartCoroutine(destruirseFinDelJuego());
-    }
-
-    public void eliminarSilabasLuegoDeFormacion(List<SilabaController> silabasAEliminar)
-    {
-        //multiplicamos por 1000 porque vamos a trabajar con milisegundos
-        float tiempoAnimacion = Constants.tiempoDeAnimacionPalabraCorrecta * 1000 * 0.5f;
-        int incremento = 100;
-
-        float tiempoDeEliminacion = tiempoAnimacion + incremento;
-        foreach(SilabaController sil in silabasAEliminar)
-        {
-            //Dividimos por 1000 por milisegundos
-            sil.eliminarLuegoDeFormacionPalabraEnSegundos( + tiempoDeEliminacion/1000);
-            this.silabas.Remove(sil);
-
-            tiempoDeEliminacion = tiempoAnimacion + incremento;
-        }
-
-
-        Invoke("romperEnSilabasYColocarEnPantallaLuegoDeFormacion", tiempoDeEliminacion/1000);
-
-    }
-
-    IEnumerator destruirseFinDelJuego()
-    {
         if ((this.transform != null))
         {
-        transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic)    ;
+            transform.DOScale(new Vector3(0, 0, 0), Constants.tiempoAnimacionDestruccion).SetEase(Ease.InOutElastic).
+                    OnComplete(() => Destroy(this.gameObject));
         }
 
-        yield return new WaitForSeconds(Constants.tiempoAnimacionDestruccion);
-        
     }
 
     public bool tieneUnaSolaSilaba()
@@ -358,10 +310,6 @@ public class PalabraController : MonoBehaviour
     }
 
 
-    private void encontrarPadre()
-    {
-        transform.SetParent(gameManager.getJuegoGameObject().transform);
-    }
 
     public void OnTriggerEnter(Collider other)
     {

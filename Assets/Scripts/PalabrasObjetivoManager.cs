@@ -13,15 +13,17 @@ public class PalabrasObjetivoManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.palabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
-        EventManager.palabraFormada += esclarecerPalabra;
+        EventManager.onPalabrasSeleccionadasParaJuego += settearPalabrasObjetivo;
+        EventManager.onPalabraFormada += esclarecerPalabra;
+        EventManager.onLimpiarPalabrasObjetivo += limpiarTodo;
 
     }
 
     void OnDisable()
     {
-        EventManager.palabrasSeleccionadasParaJuego -= settearPalabrasObjetivo;
-        EventManager.palabraFormada -= esclarecerPalabra;
+        EventManager.onPalabrasSeleccionadasParaJuego -= settearPalabrasObjetivo;
+        EventManager.onPalabraFormada -= esclarecerPalabra;
+        EventManager.onLimpiarPalabrasObjetivo -= limpiarTodo;
     }
     #endregion
 
@@ -55,6 +57,18 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
 
     #region metodos
+
+    void limpiarTodo()
+    {
+        this.palabrasObjetivo = new List<PalabraObjetivoController>();
+        GameObject[] palabrasObjetivo = GameObject.FindGameObjectsWithTag("PalabraObjetivo");
+
+        foreach(GameObject pal in palabrasObjetivo)
+        {
+            Destroy(pal);
+        }
+    }
+
     public void esclarecerPalabras()
     {
         foreach (PalabraObjetivoController pal in palabrasObjetivo)
@@ -70,10 +84,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
         {
             pal.esclarecerSilabas();
             palabrasObjetivo.Remove(pal);
-            if(palabrasObjetivo.Count == 0)
-            {
-                EventManager.onNosQuedamosSinPalabras();
-            }
+
         }
     }
     public void oscurecerPalabras()
@@ -87,40 +98,49 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
     IEnumerator IEcolocarNuevasPalabrasObjetivo(List<PalabraSilabas> palabrasNuevas)
     {
-        GameObject[] palabrasObjetivoActuales = GameObject.FindGameObjectsWithTag(Constants.tagPalabraObjetivo);
-
-        if(palabrasObjetivoActuales.Length > 0) { 
-
-            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+        if(palabrasNuevas != null)
+        {
+            if(palabrasNuevas.Count != 0)
             {
-                Vector3 posNueva = palabraOculta.transform.position;
-                posNueva += new Vector3(500, 0, 0);
+                GameObject[] palabrasObjetivoActuales = GameObject.FindGameObjectsWithTag(Constants.tagPalabraObjetivo);
 
-                if(palabraOculta.transform != null)
+                if (palabrasObjetivoActuales.Length > 0)
                 {
 
-                    palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
+                    foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+                    {
+                        Vector3 posNueva = palabraOculta.transform.position;
+                        posNueva += new Vector3(500, 0, 0);
+
+                        if (palabraOculta.transform != null)
+                        {
+
+                            palabraOculta.transform.DOMove(posNueva, Constants.tiempoAnimacionSalidaPalabraObjetivo);
+                        }
+                    }
+
+                    yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);
+
+                    foreach (GameObject palabraOculta in palabrasObjetivoActuales)
+                    {
+                        Destroy(palabraOculta);
+                    }
+
+                    transform.DetachChildren();
                 }
+
+                int indicePalabra = 0;
+
+                foreach (PalabraSilabas palabra in palabrasNuevas)
+                {
+                    colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
+
+                    indicePalabra++;
+                }
+
             }
-
-            yield return new WaitForSeconds(Constants.tiempoAnimacionSalidaPalabraObjetivo);
-
-            foreach (GameObject palabraOculta in palabrasObjetivoActuales)
-            {
-                Destroy(palabraOculta);
-            }
-
-            transform.DetachChildren();
         }
 
-        int indicePalabra = 0;
-
-        foreach (PalabraSilabas palabra in palabrasNuevas)
-        {
-            colocarNuevaPalabraObjetivo(palabra.palabra, palabra.silabas, indicePalabra);
-
-            indicePalabra++;
-        }
     }
 
 

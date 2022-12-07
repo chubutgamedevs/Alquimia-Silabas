@@ -16,15 +16,20 @@ public class SilabaController : MonoBehaviour
     private GameObject palabraParent;
     private PalabraController palabraController;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("colisionador")) {
+            palabraController.romperEnSilabasYColocarEnPantalla();
+        }
+    }
 
-    
     public String silaba = "CIS";
 
     public TMPro.TextMeshPro texto;
 
     private Drag drag;
 
-    private BoxCollider boxCollider;
+    private BoxCollider2D boxCollider;
 
     public Animator animadorSilaba;
 
@@ -33,14 +38,14 @@ public class SilabaController : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.modoRomperDesActivado += handleModoRomperDesactivado;
-        EventManager.modoRomperActivado += handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado += handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado += handleModoRomperActivado;
     }
 
     void OnDisable()
     {
-        EventManager.modoRomperDesActivado -= handleModoRomperDesactivado;
-        EventManager.modoRomperActivado -= handleModoRomperActivado;
+        EventManager.onModoRomperDesActivado -= handleModoRomperDesactivado;
+        EventManager.onModoRomperActivado -= handleModoRomperActivado;
     }
 
     public void disableDrag()
@@ -64,7 +69,7 @@ public class SilabaController : MonoBehaviour
 
     private void OnMouseDown()
     {
-        EventManager.onSilabaEsClickeada(this);
+        EventManager.SilabaEsClickeada(this);
     }
 
     void OnMouseDrag()
@@ -90,8 +95,7 @@ public class SilabaController : MonoBehaviour
 
     void OnMouseUp()
     {
-        this.palabraController.irAlPuntoInicial();
-        EventManager.onComprobarBounds();
+        EventManager.ComprobarBounds();
     }
 
     #endregion eventos
@@ -107,7 +111,7 @@ public class SilabaController : MonoBehaviour
         }
 
         conectoresManager = getConectoresManager();
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
 
@@ -119,7 +123,7 @@ public class SilabaController : MonoBehaviour
 
         texto.text = silaba;
 
-        setPalabra(this.transform.parent.gameObject);
+        setPalabra(this.transform.parent.gameObject, this.transform.parent.gameObject.GetComponent<PalabraController>());
     }
 
     // Update is called once per frame
@@ -149,28 +153,16 @@ public class SilabaController : MonoBehaviour
         this.silaba = silaba.ToUpper();
     }
 
-    public float getAncho()
-    {
-        return boxCollider.bounds.size.x;
-    }
-
     public float getAlto()
     {
         return boxCollider.bounds.size.y;
     }
 
-    public void setPalabra(GameObject palabraAux)
-    {
-        this.palabraParent = palabraAux;
-        this.transform.SetParent(this.palabraParent.transform);
-
-        this.palabraController = this.palabraParent.GetComponent<PalabraController>();
-    }
 
     public void setPalabra(GameObject palabraAux, PalabraController controller)
     {
         this.palabraParent = palabraAux;
-        this.transform.SetParent(this.palabraParent.transform);
+        this.transform.SetParent(controller.transform);
 
         this.palabraController = controller;
     }
@@ -236,10 +228,6 @@ public class SilabaController : MonoBehaviour
         drag.disableDrag();
     }
 
-    public void eliminarLuegoDeFormacionPalabraEnSegundos(float segundos)
-    {
-        Invoke("eliminarLuegoDeFormacion", segundos);
-    }
 
     public void eliminarLuegoDeFormacion()
     {
@@ -278,7 +266,7 @@ public class SilabaController : MonoBehaviour
 
             conectoresManager.activarConectores();
 
-            EventManager.onSilabaSeparadaDeSilaba(this);
+            EventManager.SilabaSeparadaDeSilaba(this);
         }
     }
 
@@ -358,6 +346,7 @@ public class SilabaController : MonoBehaviour
     {
         animadorSilaba.Play("rest");
     }
+
     #endregion
 
 }

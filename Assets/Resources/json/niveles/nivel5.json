@@ -1,0 +1,42 @@
+{
+  "batches": [
+    {
+      "silabas": [
+        "CAN",
+        "TAR",
+        "CANT",
+        "\u00c3\u201c",
+        "A",
+        "RRI",
+        "BA",
+        "MUE",
+        "LA"
+      ],
+      "palabras": [
+        { "silabas": ["CAN", "TAR"], "palabra": "CANTAR" },
+        { "silabas": ["CANT", "\u00c3\u201c"], "palabra": "CANT\u00c3\u201c" },
+        { "silabas": ["A", "RRI", "BA"], "palabra": "ARRIBA" },
+        { "silabas": ["MUE", "LA"], "palabra": "MUELA" }
+      ]
+    },
+    {
+      "silabas": [
+        "SOL",
+        "DA",
+        "DI",
+        "TO",
+        "SOL",
+        "DA",
+        "DOS",
+        "GA",
+        "LLI",
+        "TO"
+      ],
+      "palabras": [
+        { "silabas": ["SOL", "DA", "DI", "TO"], "palabra": "SOLDADITO" },
+        { "silabas": ["SOL", "DA", "DOS"], "palabra": "SOLDADOS" },
+        { "silabas": ["GA", "LLI", "TO"], "palabra": "GALLITO" }
+      ]
+    }
+  ]
+}

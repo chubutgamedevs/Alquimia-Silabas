@@ -11,16 +11,16 @@ public class SilabasManager : MonoBehaviour
     #region eventos
     void OnEnable()
     {
-        EventManager.silabaEsClickeada += manejarClickASilaba;
-        EventManager.silabasColisionan += UnirSilabas;
-        EventManager.activarConectoresDespuesDe += activarConectoresDespuesDe;
+        EventManager.onSilabaEsClickeada += manejarClickASilaba;
+        EventManager.onSilabasColisionan += UnirSilabas;
+        EventManager.onActivarConectoresDespuesDe += activarConectoresDespuesDe;
     }
 
     void OnDisable()
     {
-        EventManager.silabaEsClickeada -= manejarClickASilaba;
-        EventManager.silabasColisionan -= UnirSilabas;
-        EventManager.activarConectoresDespuesDe -= activarConectoresDespuesDe;
+        EventManager.onSilabaEsClickeada -= manejarClickASilaba;
+        EventManager.onSilabasColisionan -= UnirSilabas;
+        EventManager.onActivarConectoresDespuesDe -= activarConectoresDespuesDe;
     }
 
     #endregion
@@ -55,10 +55,14 @@ public class SilabasManager : MonoBehaviour
     {   //la primer silaba siempre es la que se est� moviendo (checkear eventos)
         PalabraController pController1 = silaba.getPalabraController();
         PalabraController pController2 = otraSilaba.getPalabraController();
-    
+
+        bool silabaEstaSola = pController1.silabas.Count == 0;
+
+        int countSilabas1 = pController1.silabas.Count;
+
         silaba.disableDrag();
 
-        float deltaX = pController1.transform.position.x - pController2.transform.position.x;
+        float deltaX = pController1.transform.localPosition.x - pController2.transform.localPosition.x;
 
         float signoDistanciaSilabas = Mathf.Sign(deltaX);
 
@@ -67,7 +71,6 @@ public class SilabasManager : MonoBehaviour
         //quitamos el control al usuario
         silaba.dejarQuietaYQuitarControlDeMouse();
         otraSilaba.dejarQuietaYQuitarControlDeMouse();
-
 
         SilabaController izquierda = silaba;
         SilabaController derecha = otraSilaba;
@@ -100,7 +103,7 @@ public class SilabasManager : MonoBehaviour
 
         pController1.acomodarSilabasEnElEspacio();
 
-        EventManager.onSilabasUnidas(izquierda, derecha);
+        EventManager.SilabasUnidas(izquierda, derecha);
     }
 
     void activarConectoresDespuesDe(List<SilabaController> silabasAux,float t)
@@ -116,7 +119,7 @@ public class SilabasManager : MonoBehaviour
         if (gameManager.modoRomper)
         {
             silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
-            EventManager.onModoRomperDesactivado();
+            EventManager.ModoRomperDesactivado();
         }
     }
 
