@@ -13,9 +13,9 @@ public class GanasteMostradorController : MonoBehaviour
     private Vector3 nasInitialPosition = new Vector3(10, 0, 0);
     private Vector3 teInitialPosition = new Vector3(20, 0, 0);
 
-    private Vector3 gaFinalPosition = new Vector3(-1.5f, 0.25f, 0);
-    private Vector3 nasFinalPosition = new Vector3(0, 0, 0);
-    private Vector3 teFinalPosition = new Vector3(1.5f, -0.25f, 0);
+    private Vector3 gaFinalPosition = new Vector3(-1.5f, 0.40f, 0);
+    private Vector3 nasFinalPosition = new Vector3(1, 0, 0);
+    private Vector3 teFinalPosition = new Vector3(3.5f, -0.40f, 0);
 
 
     private List<Vector3> explosiones = new List<Vector3> {
