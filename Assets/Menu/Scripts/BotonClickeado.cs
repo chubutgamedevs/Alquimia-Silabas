@@ -30,6 +30,26 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     }
     public void IWasClicked(){
         Debug.Log("Clicked");
+        SceneManager.LoadScene("Niveles");
+    }
+    public void Nivel1(){
+        Debug.Log("Clicked");
         SceneManager.LoadScene(1);
+    }
+    public void Nivel2(){
+        Debug.Log("Clicked");
+        SceneManager.LoadScene(2);
+    }
+    public void Nivel3(){
+        Debug.Log("Clicked");
+        SceneManager.LoadScene(3);
+    }
+    public void Nivel4(){
+        Debug.Log("Clicked");
+        SceneManager.LoadScene(4);
+    }
+    public void Nivel5(){
+        Debug.Log("Clicked");
+        SceneManager.LoadScene(5);
     }
 }
