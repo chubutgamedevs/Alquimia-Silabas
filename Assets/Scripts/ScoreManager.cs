@@ -40,12 +40,32 @@ public class ScoreManager : MonoBehaviour
         puntajeActual += puntaje;
 
         textoScore.text = "Puntaje: " + puntajeActual.ToString();
+
+    }
+
+    void restPuntaje(int puntaje)
+    {
+        puntajeActual -= puntaje/2;
+
+        textoScore.text = "Puntaje: " + puntajeActual.ToString();
+
     }
 
     void greenearTextoUnPoquito()
     {
         Color initialColor = textoScore.color;
         textoScore.DOBlendableColor(Color.green, 0.3f)
+            .OnComplete(() =>
+            {
+                textoScore.DOBlendableColor(initialColor, 0.3f);
+            }
+        ).SetEase(Ease.InCirc);
+    }
+
+    void rojearTextoUnPoquito()
+    {
+        Color initialColor = textoScore.color;
+        textoScore.DOBlendableColor(Color.red, 0.3f)
             .OnComplete(() =>
             {
                 textoScore.DOBlendableColor(initialColor, 0.3f);

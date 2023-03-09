@@ -68,7 +68,7 @@ public class SoundManager : MonoBehaviour
 
 
 	void Start(){
-		//MusicaNivel();
+		MusicaNivel();
 	}
 
 	// Play a single clip through the sound effects source.

@@ -14,11 +14,12 @@ public class UINiveles : MonoBehaviour
         {
             _nextLevelButton.SetActive(false);
         }
-        SoundManager.Instance.MusicaNivel();
+        //SoundManager.Instance.MusicaNivel();
 
     }
     public void goBackToMenu()
     {
+        SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(0);
         GameManager.GetInstance().cleanUp();
     }
