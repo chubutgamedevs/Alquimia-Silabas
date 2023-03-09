@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
-        startGameConPool(SceneManager.GetActiveScene().buildIndex);
+        startGameConPool(SceneManager.GetActiveScene().buildIndex-1);
     }
 
     public void cleanUp()
@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
         _juego = getJuegoGameObject();
         palabrasDeserializer = new PalabrasDeserializer(nivel + nivelActual);
 
-        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAÑO COLATERAL)
+        puntos = PoissonDiscSampling.generatePoints(); // EFECTO COLATERAL (DAï¿½O COLATERAL)
 
         nuevaTandaDePalabras();
     }

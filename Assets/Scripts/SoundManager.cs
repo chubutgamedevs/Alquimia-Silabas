@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class SoundManager : MonoBehaviour
 	public float HighPitchRange = 1.05f;
 
 	private bool sonidoActivado = true;
+
+	[SerializeField] AudioClip[] musicas;
 
     #region eventos
 	
@@ -62,6 +65,11 @@ public class SoundManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);
 	}
     #endregion
+
+
+	void Start(){
+		//MusicaNivel();
+	}
 
 	// Play a single clip through the sound effects source.
 	public void Play(AudioClip clip)
@@ -135,5 +143,14 @@ public class SoundManager : MonoBehaviour
 		this.EffectsSource.volume = v;
 		this.MusicSource.volume = v;
 	}
+	
+	public void MusicaNivel(){
+		Play(musicas[SceneManager.GetActiveScene().buildIndex-2]);
+		Debug.Log(musicas[SceneManager.GetActiveScene().buildIndex-2].name);
+	}
+	public void cleanUp()
+    {
+        Destroy(this.gameObject);
+    }
 
 }

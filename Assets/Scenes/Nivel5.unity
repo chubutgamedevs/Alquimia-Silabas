@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44775492, g: 0.49494815, b: 0.5609159, a: 1}
+  m_IndirectSpecularColor: {r: 0.44775474, g: 0.49494767, b: 0.560915, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -556,7 +556,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &963194229
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -573,7 +573,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &1026310746 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1959159756654170125, guid: 8edc1fc90374f784795b095e512af1e6, type: 3}
@@ -1783,6 +1783,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 23370a0ccb4632c4bb5bf517f1b03c7e, type: 3}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: c51d9031d283436439f2d001c372904f, type: 3}
     - target: {fileID: 2481789256815850411, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
       propertyPath: m_RootOrder
       value: 10

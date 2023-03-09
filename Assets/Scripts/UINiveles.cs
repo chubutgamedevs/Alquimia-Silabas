@@ -14,6 +14,8 @@ public class UINiveles : MonoBehaviour
         {
             _nextLevelButton.SetActive(false);
         }
+        SoundManager.Instance.MusicaNivel();
+
     }
     public void goBackToMenu()
     {
@@ -25,6 +27,8 @@ public class UINiveles : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().buildIndex < SceneManager.sceneCountInBuildSettings)
         GameManager.GetInstance().cleanUp();
+        SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+        
     }
 }
