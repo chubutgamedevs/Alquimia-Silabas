@@ -34,6 +34,11 @@ public class SilabaController : MonoBehaviour
     public Animator animadorSilaba;
 
     internal Vector3 puntoInicial = new Vector3(0,0,0);
+    private Sprite ficha;
+    [SerializeField] Sprite[] sprites;
+    public GameObject fichin;
+
+
 
     #region eventos
     void OnEnable()
@@ -337,6 +342,11 @@ public class SilabaController : MonoBehaviour
         animadorSilaba.Play("silabaGreenearOK");
     }
 
+    public void playAnimacionSilabaIncorrecta()
+    {
+        animadorSilaba.Play("silabaRojearOK");
+    }
+
     public void entrarAnimacionModoRomper()
     {
         animadorSilaba.Play("silabaEnModoRomper");
@@ -345,6 +355,32 @@ public class SilabaController : MonoBehaviour
     public void salirDeTodasLasAnimaciones()
     {
         animadorSilaba.Play("rest");
+    }
+
+    #endregion
+
+    #region CambioSprites
+
+    public void SpriteConectadoIzq()
+    {
+        ficha = sprites[1];
+        fichin.GetComponent<SpriteRenderer>().sprite = ficha;
+        //Efectos y gliter
+    }
+    public void SpriteConectadoDer(){
+        ficha= sprites[2];
+        fichin.GetComponent<SpriteRenderer>().sprite = ficha;
+        //Efectos blablalal
+    }
+
+    public void SpriteConectadoFull(){
+        ficha = sprites[3];
+        fichin.GetComponent<SpriteRenderer>().sprite = ficha;
+    }
+
+    public void SpriteDesconectado(){
+        ficha = sprites[0];
+        fichin.GetComponent<SpriteRenderer>().sprite = ficha;
     }
 
     #endregion

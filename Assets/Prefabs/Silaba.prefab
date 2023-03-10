@@ -327,12 +327,12 @@ MonoBehaviour:
   m_margin: {x: 0.1, y: 0.1, z: 0.1, w: 0.1}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  _SortingLayer: 0
-  _SortingLayerID: 0
-  _SortingOrder: 0
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 7832757445445151198}
   m_maskType: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
 --- !u!1 &7832757445997255160
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +401,12 @@ MonoBehaviour:
   silaba: CIS
   texto: {fileID: 0}
   animadorSilaba: {fileID: 7543526463886386269}
+  sprites:
+  - {fileID: 21300000, guid: 0fe90cfb10497f1458348636fee42848, type: 3}
+  - {fileID: 21300000, guid: f72cc272f5b58f6d6a246f59c0d16805, type: 3}
+  - {fileID: 21300000, guid: 95218f11a919ec507b00a0227c714024, type: 3}
+  - {fileID: 21300000, guid: 7e6e3868cb5d540c0bb601bf92da02a7, type: 3}
+  fichin: {fileID: 7832757446965612366}
 --- !u!61 &3942293383778596935
 BoxCollider2D:
   m_ObjectHideFlags: 0

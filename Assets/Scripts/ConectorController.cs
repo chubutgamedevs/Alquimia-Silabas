@@ -36,7 +36,7 @@ public class ConectorController : MonoBehaviour
             //de esta manera evitamos que el evento se lance 2 veces
             if (silabaController.getPalabraController().moviendose){
 
-                //el primer argumento es la silaba que se está moviendo
+                //el primer argumento es la silaba que se estï¿½ moviendo
                 EventManager.SilabasColisionan(silabaController, otroConector.silabaController);
 
                 //desactivamos conectores para no conectar en el medio una vez unidas
