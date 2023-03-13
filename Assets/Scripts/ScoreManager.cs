@@ -1,3 +1,4 @@
+
 using UnityEngine;
 using DG.Tweening;
 
@@ -8,20 +9,30 @@ public class ScoreManager : MonoBehaviour
 
     int puntajeActual = 0;
 
+    int puntajeGolpeMartillo = 20;
+
+    bool descontandoPuntos = false;
+
+    Color initialColor;
+
     [SerializeField] TMPro.TextMeshProUGUI textoScore;
 
     private void OnEnable()
     {
         EventManager.onPalabraFormada += handlePalabraFormada;
+        EventManager.onMartilloGolpea += handleMartilloGolpea;
     }
 
     private void OnDisable()
     {
         EventManager.onPalabraFormada -= handlePalabraFormada;
+        EventManager.onMartilloGolpea -= handleMartilloGolpea;
     }
 
     private void Start()
     {
+        initialColor = textoScore.color;
+
         addPuntaje(0);
     }
 
@@ -33,6 +44,34 @@ public class ScoreManager : MonoBehaviour
         addPuntaje(puntaje);
 
         greenearTextoUnPoquito();
+
+        iniciarDescuentoDePuntos();
+    }
+
+    void handleMartilloGolpea(Vector3 _)
+    {
+        reducirPuntaje(puntajeGolpeMartillo);
+    }
+
+
+    void iniciarDescuentoDePuntos()
+    {
+        if (!descontandoPuntos) {
+            descontandoPuntos = true;
+            InvokeRepeating("reducirPuntajeUnPunto", 1f,1f);
+        }
+    }
+
+    void reducirPuntajeUnPunto()
+    {
+        addPuntaje(-1);
+        reddearTextoUnPoquititito();
+    }
+
+    void reducirPuntaje(int puntos)
+    {
+        addPuntaje(-puntos);
+        reddearTextoUnPoquito();
     }
 
     void addPuntaje(int puntaje)
@@ -40,32 +79,31 @@ public class ScoreManager : MonoBehaviour
         puntajeActual += puntaje;
 
         textoScore.text = "Puntaje: " + puntajeActual.ToString();
-
     }
 
-    void restPuntaje(int puntaje)
+
+    void reddearTextoUnPoquititito()
     {
-        puntajeActual -= puntaje/2;
-
-        textoScore.text = "Puntaje: " + puntajeActual.ToString();
-
+        textoScore.DOBlendableColor(new Color(0.8f,0.5f,0.5f) , 0.05f)
+            .OnComplete(() =>
+            {
+                textoScore.DOBlendableColor(initialColor, 0.05f);
+            }
+        ).SetEase(Ease.InCirc);
     }
 
-    void greenearTextoUnPoquito()
+    void reddearTextoUnPoquito()
     {
-        Color initialColor = textoScore.color;
-        textoScore.DOBlendableColor(Color.green, 0.3f)
+        textoScore.DOBlendableColor(Color.red, 0.3f)
             .OnComplete(() =>
             {
                 textoScore.DOBlendableColor(initialColor, 0.3f);
             }
         ).SetEase(Ease.InCirc);
     }
-
-    void rojearTextoUnPoquito()
+    void greenearTextoUnPoquito()
     {
-        Color initialColor = textoScore.color;
-        textoScore.DOBlendableColor(Color.red, 0.3f)
+        textoScore.DOBlendableColor(Color.green, 0.3f)
             .OnComplete(() =>
             {
                 textoScore.DOBlendableColor(initialColor, 0.3f);

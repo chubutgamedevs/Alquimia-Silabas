@@ -91,6 +91,7 @@ public class SilabasManager : MonoBehaviour
         derecha.enableDrag();
 
         pController1.acomodarSilabasEnElEspacio();
+        CambiarSpritesConnected(izquierda, derecha);
 
         EventManager.SilabasUnidas(izquierda, derecha);
     }
@@ -110,6 +111,10 @@ public class SilabasManager : MonoBehaviour
             silaba.getPalabraController().romperEnSilabasYColocarEnPantalla();
             EventManager.ModoRomperDesactivado();
         }
+    }
+    void CambiarSpritesConnected(SilabaController izquierda, SilabaController derecha){
+        izquierda.SpriteConectadoDer();
+        derecha.SpriteConectadoIzq();
     }
 
     #endregion

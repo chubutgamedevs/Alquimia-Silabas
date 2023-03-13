@@ -279,6 +279,7 @@ public class SilabaController : MonoBehaviour
     {
         this.silabaIzquierda = null;
         this.silabaDerecha = null;
+        this.SpriteDesconectado();
     }
 
 
@@ -363,11 +364,20 @@ public class SilabaController : MonoBehaviour
 
     public void SpriteConectadoIzq()
     {
+        if (this.silabaDerecha != null){
+            SpriteConectadoFull();
+            return;    
+        }
         ficha = sprites[1];
         fichin.GetComponent<SpriteRenderer>().sprite = ficha;
         //Efectos y gliter
     }
     public void SpriteConectadoDer(){
+
+        if (this.silabaIzquierda != null){
+            SpriteConectadoFull();
+            return;    
+        }
         ficha= sprites[2];
         fichin.GetComponent<SpriteRenderer>().sprite = ficha;
         //Efectos blablalal
