@@ -64,8 +64,7 @@ public class ScoreManager : MonoBehaviour
 
     void reducirPuntajeUnPunto()
     {
-        addPuntaje(-1);
-        reddearTextoUnPoquititito();
+       reducirPuntaje(1);
     }
 
     void reducirPuntaje(int puntos)
@@ -81,33 +80,25 @@ public class ScoreManager : MonoBehaviour
         textoScore.text = "Puntaje: " + puntajeActual.ToString();
     }
 
-
-    void reddearTextoUnPoquititito()
-    {
-        textoScore.DOBlendableColor(new Color(0.8f,0.5f,0.5f) , 0.05f)
+    void colorearUnPoco(Color color, float tiempo){
+        textoScore.DOBlendableColor(color , tiempo)
             .OnComplete(() =>
             {
-                textoScore.DOBlendableColor(initialColor, 0.05f);
+                textoScore.DOBlendableColor(initialColor, tiempo);
             }
         ).SetEase(Ease.InCirc);
+    }
+    void reddearTextoUnPoquititito()
+    {   
+        colorearUnPoco(new Color(0.8f,0.5f,0.5f) , 0.05f);
     }
 
     void reddearTextoUnPoquito()
     {
-        textoScore.DOBlendableColor(Color.red, 0.3f)
-            .OnComplete(() =>
-            {
-                textoScore.DOBlendableColor(initialColor, 0.3f);
-            }
-        ).SetEase(Ease.InCirc);
+        colorearUnPoco(Color.red, 0.3f);
     }
     void greenearTextoUnPoquito()
     {
-        textoScore.DOBlendableColor(Color.green, 0.3f)
-            .OnComplete(() =>
-            {
-                textoScore.DOBlendableColor(initialColor, 0.3f);
-            }
-        ).SetEase(Ease.InCirc);
+        colorearUnPoco(Color.green, 0.3f);
     }
 }
