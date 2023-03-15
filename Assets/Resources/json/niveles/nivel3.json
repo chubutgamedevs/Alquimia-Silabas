@@ -1,1 +1,138 @@
-{"batches": [{"silabas": ["VER", "DE", "SUE", "LO", "CA", "SA", "CO", "CI", "NE", "RO"], "palabras": [{"silabas": ["VER", "DE"], "palabra": "VERDE"}, {"silabas": ["SUE", "LO"], "palabra": "SUELO"}, {"silabas": ["CA", "SA"], "palabra": "CASA"}, {"silabas": ["CO", "CI", "NE", "RO"], "palabra": "COCINERO"}]}, {"silabas": ["MIE", "DO", "YOY\u00c3", "\u201c", "NE", "NA", "DE", "DO"], "palabras": [{"silabas": ["MIE", "DO"], "palabra": "MIEDO"}, {"silabas": ["YOY\u00c3", "\u201c"], "palabra": "YOY\u00c3\u201c"}, {"silabas": ["NE", "NA"], "palabra": "NENA"}, {"silabas": ["DE", "DO"], "palabra": "DEDO"}]}, {"silabas": ["CO", "LI", "TA", "LA", "TA", "REI", "NA", "BA", "TA", "TA"], "palabras": [{"silabas": ["CO", "LI", "TA"], "palabra": "COLITA"}, {"silabas": ["LA", "TA"], "palabra": "LATA"}, {"silabas": ["REI", "NA"], "palabra": "REINA"}, {"silabas": ["BA", "TA", "TA"], "palabra": "BATATA"}]}]}
+{
+    "batches": [
+        {
+            "silabas": [
+                "VER",
+                "DE",
+                "SUE",
+                "LO",
+                "CA",
+                "SA",
+                "CO",
+                "CI",
+                "NE",
+                "RO"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "VER",
+                        "DE"
+                    ],
+                    "palabra": "VERDE"
+                },
+                {
+                    "silabas": [
+                        "SUE",
+                        "LO"
+                    ],
+                    "palabra": "SUELO"
+                },
+                {
+                    "silabas": [
+                        "CA",
+                        "SA"
+                    ],
+                    "palabra": "CASA"
+                },
+                {
+                    "silabas": [
+                        "CO",
+                        "CI",
+                        "NE",
+                        "RO"
+                    ],
+                    "palabra": "COCINERO"
+                }
+            ]
+        },
+        {
+            "silabas": [
+                "MIE",
+                "DO",
+                "YOY\u00c3",
+                "\u201c",
+                "NE",
+                "NA",
+                "DE",
+                "DO"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "MIE",
+                        "DO"
+                    ],
+                    "palabra": "MIEDO"
+                },
+                {
+                    "silabas": [
+                        "YOY\u00c3",
+                        "\u201c"
+                    ],
+                    "palabra": "YOY\u00c3\u201c"
+                },
+                {
+                    "silabas": [
+                        "NE",
+                        "NA"
+                    ],
+                    "palabra": "NENA"
+                },
+                {
+                    "silabas": [
+                        "DE",
+                        "DO"
+                    ],
+                    "palabra": "DEDO"
+                }
+            ]
+        },
+        {
+            "silabas": [
+                "CO",
+                "LI",
+                "TA",
+                "LA",
+                "TA",
+                "REI",
+                "NA",
+                "BA",
+                "TA",
+                "TA"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "CO",
+                        "LI",
+                        "TA"
+                    ],
+                    "palabra": "COLITA"
+                },
+                {
+                    "silabas": [
+                        "LA",
+                        "TA"
+                    ],
+                    "palabra": "LATA"
+                },
+                {
+                    "silabas": [
+                        "REI",
+                        "NA"
+                    ],
+                    "palabra": "REINA"
+                },
+                {
+                    "silabas": [
+                        "BA",
+                        "TA",
+                        "TA"
+                    ],
+                    "palabra": "BATATA"
+                }
+            ]
+        }
+    ]
+}

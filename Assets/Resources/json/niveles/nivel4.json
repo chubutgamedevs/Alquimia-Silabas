@@ -1,1 +1,192 @@
-{"batches": [{"silabas": ["TEM", "BL\u00c3\u201c", "TEM", "BLA", "BA", "LA", "TA", "PLA", "TO"], "palabras": [{"silabas": ["TEM", "BL\u00c3\u201c"], "palabra": "TEMBL\u00c3\u201c"}, {"silabas": ["TEM", "BLA", "BA"], "palabra": "TEMBLABA"}, {"silabas": ["LA", "TA"], "palabra": "LATA"}, {"silabas": ["PLA", "TO"], "palabra": "PLATO"}]}, {"silabas": ["A", "BA", "TAT\u00c3", "\u201c", "RINC", "\u00c3\u201cN", "DE", "DO", "DA", "DO"], "palabras": [{"silabas": ["A", "BA", "TAT\u00c3", "\u201c"], "palabra": "ABATAT\u00c3\u201c"}, {"silabas": ["RINC", "\u00c3\u201cN"], "palabra": "RINC\u00c3\u201cN"}, {"silabas": ["DE", "DO"], "palabra": "DEDO"}, {"silabas": ["DA", "DO"], "palabra": "DADO"}]}, {"silabas": ["COS", "TU", "RE", "RO", "CO", "CI", "NE", "RO", "PLA", "ZA", "PLA", "TA"], "palabras": [{"silabas": ["COS", "TU", "RE", "RO"], "palabra": "COSTURERO"}, {"silabas": ["CO", "CI", "NE", "RO"], "palabra": "COCINERO"}, {"silabas": ["PLA", "ZA"], "palabra": "PLAZA"}, {"silabas": ["PLA", "TA"], "palabra": "PLATA"}]}, {"silabas": ["MARR", "\u00c3\u201cN", "CU", "CHA", "RA", "TE", "NE", "DOR", "CU", "CHI", "LLO"], "palabras": [{"silabas": ["MARR", "\u00c3\u201cN"], "palabra": "MARR\u00c3\u201cN"}, {"silabas": ["CU", "CHA", "RA"], "palabra": "CUCHARA"}, {"silabas": ["TE", "NE", "DOR"], "palabra": "TENEDOR"}, {"silabas": ["CU", "CHI", "LLO"], "palabra": "CUCHILLO"}]}]}
+{
+    "batches": [
+        {
+            "silabas": [
+                "TEM",
+                "BL\u00c3\u201c",
+                "TEM",
+                "BLA",
+                "BA",
+                "LA",
+                "TA",
+                "PLA",
+                "TO"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "TEM",
+                        "BL\u00c3\u201c"
+                    ],
+                    "palabra": "TEMBL\u00c3\u201c"
+                },
+                {
+                    "silabas": [
+                        "TEM",
+                        "BLA",
+                        "BA"
+                    ],
+                    "palabra": "TEMBLABA"
+                },
+                {
+                    "silabas": [
+                        "LA",
+                        "TA"
+                    ],
+                    "palabra": "LATA"
+                },
+                {
+                    "silabas": [
+                        "PLA",
+                        "TO"
+                    ],
+                    "palabra": "PLATO"
+                }
+            ]
+        },
+        {
+            "silabas": [
+                "A",
+                "BA",
+                "TAT\u00c3",
+                "\u201c",
+                "RINC",
+                "\u00c3\u201cN",
+                "DE",
+                "DO",
+                "DA",
+                "DO"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "A",
+                        "BA",
+                        "TAT\u00c3",
+                        "\u201c"
+                    ],
+                    "palabra": "ABATAT\u00c3\u201c"
+                },
+                {
+                    "silabas": [
+                        "RINC",
+                        "\u00c3\u201cN"
+                    ],
+                    "palabra": "RINC\u00c3\u201cN"
+                },
+                {
+                    "silabas": [
+                        "DE",
+                        "DO"
+                    ],
+                    "palabra": "DEDO"
+                },
+                {
+                    "silabas": [
+                        "DA",
+                        "DO"
+                    ],
+                    "palabra": "DADO"
+                }
+            ]
+        },
+        {
+            "silabas": [
+                "COS",
+                "TU",
+                "RE",
+                "RO",
+                "CO",
+                "CI",
+                "NE",
+                "RO",
+                "PLA",
+                "ZA",
+                "PLA",
+                "TA"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "COS",
+                        "TU",
+                        "RE",
+                        "RO"
+                    ],
+                    "palabra": "COSTURERO"
+                },
+                {
+                    "silabas": [
+                        "CO",
+                        "CI",
+                        "NE",
+                        "RO"
+                    ],
+                    "palabra": "COCINERO"
+                },
+                {
+                    "silabas": [
+                        "PLA",
+                        "ZA"
+                    ],
+                    "palabra": "PLAZA"
+                },
+                {
+                    "silabas": [
+                        "PLA",
+                        "TA"
+                    ],
+                    "palabra": "PLATA"
+                }
+            ]
+        },
+        {
+            "silabas": [
+                "MA",
+                "RRON",
+                "CU",
+                "CHA",
+                "RA",
+                "TE",
+                "NE",
+                "DOR",
+                "CU",
+                "CHI",
+                "LLO"
+            ],
+            "palabras": [
+                {
+                    "silabas": [
+                        "MA",
+                        "RRON"
+                    ],
+                    "palabra": "MARRON"
+                },
+                {
+                    "silabas": [
+                        "CU",
+                        "CHA",
+                        "RA"
+                    ],
+                    "palabra": "CUCHARA"
+                },
+                {
+                    "silabas": [
+                        "TE",
+                        "NE",
+                        "DOR"
+                    ],
+                    "palabra": "TENEDOR"
+                },
+                {
+                    "silabas": [
+                        "CU",
+                        "CHI",
+                        "LLO"
+                    ],
+                    "palabra": "CUCHILLO"
+                }
+            ]
+        }
+    ]
+}
