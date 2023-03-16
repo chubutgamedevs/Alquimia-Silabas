@@ -88,11 +88,6 @@ public class ScoreManager : MonoBehaviour
             }
         ).SetEase(Ease.InCirc);
     }
-    void reddearTextoUnPoquititito()
-    {   
-        colorearUnPoco(new Color(0.8f,0.5f,0.5f) , 0.05f);
-    }
-
     void reddearTextoUnPoquito()
     {
         colorearUnPoco(Color.red, 0.3f);
