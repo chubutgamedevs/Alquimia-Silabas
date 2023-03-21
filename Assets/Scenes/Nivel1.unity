@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.45045024, g: 0.49828017, b: 0.5635214, a: 1}
+  m_IndirectSpecularColor: {r: 0.44775522, g: 0.49494845, b: 0.56091636, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,6 +278,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2785358098720925322, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c16e6143ec6a74c41911100a4e908072, type: 3}
+--- !u!1 &393863783 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1959159756654170126, guid: 8edc1fc90374f784795b095e512af1e6, type: 3}
+  m_PrefabInstance: {fileID: 1959159756303143511}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &614142354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -587,7 +592,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1959159756654170125, guid: 8edc1fc90374f784795b095e512af1e6, type: 3}
   m_PrefabInstance: {fileID: 1959159756303143511}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 393863783}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74f5ff2fe8178894bb66bf628ed95567, type: 3}
@@ -1641,6 +1646,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1026310746}
+    - target: {fileID: 807445470860383474, guid: 6517460c274c54c40838837fd06dec3c, type: 3}
+      propertyPath: buffer
+      value: 
+      objectReference: {fileID: 393863783}
+    - target: {fileID: 807445470860383474, guid: 6517460c274c54c40838837fd06dec3c, type: 3}
+      propertyPath: SpritePalabra
+      value: 
+      objectReference: {fileID: 2862313839955964489, guid: 3947630c45405734ab24a803a82a8cb7, type: 3}
     - target: {fileID: 807445471159705000, guid: 6517460c274c54c40838837fd06dec3c, type: 3}
       propertyPath: m_Sprite
       value: 

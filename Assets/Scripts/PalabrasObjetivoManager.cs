@@ -8,6 +8,9 @@ public class PalabrasObjetivoManager : MonoBehaviour
 {
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
+    public GameObject buffer;
+    public GameObject SpritePalabra;
+    private Sprite palabrasprite;
 
 
     #region eventos
@@ -32,6 +35,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
     private void Start()
     {
         palabrasObjetivo = new List<PalabraObjetivoController>();
+        palabrasprite = SpritePalabra.GetComponent<SpriteRenderer>().sprite;
     }
 
     #endregion
@@ -137,18 +141,14 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
                     indicePalabra++;
                 }
-
             }
         }
-
     }
-
-
 
     internal GameObject nuevaPalabraObjetivoVacia()
     {
         GameObject palabraObj = Instantiate(palabraObjetivoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
+        
         return palabraObj;
     }
 
@@ -163,6 +163,15 @@ public class PalabrasObjetivoManager : MonoBehaviour
         palabraObj.ubicarPalabra(indicePalabra);
 
         palabrasObjetivo.Add(palabraObj);
+    }
+    void levantarDelBuffer(string palabra){
+        
+
+        palabrasprite = GameManager.GetInstance().imageBuffer.Find(x=> x.name == palabra);
+        SpritePalabra.GetComponent<SpriteRenderer>().sprite = palabrasprite;
+
+        Debug.Log ("cargando sprite:"+ SpritePalabra.name);
+        GameObject duplica2 = Instantiate(SpritePalabra, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
     #endregion

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -212,7 +212,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &175812437
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -229,7 +229,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &184349749
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +733,18 @@ PrefabInstance:
       propertyPath: MusicSource
       value: 
       objectReference: {fileID: 751191995}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 23370a0ccb4632c4bb5bf517f1b03c7e, type: 3}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: c51d9031d283436439f2d001c372904f, type: 3}
     - target: {fileID: 2481789256815850411, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
       propertyPath: m_RootOrder
       value: 4

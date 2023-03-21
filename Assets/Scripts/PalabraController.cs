@@ -119,7 +119,7 @@ public class PalabraController : MonoBehaviour
     void comprobarBounds()
     {
 
-        //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente está dentro de los bounds del juego
+        //nos fijamos si la silaba volviendo al punto inicial con su offset correspondiente estï¿½ dentro de los bounds del juego
         if (!Ubicador.estaDentroDelJuego(this.transform.position))
         {
             this.irAlPuntoInicialLento();

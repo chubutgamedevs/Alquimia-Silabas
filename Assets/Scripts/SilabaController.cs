@@ -36,7 +36,8 @@ public class SilabaController : MonoBehaviour
     internal Vector3 puntoInicial = new Vector3(0,0,0);
     private Sprite ficha;
     [SerializeField] Sprite[] sprites;
-    public GameObject fichin;
+    public GameObject fichin, gif;
+
 
 
 
@@ -370,7 +371,7 @@ public class SilabaController : MonoBehaviour
         }
         ficha = sprites[1];
         fichin.GetComponent<SpriteRenderer>().sprite = ficha;
-        //Efectos y gliter
+        Instantiate(gif, (transform.position + new Vector3 (0,0,-2)), Quaternion.identity);
     }
     public void SpriteConectadoDer(){
 
@@ -380,7 +381,7 @@ public class SilabaController : MonoBehaviour
         }
         ficha= sprites[2];
         fichin.GetComponent<SpriteRenderer>().sprite = ficha;
-        //Efectos blablalal
+        Instantiate(gif, (transform.position + new Vector3 (0,0,-2)), Quaternion.identity);
     }
 
     public void SpriteConectadoFull(){

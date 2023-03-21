@@ -145,8 +145,10 @@ public class SoundManager : MonoBehaviour
 	}
 	
 	public void MusicaNivel(){
-		Play(musicas[SceneManager.GetActiveScene().buildIndex-2]);
-		Debug.Log(musicas[SceneManager.GetActiveScene().buildIndex-2].name);
+		if (SceneManager.GetActiveScene().buildIndex < 2){
+			Play(musicas[SceneManager.GetActiveScene().buildIndex-2]);
+			Debug.Log(musicas[SceneManager.GetActiveScene().buildIndex-2].name);	
+		}
 	}
 	public void cleanUp()
     {

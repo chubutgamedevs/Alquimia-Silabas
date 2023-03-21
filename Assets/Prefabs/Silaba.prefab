@@ -407,6 +407,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 95218f11a919ec507b00a0227c714024, type: 3}
   - {fileID: 21300000, guid: 7e6e3868cb5d540c0bb601bf92da02a7, type: 3}
   fichin: {fileID: 7832757446965612366}
+  gif: {fileID: 2494443961913674917, guid: 855605e890b0cee0a925be18ece9216e, type: 3}
 --- !u!61 &3942293383778596935
 BoxCollider2D:
   m_ObjectHideFlags: 0
