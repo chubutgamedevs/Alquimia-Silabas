@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using UnityEngine.UI;
 public class PalabraObjetivoController : MonoBehaviour
 {
     public string palabra = "";
@@ -14,6 +14,7 @@ public class PalabraObjetivoController : MonoBehaviour
     [SerializeField] float minFontSize = 20;
 
     public GameObject SilabaObjetivoPrefab;
+    [SerializeField] private Image imagen;
 
     List<string> silabas;
     List<SilabaObjetivoController> silabasControllers;
@@ -24,6 +25,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
     private void Start()
     {
+        //this.imagen = gameObject.transform.GetChild(0);
     }
     private void Awake()
     {
@@ -55,6 +57,12 @@ public class PalabraObjetivoController : MonoBehaviour
 
         settearSilabasControllers();
     }
+
+     public void settearImagen(Sprite imagenRecibida){
+        Debug.Log(imagenRecibida.name);
+        imagen.sprite = imagenRecibida;
+     }
+
 
     void settearSilabasControllers()
     {

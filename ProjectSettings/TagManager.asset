@@ -16,6 +16,7 @@ TagManager:
   - explosion
   - silaba
   - SoundManager
+  - imagen
   layers:
   - Default
   - TransparentFX

@@ -53,6 +53,7 @@ MonoBehaviour:
   palabra: 
   minFontSize: 20
   SilabaObjetivoPrefab: {fileID: 8812646469344745306, guid: adf88f2f08ec3c84489f19bb90a0b4ac, type: 3}
+  imagen: {fileID: 1391101888386381997, guid: 873f782aa849eb5b3a95fded7591f461, type: 3}
 --- !u!222 &-881200902251744751
 CanvasRenderer:
   m_ObjectHideFlags: 0

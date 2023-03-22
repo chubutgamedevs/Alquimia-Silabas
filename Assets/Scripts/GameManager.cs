@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
     public GameObject silabaPrefab;
 
     private List<Vector3> puntos;
-    public List<Sprite> imageBuffer = new List<Sprite>();  
 
     private string nivel = "json/niveles/nivel";
 
@@ -56,13 +55,6 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         startGameConPool(SceneManager.GetActiveScene().buildIndex-1);
-        //Cargar todo archivo Texture2D en Resources/Imagenes/imagenesPalabras
-        Sprite[] textures = Resources.LoadAll<Sprite>("imagenes/imagenesPalabras");
-        for (int i = 0; i < textures.Length; i++)
-        {
-            imageBuffer.Add(textures[i]);
-           // Debug.Log(imageBuffer[i]);
-        } 
     }
 
     public void cleanUp()
