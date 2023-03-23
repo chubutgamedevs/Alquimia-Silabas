@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1698254098707528732}
   - component: {fileID: 5943746579812965754}
   - component: {fileID: -881200902251744751}
+  - component: {fileID: 6283202598946925911}
   m_Layer: 5
   m_Name: PalabraObjetivo
   m_TagString: PalabraObjetivo
@@ -54,6 +55,7 @@ MonoBehaviour:
   minFontSize: 20
   SilabaObjetivoPrefab: {fileID: 8812646469344745306, guid: adf88f2f08ec3c84489f19bb90a0b4ac, type: 3}
   imagen: {fileID: 1391101888386381997, guid: 873f782aa849eb5b3a95fded7591f461, type: 3}
+  Aux: {fileID: 0}
 --- !u!222 &-881200902251744751
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -62,3 +64,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698254098707528731}
   m_CullTransparentMesh: 1
+--- !u!114 &6283202598946925911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698254098707528731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1

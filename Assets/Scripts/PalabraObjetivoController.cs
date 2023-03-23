@@ -14,7 +14,8 @@ public class PalabraObjetivoController : MonoBehaviour
     [SerializeField] float minFontSize = 20;
 
     public GameObject SilabaObjetivoPrefab;
-    [SerializeField] private Image imagen;
+    public Image imagen;
+    public Sprite Aux;
 
     List<string> silabas;
     List<SilabaObjetivoController> silabasControllers;
@@ -59,8 +60,9 @@ public class PalabraObjetivoController : MonoBehaviour
     }
 
      public void settearImagen(Sprite imagenRecibida){
-        Debug.Log(imagenRecibida.name);
-        imagen.sprite = imagenRecibida;
+        Debug.Log(imagenRecibida);
+        Aux = imagenRecibida;
+        imagen.sprite = Aux;
      }
 
 

@@ -9,7 +9,8 @@ public class PalabrasObjetivoManager : MonoBehaviour
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
 
-    public List<Sprite> imageBuffer = new List<Sprite>();  
+    public List<Sprite> imageBuffer = new List<Sprite>();
+    public Sprite enviar;  
 
     private void Awake() {
         //Cargar todo archivo Texture2D en Resources/Imagenes/imagenesPalabras
@@ -169,6 +170,7 @@ public class PalabrasObjetivoManager : MonoBehaviour
         palabraObj.settearPalabraObjetivo(palabra, silabas);
         palabraObj.ubicarPalabra(indicePalabra);
         palabraObj.settearImagen(imageBuffer.Find(x=> x.name.ToLower() == palabra.ToLower()));
+        enviar = imageBuffer.Find(x=> x.name.ToLower() == palabra.ToLower());
 
         palabrasObjetivo.Add(palabraObj);
 
