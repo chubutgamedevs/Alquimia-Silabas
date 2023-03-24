@@ -68,7 +68,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
     void settearSilabasControllers()
     {
-        eliminarSilabasHijasTransform();
+        this.silabasControllers = new List<SilabaObjetivoController>();
 
         int indiceSilaba = 0;
 
@@ -110,15 +110,6 @@ public class PalabraObjetivoController : MonoBehaviour
     #endregion
 
     #region metodos
-    void eliminarSilabasHijasTransform()
-    {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        silabasControllers = new List<SilabaObjetivoController>();
-    }
 
 
     #region animaciones
