@@ -4,8 +4,8 @@
       "silabas": [
         "CAN",
         "TAR",
-        "CANT",
-        "\u00c3\u201c",
+        "CAN",
+        "TO",
         "A",
         "RRI",
         "BA",
@@ -14,7 +14,7 @@
       ],
       "palabras": [
         { "silabas": ["CAN", "TAR"], "palabra": "CANTAR" },
-        { "silabas": ["CANT", "\u00c3\u201c"], "palabra": "CANT\u00c3\u201c" },
+        { "silabas": ["CAN", "TO"], "palabra": "CANTOR" },
         { "silabas": ["A", "RRI", "BA"], "palabra": "ARRIBA" },
         { "silabas": ["MUE", "LA"], "palabra": "MUELA" }
       ]

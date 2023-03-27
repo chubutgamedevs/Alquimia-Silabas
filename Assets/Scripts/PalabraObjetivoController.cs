@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using UnityEngine.UI;
 public class PalabraObjetivoController : MonoBehaviour
 {
     public string palabra = "";
@@ -14,6 +14,8 @@ public class PalabraObjetivoController : MonoBehaviour
     [SerializeField] float minFontSize = 20;
 
     public GameObject SilabaObjetivoPrefab;
+    public Image imagen;
+    public Sprite Aux;
 
     List<string> silabas;
     List<SilabaObjetivoController> silabasControllers;
@@ -24,6 +26,7 @@ public class PalabraObjetivoController : MonoBehaviour
 
     private void Start()
     {
+        //this.imagen = gameObject.transform.GetChild(0);
     }
     private void Awake()
     {
@@ -56,9 +59,16 @@ public class PalabraObjetivoController : MonoBehaviour
         settearSilabasControllers();
     }
 
+     public void settearImagen(Sprite imagenRecibida){
+        Debug.Log(imagenRecibida);
+        Aux = imagenRecibida;
+        imagen.sprite = Aux;
+     }
+
+
     void settearSilabasControllers()
     {
-        eliminarSilabasHijasTransform();
+        this.silabasControllers = new List<SilabaObjetivoController>();
 
         int indiceSilaba = 0;
 
@@ -100,15 +110,6 @@ public class PalabraObjetivoController : MonoBehaviour
     #endregion
 
     #region metodos
-    void eliminarSilabasHijasTransform()
-    {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        silabasControllers = new List<SilabaObjetivoController>();
-    }
 
 
     #region animaciones

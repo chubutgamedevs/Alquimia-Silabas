@@ -9,6 +9,17 @@ public class PalabrasObjetivoManager : MonoBehaviour
     List<PalabraObjetivoController> palabrasObjetivo;
     public GameObject palabraObjetivoPrefab;
 
+    public List<Sprite> imageBuffer = new List<Sprite>();
+
+    private void Awake() {
+        //Cargar todo archivo Texture2D en Resources/Imagenes/imagenesPalabras
+        Sprite[] textures = Resources.LoadAll<Sprite>("imagenes/imagenesPalabras");
+        for (int i = 0; i < textures.Length; i++)
+        {
+            imageBuffer.Add(textures[i]);
+        } 
+    }
+
 
     #region eventos
     void OnEnable()
@@ -137,18 +148,14 @@ public class PalabrasObjetivoManager : MonoBehaviour
 
                     indicePalabra++;
                 }
-
             }
         }
-
     }
-
-
 
     internal GameObject nuevaPalabraObjetivoVacia()
     {
         GameObject palabraObj = Instantiate(palabraObjetivoPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
+        
         return palabraObj;
     }
 
@@ -161,10 +168,11 @@ public class PalabrasObjetivoManager : MonoBehaviour
         PalabraObjetivoController palabraObj = palabraObject.GetComponent<PalabraObjetivoController>();
         palabraObj.settearPalabraObjetivo(palabra, silabas);
         palabraObj.ubicarPalabra(indicePalabra);
+        palabraObj.settearImagen(imageBuffer.Find(x => x.name.ToLower() == palabra.ToLower()));
 
         palabrasObjetivo.Add(palabraObj);
-    }
 
+    }
     #endregion
 
 }
