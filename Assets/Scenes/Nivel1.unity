@@ -1840,6 +1840,18 @@ PrefabInstance:
       propertyPath: musicas.Array.data[1]
       value: 
       objectReference: {fileID: 8300000, guid: c51d9031d283436439f2d001c372904f, type: 3}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: b6b2733dab5ef353ba6781da2d2e733e, type: 3}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: ca1e1398507d9e34dba5c2d283c01517, type: 3}
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: musicas.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: f3fbb67782f173a71af558535a5ac4cc, type: 3}
     - target: {fileID: 2481789256815850411, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
       propertyPath: m_RootOrder
       value: 10
