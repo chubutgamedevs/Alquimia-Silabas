@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.4440221, g: 0.49316514, b: 0.5722316, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -486,6 +486,8 @@ MonoBehaviour:
   _compressClip: {fileID: 8300000, guid: 46a427219029723d3ab282bbca00dee9, type: 3}
   _unCompressClip: {fileID: 8300000, guid: f785c4e15663411f7986d9b08a1e38df, type: 3}
   _source: {fileID: 751191995}
+  _textTransform: {fileID: 0}
+  _hardcodedAnchoredTransformOffset: {x: 0, y: -10}
 --- !u!1 &529702450
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +546,8 @@ MonoBehaviour:
   _compressClip: {fileID: 8300000, guid: 46a427219029723d3ab282bbca00dee9, type: 3}
   _unCompressClip: {fileID: 8300000, guid: f785c4e15663411f7986d9b08a1e38df, type: 3}
   _source: {fileID: 751191995}
+  _textTransform: {fileID: 0}
+  _hardcodedAnchoredTransformOffset: {x: 0, y: -10}
 --- !u!114 &529702453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1120,6 +1124,8 @@ MonoBehaviour:
   _compressClip: {fileID: 8300000, guid: 46a427219029723d3ab282bbca00dee9, type: 3}
   _unCompressClip: {fileID: 8300000, guid: f785c4e15663411f7986d9b08a1e38df, type: 3}
   _source: {fileID: 751191995}
+  _textTransform: {fileID: 0}
+  _hardcodedAnchoredTransformOffset: {x: 0, y: -10}
 --- !u!1 &1457354576
 GameObject:
   m_ObjectHideFlags: 0

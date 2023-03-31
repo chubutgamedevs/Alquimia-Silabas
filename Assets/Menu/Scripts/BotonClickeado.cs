@@ -11,15 +11,27 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [SerializeField] private Sprite _default, _pressed;
     [SerializeField] private AudioClip _compressClip, _unCompressClip;
     [SerializeField] private AudioSource _source;
+    [SerializeField] private RectTransform _textTransform;
+    private Vector2 _textTransformInitialAnchoredPosition;
+    [SerializeField] private Vector2 _hardcodedAnchoredTransformOffset = new Vector2(0,-10);
 
     private void Start()
     {
         _source = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<AudioSource>();
+        if(_textTransform != null)
+        {
+            _textTransformInitialAnchoredPosition = _textTransform.anchoredPosition;
+        }
     }
     public void OnPointerDown(PointerEventData eventData)
     {
         _img.sprite = _pressed;
         _source.PlayOneShot(_compressClip);
+
+        if(_textTransform != null)
+        {
+            _textTransform.anchoredPosition = _textTransformInitialAnchoredPosition + _hardcodedAnchoredTransformOffset;
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -27,36 +39,41 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         
         _img.sprite = _default;
         _source.PlayOneShot(_unCompressClip);
+
+        if (_textTransform != null)
+        {
+            _textTransform.anchoredPosition = _textTransformInitialAnchoredPosition;
+        }
     }
     public void IWasClicked(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene("Niveles");
+        SceneManager.LoadSceneAsync("Niveles");
         
     }
     public void Nivel1(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(2);
+        SceneManager.LoadSceneAsync(2);
     }
     public void Nivel2(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(3);
+        SceneManager.LoadSceneAsync(3);
     }
     public void Nivel3(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(4);
+        SceneManager.LoadSceneAsync(4);
     }
     public void Nivel4(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(5);
+        SceneManager.LoadSceneAsync(5);
     }
     public void Nivel5(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(6);
+        SceneManager.LoadSceneAsync(6);
     }
 }

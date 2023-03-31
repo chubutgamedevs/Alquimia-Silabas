@@ -3,8 +3,6 @@
         {
             "silabas": [
                 "TEM",
-                "BL\u00c3\u201c",
-                "TEM",
                 "BLA",
                 "BA",
                 "LA",
@@ -13,13 +11,6 @@
                 "TO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "TEM",
-                        "BL\u00c3\u201c"
-                    ],
-                    "palabra": "TEMBL\u00c3\u201c"
-                },
                 {
                     "silabas": [
                         "TEM",
@@ -46,12 +37,11 @@
         },
         {
             "silabas": [
-                "A",
                 "BA",
-                "TAT\u00c3",
-                "\u201c",
-                "RINC",
-                "\u00c3\u201cN",
+                "TA",
+                "TA",
+                "RIN",
+                "CON",
                 "DE",
                 "DO",
                 "DA",
@@ -60,19 +50,18 @@
             "palabras": [
                 {
                     "silabas": [
-                        "A",
                         "BA",
-                        "TAT\u00c3",
-                        "\u201c"
+                        "TA",
+                        "TA"
                     ],
-                    "palabra": "ABATAT\u00c3\u201c"
+                    "palabra": "BATATA"
                 },
                 {
                     "silabas": [
-                        "RINC",
-                        "\u00c3\u201cN"
+                        "RIN",
+                        "CON"
                     ],
-                    "palabra": "RINC\u00c3\u201cN"
+                    "palabra": "RINCON"
                 },
                 {
                     "silabas": [
