@@ -11,15 +11,27 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     [SerializeField] private Sprite _default, _pressed;
     [SerializeField] private AudioClip _compressClip, _unCompressClip;
     [SerializeField] private AudioSource _source;
+    [SerializeField] private RectTransform _textTransform;
+    private Vector2 _textTransformInitialAnchoredPosition;
+    [SerializeField] private Vector2 _hardcodedAnchoredTransformOffset = new Vector2(0,-10);
 
     private void Start()
     {
         _source = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<AudioSource>();
+        if(_textTransform != null)
+        {
+            _textTransformInitialAnchoredPosition = _textTransform.anchoredPosition;
+        }
     }
     public void OnPointerDown(PointerEventData eventData)
     {
         _img.sprite = _pressed;
         _source.PlayOneShot(_compressClip);
+
+        if(_textTransform != null)
+        {
+            _textTransform.anchoredPosition = _textTransformInitialAnchoredPosition + _hardcodedAnchoredTransformOffset;
+        }
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -27,6 +39,11 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         
         _img.sprite = _default;
         _source.PlayOneShot(_unCompressClip);
+
+        if (_textTransform != null)
+        {
+            _textTransform.anchoredPosition = _textTransformInitialAnchoredPosition;
+        }
     }
     public void IWasClicked(){
         Debug.Log("Clicked");
