@@ -29,34 +29,36 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         _source.PlayOneShot(_unCompressClip);
     }
     public void IWasClicked(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync("Niveles");
         
     }
     public void Nivel1(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(2);
     }
     public void Nivel2(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(3);
     }
     public void Nivel3(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(4);
     }
     public void Nivel4(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(5);
     }
     public void Nivel5(){
-        Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
         SceneManager.LoadSceneAsync(6);
+    }
+    public void Menu(){
+        SoundManager.Instance.cleanUp();
+        SceneManager.LoadSceneAsync("Menu");
+    }
+    public void Creditos(){
+        SoundManager.Instance.cleanUp();
+        SceneManager.LoadSceneAsync("Creditos");
     }
 }
