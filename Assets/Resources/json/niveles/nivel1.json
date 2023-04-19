@@ -3,7 +3,7 @@
         {
             "silabas": [
                 "PI",
-                "YA",
+                "JA",
                 "MA",
                 "CA",
                 "MA",
@@ -13,35 +13,10 @@
                 "TA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "PI",
-                        "YA",
-                        "MA"
-                    ],
-                    "palabra": "PIYAMA"
-                },
-                {
-                    "silabas": [
-                        "CA",
-                        "MA"
-                    ],
-                    "palabra": "CAMA"
-                },
-                {
-                    "silabas": [
-                        "CA",
-                        "SA"
-                    ],
-                    "palabra": "CASA"
-                },
-                {
-                    "silabas": [
-                        "BO",
-                        "TA"
-                    ],
-                    "palabra": "BOTA"
-                }
+                {"silabas": ["PI","JA","MA"],"palabra": "PIJAMA"},
+                {"silabas": ["CA","MA"],"palabra": "CAMA"},
+                {"silabas": ["CA","SA"],"palabra": "CASA"},
+                {"silabas": ["BO","TA"],"palabra": "BOTA"}
             ]
         },
         {
@@ -60,38 +35,10 @@
                 "NES"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "RE",
-                        "ME",
-                        "RA"
-                    ],
-                    "palabra": "REMERA"
-                },
-                {
-                    "silabas": [
-                        "SA",
-                        "CO"
-                    ],
-                    "palabra": "SACO"
-                },
-                {
-                    "silabas": [
-                        "O",
-                        "JO",
-                        "TAS"
-                    ],
-                    "palabra": "OJOTAS"
-                },
-                {
-                    "silabas": [
-                        "PAN",
-                        "TA",
-                        "LO",
-                        "NES"
-                    ],
-                    "palabra": "PANTALONES"
-                }
+                {"silabas":["RE","ME","RA"],"palabra": "REMERA"},
+                {"silabas": ["SA","CO"],"palabra": "SACO"},
+                {"silabas": ["O","JO","TAS"],"palabra": "OJOTAS"},
+                {"silabas": ["PAN","TA","LO","NES"],"palabra": "PANTALONES"}
             ]
         },
         {
@@ -109,37 +56,10 @@
                 "TA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "MIE",
-                        "DO"
-                    ],
-                    "palabra": "MIEDO"
-                },
-                {
-                    "silabas": [
-                        "ME",
-                        "DIAS"
-                    ],
-                    "palabra": "MEDIAS"
-                },
-                {
-                    "silabas": [
-                        "CA",
-                        "MI",
-                        "SA"
-                    ],
-                    "palabra": "CAMISA"
-                },
-                {
-                    "silabas": [
-                        "CA",
-                        "MI",
-                        "SE",
-                        "TA"
-                    ],
-                    "palabra": "CAMISETA"
-                }
+                {"silabas": ["MIE","DO"],"palabra": "MIEDO"},
+                {"silabas": ["ME","DIAS"],"palabra": "MEDIAS"},
+                {"silabas": ["CA","MI","SA"],"palabra": "CAMISA"},
+                {"silabas": ["CA","MI","SE","TA"],"palabra": "CAMISETA"}
             ]
         },
         {
@@ -151,21 +71,8 @@
                 "BO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "LO",
-                        "BI",
-                        "TO"
-                    ],
-                    "palabra": "LOBITO"
-                },
-                {
-                    "silabas": [
-                        "LO",
-                        "BO"
-                    ],
-                    "palabra": "LOBO"
-                }
+                {"silabas": ["LO","BI","TO"],"palabra": "LOBITO"},
+                {"silabas": ["LO","BO"],"palabra": "LOBO"}
             ]
         }
     ]

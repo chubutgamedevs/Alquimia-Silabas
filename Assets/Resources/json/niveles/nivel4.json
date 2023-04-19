@@ -2,8 +2,8 @@
     "batches": [
         {
             "silabas": [
-                "TEM",
-                "BL\u00c3\u201c",
+                "TIEM",
+                "BLA",
                 "TEM",
                 "BLA",
                 "BA",
@@ -13,81 +13,29 @@
                 "TO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "TEM",
-                        "BL\u00c3\u201c"
-                    ],
-                    "palabra": "TEMBL\u00c3\u201c"
-                },
-                {
-                    "silabas": [
-                        "TEM",
-                        "BLA",
-                        "BA"
-                    ],
-                    "palabra": "TEMBLABA"
-                },
-                {
-                    "silabas": [
-                        "LA",
-                        "TA"
-                    ],
-                    "palabra": "LATA"
-                },
-                {
-                    "silabas": [
-                        "PLA",
-                        "TO"
-                    ],
-                    "palabra": "PLATO"
-                }
+                {"silabas": ["TIEM","BLA"],"palabra": "TIEMBLA"},
+                {"silabas": ["TEM","BLA","BA"],"palabra": "TEMBLABA"},
+                {"silabas": ["LA","TA"],"palabra": "LATA"},
+                {"silabas": ["PLA","TO"],"palabra": "PLATO"}
             ]
         },
         {
             "silabas": [
-                "A",
                 "BA",
-                "TAT\u00c3",
-                "\u201c",
+                "TA",
+                "TA",
                 "RINC",
-                "\u00c3\u201cN",
+                "ON",
                 "DE",
                 "DO",
                 "DA",
                 "DO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "A",
-                        "BA",
-                        "TAT\u00c3",
-                        "\u201c"
-                    ],
-                    "palabra": "ABATAT\u00c3\u201c"
-                },
-                {
-                    "silabas": [
-                        "RINC",
-                        "\u00c3\u201cN"
-                    ],
-                    "palabra": "RINC\u00c3\u201cN"
-                },
-                {
-                    "silabas": [
-                        "DE",
-                        "DO"
-                    ],
-                    "palabra": "DEDO"
-                },
-                {
-                    "silabas": [
-                        "DA",
-                        "DO"
-                    ],
-                    "palabra": "DADO"
-                }
+                {"silabas": ["BA","TA","TA"],"palabra": "BATATA"},
+                {"silabas": ["RINC","ON"],"palabra": "RINCON"},
+                {"silabas": ["DE","DO"],"palabra": "DEDO"},
+                {"silabas": ["DA","DO"],"palabra": "DADO"}
             ]
         },
         {
@@ -106,38 +54,10 @@
                 "TA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "COS",
-                        "TU",
-                        "RE",
-                        "RO"
-                    ],
-                    "palabra": "COSTURERO"
-                },
-                {
-                    "silabas": [
-                        "CO",
-                        "CI",
-                        "NE",
-                        "RO"
-                    ],
-                    "palabra": "COCINERO"
-                },
-                {
-                    "silabas": [
-                        "PLA",
-                        "ZA"
-                    ],
-                    "palabra": "PLAZA"
-                },
-                {
-                    "silabas": [
-                        "PLA",
-                        "TA"
-                    ],
-                    "palabra": "PLATA"
-                }
+                {"silabas": ["COS","TU","RE","RO"],"palabra": "COSTURERO"},
+                {"silabas": ["CO","CI","NE","RO"],"palabra": "COCINERO"},
+                {"silabas": ["PLA","ZA"],"palabra": "PLAZA"},
+                {"silabas": ["PLA","TA"],"palabra": "PLATA"}
             ]
         },
         {
@@ -155,37 +75,10 @@
                 "LLO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "MA",
-                        "RRON"
-                    ],
-                    "palabra": "MARRON"
-                },
-                {
-                    "silabas": [
-                        "CU",
-                        "CHA",
-                        "RA"
-                    ],
-                    "palabra": "CUCHARA"
-                },
-                {
-                    "silabas": [
-                        "TE",
-                        "NE",
-                        "DOR"
-                    ],
-                    "palabra": "TENEDOR"
-                },
-                {
-                    "silabas": [
-                        "CU",
-                        "CHI",
-                        "LLO"
-                    ],
-                    "palabra": "CUCHILLO"
-                }
+                {"silabas": ["MA","RRON"],"palabra": "MARRON"},
+                {"silabas": ["CU","CHA","RA"],"palabra": "CUCHARA"},
+                {"silabas": ["TE","NE","DOR"],"palabra": "TENEDOR"},
+                {"silabas": ["CU","CHI","LLO"],"palabra": "CUCHILLO"}
             ]
         }
     ]

@@ -927,6 +927,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!82 &1488204630 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2481789256815850409, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+  m_PrefabInstance: {fileID: 2481789258393607445}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1522980356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1828,6 +1833,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
+      propertyPath: MusicSource
+      value: 
+      objectReference: {fileID: 1488204630}
     - target: {fileID: 2481789256815850408, guid: 3faf04e3be9974241b35b41828bb617a, type: 3}
       propertyPath: musicas.Array.size
       value: 5

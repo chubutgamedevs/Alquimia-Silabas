@@ -31,32 +31,32 @@ public class BotonClickeado : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     public void IWasClicked(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene("Niveles");
+        SceneManager.LoadSceneAsync("Niveles");
         
     }
     public void Nivel1(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(2);
+        SceneManager.LoadSceneAsync(2);
     }
     public void Nivel2(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(3);
+        SceneManager.LoadSceneAsync(3);
     }
     public void Nivel3(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(4);
+        SceneManager.LoadSceneAsync(4);
     }
     public void Nivel4(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(5);
+        SceneManager.LoadSceneAsync(5);
     }
     public void Nivel5(){
         Debug.Log("Clicked");
         SoundManager.Instance.cleanUp();
-        SceneManager.LoadScene(6);
+        SceneManager.LoadSceneAsync(6);
     }
 }

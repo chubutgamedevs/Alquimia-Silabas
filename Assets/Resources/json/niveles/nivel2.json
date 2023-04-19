@@ -17,39 +17,10 @@
                 "LLA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "VA",
-                        "QUE",
-                        "RO"
-                    ],
-                    "palabra": "VAQUERO"
-                },
-                {
-                    "silabas": [
-                        "SO",
-                        "QUE",
-                        "TE"
-                    ],
-                    "palabra": "SOQUETE"
-                },
-                {
-                    "silabas": [
-                        "IM",
-                        "PER",
-                        "ME",
-                        "A",
-                        "BLE"
-                    ],
-                    "palabra": "IMPERMEABLE"
-                },
-                {
-                    "silabas": [
-                        "MA",
-                        "LLA"
-                    ],
-                    "palabra": "MALLA"
-                }
+                {"silabas": ["VA","QUE","RO"],"palabra": "VAQUERO"},
+                {"silabas": ["SO","QUE","TE"],"palabra": "SOQUETE"},
+                {"silabas": ["IM","PER","ME","A","BLE"],"palabra": "IMPERMEABLE"},
+                {"silabas": ["MA","LLA"],"palabra": "MALLA"}
             ]
         },
         {
@@ -67,36 +38,10 @@
                 "TO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "TRA",
-                        "JE"
-                    ],
-                    "palabra": "TRAJE"
-                },
-                {
-                    "silabas": [
-                        "PAN",
-                        "TU",
-                        "FLAS"
-                    ],
-                    "palabra": "PANTUFLAS"
-                },
-                {
-                    "silabas": [
-                        "GUAN",
-                        "TES"
-                    ],
-                    "palabra": "GUANTES"
-                },
-                {
-                    "silabas": [
-                        "SOM",
-                        "BRE",
-                        "RI",
-                        "TO"
-                    ],
-                    "palabra": "SOMBRERITO"
+                {"silabas": ["TRA","JE"],"palabra": "TRAJE"},
+                {"silabas": ["PAN","TU","FLAS"],"palabra": "PANTUFLAS"},
+                {"silabas": ["GUAN","TES"],"palabra": "GUANTES"},
+                {"silabas": ["SOM","BRE","RI","TO"],"palabra": "SOMBRERITO"
                 }
             ]
         },
@@ -116,38 +61,10 @@
                 "TA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "SOM",
-                        "BRE",
-                        "RO"
-                    ],
-                    "palabra": "SOMBRERO"
-                },
-                {
-                    "silabas": [
-                        "CIN",
-                        "TU",
-                        "RON"
-                    ],
-                    "palabra": "CINTURON"
-                },
-                {
-                    "silabas": [
-                        "BU",
-                        "FAN",
-                        "DA"
-                    ],
-                    "palabra": "BUFANDA"
-                },
-                {
-                    "silabas": [
-                        "COR",
-                        "BA",
-                        "TA"
-                    ],
-                    "palabra": "CORBATA"
-                }
+                {"silabas": ["SOM","BRE","RO"],"palabra": "SOMBRERO"},
+                {"silabas": ["CIN","TU","RON"],"palabra": "CINTURON"},
+                {"silabas": ["BU","FAN","DA"],"palabra": "BUFANDA"},
+                {"silabas": ["COR","BA","TA"],"palabra": "CORBATA"}
             ]
         },
         {
@@ -166,38 +83,10 @@
                 "CO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "CAL",
-                        "ZON",
-                        "CI",
-                        "LLOS"
-                    ],
-                    "palabra": "CALZONCILLOS"
-                },
-                {
-                    "silabas": [
-                        "BOS",
-                        "QUE"
-                    ],
-                    "palabra": "BOSQUE"
-                },
-                {
-                    "silabas": [
-                        "ZA",
-                        "PA",
-                        "TOS"
-                    ],
-                    "palabra": "ZAPATOS"
-                },
-                {
-                    "silabas": [
-                        "CHA",
-                        "LE",
-                        "CO"
-                    ],
-                    "palabra": "CHALECO"
-                }
+                {"silabas": ["CAL","ZON","CI","LLOS"],"palabra": "CALZONCILLOS"},
+                {"silabas": ["BOS","QUE"],"palabra": "BOSQUE"},
+                {"silabas": ["ZA","PA","TOS"],"palabra": "ZAPATOS"},
+                {"silabas": ["CHA","LE","CO"],"palabra": "CHALECO"}
             ]
         }
     ]
