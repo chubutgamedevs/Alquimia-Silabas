@@ -14,85 +14,35 @@
                 "RO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "VER",
-                        "DE"
-                    ],
-                    "palabra": "VERDE"
-                },
-                {
-                    "silabas": [
-                        "SUE",
-                        "LO"
-                    ],
-                    "palabra": "SUELO"
-                },
-                {
-                    "silabas": [
-                        "CA",
-                        "SA"
-                    ],
-                    "palabra": "CASA"
-                },
-                {
-                    "silabas": [
-                        "CO",
-                        "CI",
-                        "NE",
-                        "RO"
-                    ],
-                    "palabra": "COCINERO"
-                }
+                {"silabas": ["VER","DE"],"palabra": "VERDE"},
+                {"silabas": ["SUE","LO"],"palabra": "SUELO"},
+                {"silabas": ["CA","SA"],"palabra": "CASA"},
+                {"silabas": ["CO","CI","NE","RO"],"palabra": "COCINERO"}
             ]
         },
         {
             "silabas": [
                 "MIE",
                 "DO",
-                "YOY\u00c3",
-                "\u201c",
+                "PUER",
+                "TA",
                 "NE",
                 "NA",
                 "DE",
                 "DO"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "MIE",
-                        "DO"
-                    ],
-                    "palabra": "MIEDO"
-                },
-                {
-                    "silabas": [
-                        "YOY\u00c3",
-                        "\u201c"
-                    ],
-                    "palabra": "YOY\u00c3\u201c"
-                },
-                {
-                    "silabas": [
-                        "NE",
-                        "NA"
-                    ],
-                    "palabra": "NENA"
-                },
-                {
-                    "silabas": [
-                        "DE",
-                        "DO"
-                    ],
-                    "palabra": "DEDO"
-                }
+                {"silabas": ["MIE","DO"],"palabra": "MIEDO"},
+                {"silabas": ["PUER","TA"],"palabra": "PUERTA"},
+                {"silabas": ["NE","NA"],"palabra": "NENA"},
+                {"silabas": ["DE","DO"],"palabra": "DEDO"}
             ]
         },
         {
             "silabas": [
-                "CO",
-                "LI",
-                "TA",
+                "BA",
+                "LLE",
+                "NA",
                 "LA",
                 "TA",
                 "REI",
@@ -102,36 +52,10 @@
                 "TA"
             ],
             "palabras": [
-                {
-                    "silabas": [
-                        "CO",
-                        "LI",
-                        "TA"
-                    ],
-                    "palabra": "COLITA"
-                },
-                {
-                    "silabas": [
-                        "LA",
-                        "TA"
-                    ],
-                    "palabra": "LATA"
-                },
-                {
-                    "silabas": [
-                        "REI",
-                        "NA"
-                    ],
-                    "palabra": "REINA"
-                },
-                {
-                    "silabas": [
-                        "BA",
-                        "TA",
-                        "TA"
-                    ],
-                    "palabra": "BATATA"
-                }
+                {"silabas": ["BA","LLE","NA"],"palabra": "BALLENA"},
+                {"silabas": ["LA","TA"],"palabra": "LATA"},
+                {"silabas": ["REI","NA"],"palabra": "REINA"},
+                {"silabas": ["BA","TA","TA"],"palabra": "BATATA"}
             ]
         }
     ]
